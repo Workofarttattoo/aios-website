@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Toolkit - Ai|oS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            font-size: 3.5em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #a0a0a0;
+            margin-bottom: 10px;
+        }
+
+        .nav {
+            margin-top: 30px;
+        }
+
+        .nav a {
+            color: #667eea;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+
+        .nav a:hover {
+            color: #f093fb;
+        }
+
+        .hero-warning {
+            background: rgba(240, 147, 251, 0.1);
+            border: 2px solid rgba(240, 147, 251, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .hero-warning h2 {
+            color: #f093fb;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        .hero-warning p {
+            color: #c0c0c0;
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .tool-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .tool-icon {
+            font-size: 2.5em;
+            margin-right: 20px;
+        }
+
+        .tool-card h3 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .tool-tagline {
+            color: #f093fb;
+            font-size: 1em;
+            margin-bottom: 15px;
+        }
+
+        .tool-card p {
+            color: #c0c0c0;
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+
+        .tool-features {
+            margin-top: 20px;
+        }
+
+        .tool-features ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tool-features li {
+            color: #b0b0b0;
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .tool-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .code-snippet {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+            overflow-x: auto;
+        }
+
+        .code-snippet pre {
+            color: #e0e0e0;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .code-snippet code {
+            color: #667eea;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .badge.warning {
+            background: rgba(240, 147, 251, 0.2);
+            color: #f093fb;
+        }
+
+        .badge.safe {
+            background: rgba(0, 255, 127, 0.2);
+            color: #00ff7f;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .section h3 {
+            color: #f093fb;
+            font-size: 1.6em;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        .section p {
+            color: #c0c0c0;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .feature-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 10px;
+            padding: 25px;
+        }
+
+        .feature-box h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .feature-box p {
+            color: #b0b0b0;
+            font-size: 1em;
+            line-height: 1.6;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .comparison-table th {
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #c0c0c0;
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        @media (max-width: 768px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Sovereign Security Toolkit</h1>
+            <p class="subtitle">Agent-Friendly Security Assessment Tools</p>
+            <p style="color: #808080; margin-top: 10px;">Defensive security utilities reimagined for autonomous agents</p>
+            <div class="nav">
+                <a href="index.html">Home</a>
+                <a href="quantum.html">Algorithms</a>
+                <a href="demos.html">Demos</a>
+                <a href="docs.html">Docs</a>
+                <a href="about.html">About</a>
+            </div>
+        </header>
+
+        <!-- Warning Banner -->
+        <div class="hero-warning">
+            <h2>⚠️ Defensive Security Only</h2>
+            <p>
+                These tools are designed exclusively for defensive security assessment, rehearsal,
+                and analysis. All tools support read-only/forensic modes, rate limiting, and ethical use.
+                Not for offensive operations or malicious purposes.
+            </p>
+        </div>
+
+        <!-- Tools Overview -->
+        <section class="section">
+            <h2>Toolkit Overview</h2>
+            <p>
+                The Sovereign Security Toolkit is a collection of reimagined security assessment utilities
+                designed to work seamlessly with Ai|oS meta-agents. Unlike traditional security tools,
+                these are built with:
+            </p>
+
+            <div class="features-grid">
+                <div class="feature-box">
+                    <h4>🤖 Agent-Friendly Behavior</h4>
+                    <p>Structured JSON output, programmatic interfaces, and predictable behavior for autonomous operation.</p>
+                </div>
+
+                <div class="feature-box">
+                    <h4>🛡️ Defensive Focus</h4>
+                    <p>Read-only modes, forensic safeguards, and ethical constraints built into every tool.</p>
+                </div>
+
+                <div class="feature-box">
+                    <h4>📊 Rich Telemetry</h4>
+                    <p>Comprehensive health checks, audit logging, and metadata for Ai|oS integration.</p>
+                </div>
+
+                <div class="feature-box">
+                    <h4>🎯 Production Ready</h4>
+                    <p>Error handling, rate limiting, concurrency controls, and enterprise-grade reliability.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Individual Tools -->
+        <h2 style="text-align: center; color: #667eea; font-size: 2.5em; margin: 60px 0 40px;">The Tools</h2>
+
+        <div class="tools-grid">
+            <!-- AuroraScan -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <span class="tool-icon">🌐</span>
+                    <div>
+                        <h3>AuroraScan</h3>
+                        <div class="tool-tagline">Network Reconnaissance</div>
+                    </div>
+                </div>
+
+                <span class="badge">Network</span>
+                <span class="badge safe">Defensive</span>
+                <span class="badge">Agent-Ready</span>
+
+                <p>
+                    Agent-friendly network reconnaissance tool for discovering hosts, services, and vulnerabilities
+                    with configurable profiles and rate limiting.
+                </p>
+
+                <div class="tool-features">
+                    <strong style="color: #667eea;">Key Features:</strong>
+                    <ul>
+                        <li>Configurable scan profiles (stealth, normal, aggressive)</li>
+                        <li>Service detection and version fingerprinting</li>
+                        <li>CVE vulnerability correlation</li>
+                        <li>JSON/XML output for agents</li>
+                        <li>Rate limiting and concurrency controls</li>
+                        <li>GUI for interactive use</li>
+                    </ul>
+                </div>
+
+                <div class="code-snippet">
+                    <pre><code># Basic scan
+python -m tools.aurorascan 192.168.0.0/24 --profile recon --json
+
+# Advanced scan with GUI
+python -m tools.aurorascan --gui
+
+# From Ai|oS
+AGENTA_SECURITY_TOOLS=AuroraScan python aios/aios -v boot</code></pre>
+                </div>
+            </div>
+
+            <!-- CipherSpear -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <span class="tool-icon">💉</span>
+                    <div>
+                        <h3>CipherSpear</h3>
+                        <div class="tool-tagline">Database Injection Analysis</div>
+                    </div>
+                </div>
+
+                <span class="badge">Database</span>
+                <span class="badge safe">Read-Only</span>
+                <span class="badge">Agent-Ready</span>
+
+                <p>
+                    Database security assessment tool that identifies injection vulnerabilities through
+                    static analysis and safe testing methodologies.
+                </p>
+
+                <div class="tool-features">
+                    <strong style="color: #667eea;">Key Features:</strong>
+                    <ul>
+                        <li>SQL injection pattern detection</li>
+                        <li>NoSQL injection analysis</li>
+                        <li>Read-only safe testing mode</li>
+                        <li>Multiple database support (PostgreSQL, MySQL, MongoDB)</li>
+                        <li>Remediation recommendations</li>
+                        <li>Demo mode for training</li>
+                    </ul>
+                </div>
+
+                <div class="code-snippet">
+                    <pre><code># Analyze database
+python -m tools.cipherspear --dsn postgresql://audit@localhost/app --json
+
+# Demo mode (no real DB)
+python -m tools.cipherspear --demo --json
+
+# With GUI
+python -m tools.cipherspear --gui</code></pre>
+                </div>
+            </div>
+
+            <!-- SkyBreaker -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <span class="tool-icon">📡</span>
+                    <div>
+                        <h3>SkyBreaker</h3>
+                        <div class="tool-tagline">Wireless Security Auditing</div>
+                    </div>
+                </div>
+
+                <span class="badge">Wireless</span>
+                <span class="badge safe">Defensive</span>
+                <span class="badge">Agent-Ready</span>
+
+                <p>
+                    Wireless network security auditing tool for assessing WiFi configurations,
+                    encryption strength, and access point security.
+                </p>
+
+                <div class="tool-features">
+                    <strong style="color: #667eea;">Key Features:</strong>
+                    <ul>
+                        <li>WiFi network discovery and analysis</li>
+                        <li>Encryption strength assessment (WEP, WPA, WPA2, WPA3)</li>
+                        <li>Rogue access point detection</li>
+                        <li>Signal strength mapping</li>
+                        <li>Capture and analysis modes</li>
+                        <li>Compliance checking</li>
+                    </ul>
+                </div>
+
+                <div class="code-snippet">
+                    <pre><code># Capture mode
+python -m tools.skybreaker capture wlan0 --output capture.json
+
+# Analysis mode
+python -m tools.skybreaker analyze capture.json --json
+
+# Live monitoring
+python -m tools.skybreaker --gui</code></pre>
+                </div>
+            </div>
+
+            <!-- MythicKey -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <span class="tool-icon">🔑</span>
+                    <div>
+                        <h3>MythicKey</h3>
+                        <div class="tool-tagline">Credential Security Analysis</div>
+                    </div>
+                </div>
+
+                <span class="badge">Credentials</span>
+                <span class="badge safe">Static Analysis</span>
+                <span class="badge">Agent-Ready</span>
+
+                <p>
+                    Credential strength analysis tool using deterministic pattern matching
+                    and entropy analysis - no live credential testing.
+                </p>
+
+                <div class="tool-features">
+                    <strong style="color: #667eea;">Key Features:</strong>
+                    <ul>
+                        <li>Password entropy analysis</li>
+                        <li>Pattern detection (common passwords, keyboard walks)</li>
+                        <li>Hash type identification</li>
+                        <li>GPU-balanced profiles for large datasets</li>
+                        <li>No live credential testing (defensive only)</li>
+                        <li>Compliance checks (NIST, PCI-DSS)</li>
+                    </ul>
+                </div>
+
+                <div class="code-snippet">
+                    <pre><code># Analyze password list
+python -m tools.mythickey --demo --profile gpu-balanced --json
+
+# Check against policy
+python -m tools.mythickey --policy nist --json
+
+# Interactive analysis
+python -m tools.mythickey --gui</code></pre>
+                </div>
+            </div>
+
+            <!-- SpectraTrace -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <span class="tool-icon">📦</span>
+                    <div>
+                        <h3>SpectraTrace</h3>
+                        <div class="tool-tagline">Packet Inspection</div>
+                    </div>
+                </div>
+
+                <span class="badge">Network</span>
+                <span class="badge safe">Passive Analysis</span>
+                <span class="badge">Agent-Ready</span>
+
+                <p>
+                    Deep packet inspection tool for analyzing network traffic, detecting anomalies,
+                    and extracting metadata from captures.
+                </p>
+
+                <div class="tool-features">
+                    <strong style="color: #667eea;">Key Features:</strong>
+                    <ul>
+                        <li>Protocol analysis (HTTP, HTTPS, DNS, etc.)</li>
+                        <li>Anomaly detection with ML</li>
+                        <li>Traffic pattern analysis</li>
+                        <li>Metadata extraction</li>
+                        <li>Workflow automation (quick-scan, deep-dive)</li>
+                        <li>PCAP file support</li>
+                    </ul>
+                </div>
+
+                <div class="code-snippet">
+                    <pre><code># Analyze capture
+python -m tools.spectratrace --capture traces/demo.pcap --json
+
+# Quick scan workflow
+python -m tools.spectratrace --workflow quick-scan --json
+
+# Interactive analysis
+python -m tools.spectratrace --gui</code></pre>
+                </div>
+            </div>
+
+            <!-- NemesisHydra -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <span class="tool-icon">🔐</span>
+                    <div>
+                        <h3>NemesisHydra</h3>
+                        <div class="tool-tagline">Authentication Testing</div>
+                    </div>
+                </div>
+
+                <span class="badge">Authentication</span>
+                <span class="badge warning">Controlled Testing</span>
+                <span class="badge">Agent-Ready</span>
+
+                <p>
+                    Authentication mechanism testing tool with strict rate limiting and
+                    lockout prevention for defensive security assessment.
+                </p>
+
+                <div class="tool-features">
+                    <strong style="color: #667eea;">Key Features:</strong>
+                    <ul>
+                        <li>Authentication flow analysis</li>
+                        <li>Timing attack detection</li>
+                        <li>Session management testing</li>
+                        <li>Strict rate limiting (prevents lockouts)</li>
+                        <li>Demo mode for training</li>
+                        <li>OAuth/SAML support</li>
+                    </ul>
+                </div>
+
+                <div class="code-snippet">
+                    <pre><code># Demo mode (safe)
+python -m tools.nemesishydra --demo --json
+
+# Controlled testing
+python -m tools.nemesishydra --target https://example.com/login \
+  --max-attempts 3 --json
+
+# Interactive testing
+python -m tools.nemesishydra --gui</code></pre>
+                </div>
+            </div>
+
+            <!-- ObsidianHunt -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <span class="tool-icon">🛡️</span>
+                    <div>
+                        <h3>ObsidianHunt</h3>
+                        <div class="tool-tagline">Host Hardening Audit</div>
+                    </div>
+                </div>
+
+                <span class="badge">System</span>
+                <span class="badge safe">Read-Only</span>
+                <span class="badge">Agent-Ready</span>
+
+                <p>
+                    Host security configuration auditing tool that checks hardening status,
+                    compliance, and security best practices.
+                </p>
+
+                <div class="tool-features">
+                    <strong style="color: #667eea;">Key Features:</strong>
+                    <ul>
+                        <li>Security configuration checks</li>
+                        <li>CIS benchmark compliance</li>
+                        <li>Patch level assessment</li>
+                        <li>Service hardening analysis</li>
+                        <li>Cross-platform (Linux, macOS, Windows)</li>
+                        <li>Remediation scripts</li>
+                    </ul>
+                </div>
+
+                <div class="code-snippet">
+                    <pre><code># Audit workstation
+python -m tools.obsidianhunt --profile workstation --json
+
+# Server audit
+python -m tools.obsidianhunt --profile server --benchmark cis --json
+
+# Interactive audit
+python -m tools.obsidianhunt --gui</code></pre>
+                </div>
+            </div>
+
+            <!-- VectorFlux -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <span class="tool-icon">📡</span>
+                    <div>
+                        <h3>VectorFlux</h3>
+                        <div class="tool-tagline">Payload Analysis & Staging</div>
+                    </div>
+                </div>
+
+                <span class="badge">Analysis</span>
+                <span class="badge warning">Research Tool</span>
+                <span class="badge">Agent-Ready</span>
+
+                <p>
+                    Payload analysis and staging tool for understanding attack vectors,
+                    analyzing malware samples, and defensive research.
+                </p>
+
+                <div class="tool-features">
+                    <strong style="color: #667eea;">Key Features:</strong>
+                    <ul>
+                        <li>Payload format analysis</li>
+                        <li>Obfuscation detection</li>
+                        <li>Sandbox environment for testing</li>
+                        <li>Module system for extensibility</li>
+                        <li>Workspace management</li>
+                        <li>Forensic analysis mode</li>
+                    </ul>
+                </div>
+
+                <div class="code-snippet">
+                    <pre><code># List modules
+python -m tools.vectorflux --list-modules
+
+# Analyze payload
+python -m tools.vectorflux --workspace incident-23-071 \
+  --module analyze-payload --json
+
+# Forensic mode
+python -m tools.vectorflux --forensic --json</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Integration with Ai|oS -->
+        <section class="section">
+            <h2>Ai|oS Integration</h2>
+            <p>
+                All tools integrate seamlessly with Ai|oS meta-agents through the Security Agent.
+                When configured, tools automatically run health checks and publish telemetry.
+            </p>
+
+            <h3>Environment Configuration</h3>
+            <div class="code-snippet">
+                <pre><code># Enable security suite
+export AGENTA_SECURITY_SUITE=1
+
+# Select specific tools
+export AGENTA_SECURITY_TOOLS=AuroraScan,CipherSpear,SkyBreaker
+
+# Set profile
+export AGENTA_SECURITY_PROFILE=production
+
+# Boot Ai|oS
+python aios/aios --env AGENTA_SECURITY_SUITE=1 -v boot</code></pre>
+            </div>
+
+            <h3>Health Check System</h3>
+            <p>
+                Each tool provides a <code>health_check()</code> function that returns structured status:
+            </p>
+
+            <div class="code-snippet">
+                <pre><code>{
+  "tool": "AuroraScan",
+  "status": "ok",           // ok | warn | error
+  "summary": "AuroraScan is operational",
+  "details": {
+    "version": "1.0.0",
+    "last_run": "2025-10-13T10:30:00Z",
+    "scans_completed": 42,
+    "average_latency_ms": 250
+  }
+}</code></pre>
+            </div>
+
+            <h3>Security Agent Actions</h3>
+            <div class="code-snippet">
+                <pre><code># Check tool health
+python aios/aios -v exec security.sovereign_suite
+
+# Run specific tool
+AGENTA_SECURITY_TOOLS=AuroraScan python aios/aios -v exec security.sovereign_suite
+
+# Get telemetry
+python aios/aios -v metadata</code></pre>
+            </div>
+        </section>
+
+        <!-- Comparison with Traditional Tools -->
+        <section class="section">
+            <h2>Why Agent-Friendly?</h2>
+            <p>
+                Traditional security tools are designed for human operators. Our toolkit is reimagined for autonomous agents:
+            </p>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Feature</th>
+                    <th>Traditional Tools</th>
+                    <th>Sovereign Toolkit</th>
+                </tr>
+                <tr>
+                    <td><strong>Output Format</strong></td>
+                    <td>Human-readable text</td>
+                    <td>Structured JSON with schemas</td>
+                </tr>
+                <tr>
+                    <td><strong>Error Handling</strong></td>
+                    <td>Crashes or cryptic errors</td>
+                    <td>Graceful degradation with context</td>
+                </tr>
+                <tr>
+                    <td><strong>State Management</strong></td>
+                    <td>Interactive prompts</td>
+                    <td>Stateless, deterministic behavior</td>
+                </tr>
+                <tr>
+                    <td><strong>Rate Limiting</strong></td>
+                    <td>Manual throttling</td>
+                    <td>Built-in, configurable limits</td>
+                </tr>
+                <tr>
+                    <td><strong>Telemetry</strong></td>
+                    <td>Basic logs</td>
+                    <td>Rich metadata with timestamps</td>
+                </tr>
+                <tr>
+                    <td><strong>Forensic Mode</strong></td>
+                    <td>Not available</td>
+                    <td>Read-only safeguards built-in</td>
+                </tr>
+                <tr>
+                    <td><strong>Health Checks</strong></td>
+                    <td>Manual verification</td>
+                    <td>Automated with latency metrics</td>
+                </tr>
+                <tr>
+                    <td><strong>Integration</strong></td>
+                    <td>Shell scripts</td>
+                    <td>Python API + Ai|oS native</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Ethical Guidelines -->
+        <section class="section">
+            <h2>Ethical Use Guidelines</h2>
+
+            <div class="hero-warning" style="text-align: left;">
+                <h2>Code of Conduct</h2>
+                <p style="margin-bottom: 15px;">
+                    The Sovereign Security Toolkit is designed exclusively for defensive security.
+                    By using these tools, you agree to:
+                </p>
+                <ul style="color: #c0c0c0; margin-left: 30px; line-height: 2;">
+                    <li>Use tools only on systems you own or have explicit authorization to test</li>
+                    <li>Respect rate limits and avoid causing service disruption</li>
+                    <li>Not use for offensive operations or malicious purposes</li>
+                    <li>Follow responsible disclosure for discovered vulnerabilities</li>
+                    <li>Comply with all applicable laws and regulations</li>
+                    <li>Use forensic modes in production environments</li>
+                </ul>
+            </div>
+
+            <h3>Built-In Safeguards</h3>
+            <div class="features-grid">
+                <div class="feature-box">
+                    <h4>Forensic Mode</h4>
+                    <p>All tools support read-only operation that prevents system mutations while gathering intelligence.</p>
+                </div>
+
+                <div class="feature-box">
+                    <h4>Rate Limiting</h4>
+                    <p>Configurable rate limits prevent accidental service disruption and respect target system resources.</p>
+                </div>
+
+                <div class="feature-box">
+                    <h4>Audit Logging</h4>
+                    <p>All operations are logged with timestamps, targets, and results for accountability and compliance.</p>
+                </div>
+
+                <div class="feature-box">
+                    <h4>Authorization Checks</h4>
+                    <p>Tools require explicit configuration to operate, preventing accidental execution against unauthorized targets.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Get Started -->
+        <section class="section" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1)); text-align: center;">
+            <h2>Get Started</h2>
+            <p style="font-size: 1.2em; margin-bottom: 30px;">
+                Ready to enhance your security posture with agent-friendly tools?
+            </p>
+
+            <div class="code-snippet" style="text-align: left; max-width: 800px; margin: 0 auto 30px;">
+                <pre><code># Clone repository
+git clone https://github.com/yourusername/aios.git
+cd aios
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run health checks
+python -m tools.aurorascan --health-check
+
+# Start with GUI
+python -m tools.aurorascan --gui</code></pre>
+            </div>
+
+            <p style="color: #a0a0a0;">
+                See the <a href="docs.html" style="color: #667eea;">documentation</a> for detailed usage guides and API reference.
+            </p>
+        </section>
+    </div>
+</body>
+</html>

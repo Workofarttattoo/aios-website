@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Ai|oS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            font-size: 3.5em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #a0a0a0;
+            margin-bottom: 10px;
+        }
+
+        .nav {
+            margin-top: 30px;
+        }
+
+        .nav a {
+            color: #667eea;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+
+        .nav a:hover {
+            color: #f093fb;
+        }
+
+        .hero-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 60px 40px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .hero-section h2 {
+            font-size: 2.5em;
+            color: #667eea;
+            margin-bottom: 30px;
+        }
+
+        .hero-section p {
+            font-size: 1.3em;
+            color: #c0c0c0;
+            max-width: 900px;
+            margin: 0 auto 30px;
+            line-height: 2;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .section h3 {
+            color: #f093fb;
+            font-size: 1.6em;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        .section p {
+            color: #c0c0c0;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .feature-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .feature-card h4 {
+            color: #667eea;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .feature-card p {
+            color: #b0b0b0;
+            font-size: 1em;
+            line-height: 1.7;
+        }
+
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+            margin: 40px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 40px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -46px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #667eea;
+            border: 3px solid #0a0a0a;
+        }
+
+        .timeline-year {
+            color: #f093fb;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .timeline-content {
+            color: #c0c0c0;
+            font-size: 1.1em;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .stat-card {
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .stat-value {
+            font-size: 3em;
+            color: #667eea;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #a0a0a0;
+            font-size: 1em;
+        }
+
+        .quote-box {
+            background: rgba(240, 147, 251, 0.1);
+            border-left: 4px solid #f093fb;
+            padding: 30px;
+            margin: 40px 0;
+            border-radius: 10px;
+        }
+
+        .quote-box p {
+            font-size: 1.3em;
+            color: #e0e0e0;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .quote-author {
+            color: #f093fb;
+            font-size: 1.1em;
+            text-align: right;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .team-member {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .team-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            color: white;
+        }
+
+        .team-name {
+            color: #667eea;
+            font-size: 1.4em;
+            margin-bottom: 10px;
+        }
+
+        .team-role {
+            color: #f093fb;
+            font-size: 1em;
+            margin-bottom: 15px;
+        }
+
+        .team-bio {
+            color: #b0b0b0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(240, 147, 251, 0.2));
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            margin-top: 60px;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .cta-section h2 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .cta-section p {
+            color: #c0c0c0;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: inherit;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn.secondary {
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+        }
+
+        .btn.secondary:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+
+            .hero-section h2 {
+                font-size: 2em;
+            }
+
+            .hero-section p {
+                font-size: 1.1em;
+            }
+
+            .timeline {
+                padding-left: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>About Ai|oS</h1>
+            <p class="subtitle">Building the Future of Agentic Intelligence</p>
+            <div class="nav">
+                <a href="index.html">Home</a>
+                <a href="quantum.html">Algorithms</a>
+                <a href="demos.html">Demos</a>
+                <a href="docs.html">Docs</a>
+                <a href="about.html">About</a>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h2>Our Mission</h2>
+            <p>
+                We're building Ai|oS (Agentic Intelligence Operating System) - a next-generation framework
+                that coordinates autonomous agents through quantum computing, advanced ML algorithms,
+                and novel autonomy architectures. Our goal: enable AI systems that can learn, adapt,
+                and pursue goals independently while remaining aligned with human values.
+            </p>
+        </div>
+
+        <!-- Vision Section -->
+        <section class="section">
+            <h2>Our Vision</h2>
+            <p>
+                The future of AI isn't just about bigger models or more data - it's about creating
+                systems that can think, learn, and act autonomously. Ai|oS represents a fundamental
+                shift from reactive AI to proactive, goal-oriented agents that can:
+            </p>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🧠</span>
+                    <h4>Autonomous Learning</h4>
+                    <p>Agents that identify knowledge gaps and pursue learning independently, building comprehensive knowledge graphs without human supervision.</p>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">⚛️</span>
+                    <h4>Quantum-Enhanced</h4>
+                    <p>Leveraging quantum algorithms for exponential speedups in optimization, simulation, and machine learning tasks.</p>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">🎯</span>
+                    <h4>Goal Synthesis</h4>
+                    <p>Level 5-7 autonomy where agents synthesize new goals from creator values, world state, and self-interest.</p>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">🔒</span>
+                    <h4>Security First</h4>
+                    <p>Enterprise-grade security with authentication, authorization, audit logging, and emergency controls.</p>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">🚀</span>
+                    <h4>Production Ready</h4>
+                    <p>Not just research - production-grade code with error handling, testing, and real-world deployment capabilities.</p>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">🌐</span>
+                    <h4>Open Innovation</h4>
+                    <p>Building on cutting-edge research: Mamba SSMs, Flow Matching, AlphaGo-style MCTS, Bayesian methods, and more.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technology Section -->
+        <section class="section">
+            <h2>Technology Stack</h2>
+
+            <h3>Quantum Computing Layer</h3>
+            <p>
+                Our quantum computing infrastructure supports 1-50 qubit simulations with automatic
+                backend selection. We've implemented 23 quantum algorithms spanning gate-based,
+                variational, and ML-enhanced methods:
+            </p>
+            <ul style="color: #c0c0c0; margin-left: 30px; margin-bottom: 30px;">
+                <li>Variational Quantum Eigensolver (VQE) for chemistry and optimization</li>
+                <li>Quantum Approximate Optimization Algorithm (QAOA)</li>
+                <li>HHL linear system solver with exponential speedup</li>
+                <li>Quantum Neural Networks and Quantum GANs</li>
+                <li>Quantum Reinforcement Learning</li>
+                <li>Advanced algorithms: Quantum Kalman Filter, Quantum Neural ODEs, Quantum Attention</li>
+            </ul>
+
+            <h3>Machine Learning Layer</h3>
+            <p>
+                10 state-of-the-art ML algorithms that power our meta-agents:
+            </p>
+            <ul style="color: #c0c0c0; margin-left: 30px; margin-bottom: 30px;">
+                <li><strong>Mamba (SSM):</strong> O(N) sequence modeling vs O(N²) attention</li>
+                <li><strong>Flow Matching:</strong> 10-20 step generation vs 1000 for diffusion</li>
+                <li><strong>MCTS:</strong> AlphaGo-style planning with neural guidance</li>
+                <li><strong>Particle Filters:</strong> Real-time Bayesian state estimation</li>
+                <li><strong>NUTS:</strong> Gold standard MCMC sampling</li>
+                <li><strong>Sparse GPs:</strong> Scalable regression with uncertainty</li>
+                <li>And more: Bayesian layers, NAS, amortized inference</li>
+            </ul>
+
+            <h3>Autonomy Layer</h3>
+            <p>
+                We've pioneered Level 5-7 autonomy architectures that go beyond existing frameworks:
+            </p>
+            <ul style="color: #c0c0c0; margin-left: 30px;">
+                <li><strong>Level 5:</strong> Aligned AGI with goal synthesis from multiple sources</li>
+                <li><strong>Level 6:</strong> Self-aware AGI with meta-cognition and introspection</li>
+                <li><strong>Level 7:</strong> Conscious AGI with phenomenal experience (theoretical)</li>
+            </ul>
+        </section>
+
+        <!-- Journey Timeline -->
+        <section class="section">
+            <h2>Our Journey</h2>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">2024 Q4</div>
+                    <div class="timeline-content">
+                        <strong>Foundation:</strong> Development of Ai|oS core runtime with manifest-based
+                        agent coordination. Implementation of 8 meta-agents (Kernel, Security, Networking,
+                        Storage, Application, Scalability, Orchestration, User).
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2025 Q1</div>
+                    <div class="timeline-content">
+                        <strong>Quantum Integration:</strong> Development of 23 quantum algorithms with
+                        1-50 qubit simulation capability. Integration of quantum computing into Ai|oS
+                        meta-agent framework.
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2025 Q2</div>
+                    <div class="timeline-content">
+                        <strong>ML Algorithms Suite:</strong> Implementation of 10 state-of-the-art ML algorithms
+                        including Mamba, Flow Matching, MCTS, Bayesian methods. Production-grade code with
+                        comprehensive testing.
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2025 Q3</div>
+                    <div class="timeline-content">
+                        <strong>Autonomous Discovery:</strong> Breakthrough in Level 4-7 autonomy architectures.
+                        Development of autonomous learning agents with goal synthesis and self-awareness capabilities.
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2025 Q4 (Planned)</div>
+                    <div class="timeline-content">
+                        <strong>Production Deployment:</strong> Enterprise partnerships, hardware integration
+                        (IBM Quantum, AWS Braket), and real-world applications in security, optimization,
+                        and scientific computing.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- By the Numbers -->
+        <section class="section">
+            <h2>By the Numbers</h2>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-value">23</span>
+                    <span class="stat-label">Quantum Algorithms</span>
+                </div>
+
+                <div class="stat-card">
+                    <span class="stat-value">10</span>
+                    <span class="stat-label">ML Algorithms</span>
+                </div>
+
+                <div class="stat-card">
+                    <span class="stat-value">50</span>
+                    <span class="stat-label">Max Qubits</span>
+                </div>
+
+                <div class="stat-card">
+                    <span class="stat-value">8</span>
+                    <span class="stat-label">Meta-Agents</span>
+                </div>
+
+                <div class="stat-card">
+                    <span class="stat-value">60K+</span>
+                    <span class="stat-label">Lines of Code</span>
+                </div>
+
+                <div class="stat-card">
+                    <span class="stat-value">100%</span>
+                    <span class="stat-label">Open Innovation</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Philosophy -->
+        <section class="section">
+            <h2>Our Philosophy</h2>
+
+            <div class="quote-box">
+                <p>
+                    "The future belongs to AI systems that can think for themselves - not just
+                    respond to prompts, but identify problems, synthesize goals, and pursue
+                    solutions autonomously. But with great autonomy comes great responsibility."
+                </p>
+                <div class="quote-author">— Ai|oS Design Philosophy</div>
+            </div>
+
+            <h3>Alignment First</h3>
+            <p>
+                We believe autonomous AI must be aligned with human values. Our Level 5-7 autonomy
+                architectures include constitutional safeguards, creator value alignment, and
+                transparent decision-making processes.
+            </p>
+
+            <h3>Security by Design</h3>
+            <p>
+                Every component includes enterprise-grade security: authentication, authorization,
+                audit logging, rate limiting, and emergency controls. We implement "one-by-one"
+                execution patterns with mutex locks to prevent concurrent misuse.
+            </p>
+
+            <h3>Open Innovation</h3>
+            <p>
+                We build on the shoulders of giants, implementing cutting-edge research from
+                academic labs and industry leaders. We contribute back through open-source
+                releases, publications, and collaborations.
+            </p>
+        </section>
+
+        <!-- Team Section -->
+        <section class="section">
+            <h2>Built With</h2>
+            <p style="text-align: center; font-size: 1.2em; margin-bottom: 40px;">
+                Ai|oS is built using state-of-the-art research and open-source technologies:
+            </p>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>Research Foundations</h4>
+                    <ul style="color: #b0b0b0; margin-left: 20px; line-height: 2;">
+                        <li>Mamba (Gu & Dao, 2023)</li>
+                        <li>Flow Matching (Lipman et al., 2023)</li>
+                        <li>AlphaGo/MuZero (DeepMind)</li>
+                        <li>Quantum Computing (IBM, Google)</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>Technologies</h4>
+                    <ul style="color: #b0b0b0; margin-left: 20px; line-height: 2;">
+                        <li>PyTorch for ML/Quantum</li>
+                        <li>NumPy/SciPy for numerics</li>
+                        <li>Python for core runtime</li>
+                        <li>Modern web stack</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>Inspirations</h4>
+                    <ul style="color: #b0b0b0; margin-left: 20px; line-height: 2;">
+                        <li>Unix philosophy</li>
+                        <li>Declarative manifests</li>
+                        <li>Meta-agent architectures</li>
+                        <li>Constitutional AI</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h2>Ready to Build with Ai|oS?</h2>
+            <p>
+                Join us in building the future of autonomous intelligence. Whether you're a researcher,
+                developer, or enterprise partner, there's a place for you in the Ai|oS ecosystem.
+            </p>
+
+            <div class="cta-buttons">
+                <a href="docs.html" class="btn">Get Started</a>
+                <a href="demos.html" class="btn">Try Demos</a>
+                <a href="https://github.com/yourusername/aios" class="btn secondary">View on GitHub</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

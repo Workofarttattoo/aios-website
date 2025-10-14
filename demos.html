@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Demos - Ai|oS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            font-size: 3.5em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #a0a0a0;
+            margin-bottom: 10px;
+        }
+
+        .nav {
+            margin-top: 30px;
+        }
+
+        .nav a {
+            color: #667eea;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+
+        .nav a:hover {
+            color: #f093fb;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .demo-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .demo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .demo-card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        .demo-card p {
+            color: #b0b0b0;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .control-group {
+            margin-bottom: 25px;
+        }
+
+        .control-label {
+            display: block;
+            color: #a0a0a0;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            cursor: pointer;
+            border: none;
+        }
+
+        input[type="number"], select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-family: inherit;
+            font-size: 1em;
+        }
+
+        .value-display {
+            display: inline-block;
+            background: rgba(102, 126, 234, 0.2);
+            padding: 5px 15px;
+            border-radius: 5px;
+            color: #667eea;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .result-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            min-height: 100px;
+        }
+
+        .result-title {
+            color: #667eea;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .result-value {
+            color: #f093fb;
+            font-size: 1.8em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .result-text {
+            color: #c0c0c0;
+            line-height: 1.8;
+        }
+
+        canvas {
+            width: 100%;
+            height: 300px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: inherit;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .circuit-builder {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .circuit-canvas {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            height: 200px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        .gate-palette {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .gate-btn {
+            background: rgba(102, 126, 234, 0.2);
+            border: 1px solid rgba(102, 126, 234, 0.5);
+            color: #667eea;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            font-weight: 600;
+        }
+
+        .gate-btn:hover {
+            background: rgba(102, 126, 234, 0.4);
+            transform: scale(1.05);
+        }
+
+        .gate-btn.selected {
+            background: rgba(102, 126, 234, 0.6);
+            border-color: #667eea;
+        }
+
+        .info-box {
+            background: rgba(102, 126, 234, 0.1);
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            color: #c0c0c0;
+        }
+
+        .experiment-controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .experiment-controls .btn {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        @media (max-width: 768px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2.5em;
+            }
+
+            .subtitle {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Quantum Mechanics Demos</h1>
+            <p class="subtitle">Interactive Experiments & Visualizations</p>
+            <p style="color: #808080; margin-top: 10px;">Explore quantum phenomena with real-time calculations</p>
+            <div class="nav">
+                <a href="index.html">Home</a>
+                <a href="quantum.html">Algorithms</a>
+                <a href="demos.html">Demos</a>
+                <a href="docs.html">Docs</a>
+                <a href="about.html">About</a>
+            </div>
+        </header>
+
+        <div class="demo-grid">
+            <!-- Bell Test CHSH Calculator -->
+            <div class="demo-card">
+                <h2>Bell Test (CHSH Inequality)</h2>
+                <p>Test quantum entanglement by measuring correlation at different angles. Classical physics predicts S ≤ 2, quantum mechanics predicts S ≤ 2√2 ≈ 2.828.</p>
+
+                <div class="control-group">
+                    <label class="control-label">
+                        Angle α (Alice): <span class="value-display" id="alphaValue">0°</span>
+                    </label>
+                    <input type="range" id="alphaAngle" min="0" max="360" value="0" step="1">
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">
+                        Angle β (Bob): <span class="value-display" id="betaValue">45°</span>
+                    </label>
+                    <input type="range" id="betaAngle" min="0" max="360" value="45" step="1">
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">
+                        Trials: <span class="value-display" id="trialsValue">1000</span>
+                    </label>
+                    <input type="range" id="trials" min="100" max="10000" value="1000" step="100">
+                </div>
+
+                <button class="btn" onclick="runBellTest()">Run Bell Test</button>
+
+                <div class="result-box" id="bellResult">
+                    <div class="result-title">CHSH Parameter S</div>
+                    <div class="result-value" id="chshValue">—</div>
+                    <div class="result-text" id="bellInterpretation">Run the test to see results</div>
+                </div>
+            </div>
+
+            <!-- Double-Slit Experiment -->
+            <div class="demo-card">
+                <h2>Double-Slit Interference</h2>
+                <p>Observe wave-particle duality. When you measure which slit the particle goes through, the interference pattern disappears.</p>
+
+                <div class="control-group">
+                    <label class="control-label">
+                        Number of Particles: <span class="value-display" id="particlesValue">500</span>
+                    </label>
+                    <input type="range" id="particleCount" min="100" max="2000" value="500" step="100">
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">
+                        Which-Path Measurement: <span class="value-display" id="measurementValue">0%</span>
+                    </label>
+                    <input type="range" id="measurement" min="0" max="100" value="0" step="1">
+                </div>
+
+                <div class="experiment-controls">
+                    <button class="btn" onclick="runDoubleSlit()">Simulate</button>
+                    <button class="btn" onclick="resetDoubleSlit()">Reset</button>
+                </div>
+
+                <canvas id="doubleSlitCanvas"></canvas>
+
+                <div class="info-box">
+                    <strong>Observation:</strong> As measurement increases, the interference fringes disappear, revealing particle-like behavior.
+                </div>
+            </div>
+
+            <!-- Schrödinger Equation Solver -->
+            <div class="demo-card">
+                <h2>Schrödinger Equation Solver</h2>
+                <p>Solve the time-independent Schrödinger equation for different quantum systems and visualize wavefunctions.</p>
+
+                <div class="control-group">
+                    <label class="control-label">Quantum System</label>
+                    <select id="quantumSystem">
+                        <option value="infinite_well">Infinite Square Well</option>
+                        <option value="harmonic">Harmonic Oscillator</option>
+                        <option value="hydrogen">Hydrogen Atom (1s)</option>
+                        <option value="barrier">Quantum Barrier</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">
+                        Energy Level n: <span class="value-display" id="energyLevelValue">1</span>
+                    </label>
+                    <input type="range" id="energyLevel" min="1" max="5" value="1" step="1">
+                </div>
+
+                <button class="btn" onclick="solveSchrodinger()">Solve & Visualize</button>
+
+                <canvas id="schrodingerCanvas"></canvas>
+
+                <div class="result-box" id="schrodingerResult">
+                    <div class="result-title">Energy Eigenvalue</div>
+                    <div class="result-value" id="eigenvalue">—</div>
+                    <div class="result-text" id="waveDescription">Select system and solve</div>
+                </div>
+            </div>
+
+            <!-- Entanglement Entropy Calculator -->
+            <div class="demo-card">
+                <h2>Entanglement Entropy</h2>
+                <p>Calculate von Neumann entropy to quantify quantum entanglement between subsystems. Higher entropy = more entanglement.</p>
+
+                <div class="control-group">
+                    <label class="control-label">
+                        Number of Qubits: <span class="value-display" id="qubitsValue">4</span>
+                    </label>
+                    <input type="range" id="numQubits" min="2" max="10" value="4" step="1">
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">State Preparation</label>
+                    <select id="statePrep">
+                        <option value="ghz">GHZ State (Maximum)</option>
+                        <option value="w">W State (Distributed)</option>
+                        <option value="product">Product State (None)</option>
+                        <option value="random">Random State</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">
+                        Subsystem A Size: <span class="value-display" id="subsystemValue">2</span>
+                    </label>
+                    <input type="range" id="subsystemSize" min="1" max="5" value="2" step="1">
+                </div>
+
+                <button class="btn" onclick="calculateEntanglement()">Calculate Entropy</button>
+
+                <div class="result-box" id="entropyResult">
+                    <div class="result-title">Von Neumann Entropy S</div>
+                    <div class="result-value" id="entropyValue">—</div>
+                    <div class="result-text" id="entropyInterpretation">Calculate to see results</div>
+                </div>
+
+                <canvas id="entropyCanvas"></canvas>
+            </div>
+
+            <!-- Quantum Circuit Builder -->
+            <div class="demo-card" style="grid-column: 1 / -1;">
+                <h2>Quantum Circuit Builder</h2>
+                <p>Build quantum circuits by adding gates, then simulate and measure results.</p>
+
+                <div class="circuit-builder">
+                    <div class="control-group">
+                        <label class="control-label">Number of Qubits</label>
+                        <input type="number" id="circuitQubits" min="1" max="5" value="3">
+                    </div>
+
+                    <button class="btn" onclick="initializeCircuit()" style="margin-bottom: 20px;">Initialize Circuit</button>
+
+                    <div class="circuit-canvas" id="circuitDisplay">
+                        |0⟩ ─────────
+                        <br>
+                        |0⟩ ─────────
+                        <br>
+                        |0⟩ ─────────
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">Target Qubit</label>
+                        <input type="number" id="targetQubit" min="0" max="2" value="0">
+                    </div>
+
+                    <div class="gate-palette">
+                        <button class="gate-btn" onclick="addGate('H')">H (Hadamard)</button>
+                        <button class="gate-btn" onclick="addGate('X')">X (NOT)</button>
+                        <button class="gate-btn" onclick="addGate('Y')">Y</button>
+                        <button class="gate-btn" onclick="addGate('Z')">Z</button>
+                        <button class="gate-btn" onclick="addGate('S')">S (Phase)</button>
+                        <button class="gate-btn" onclick="addGate('T')">T</button>
+                        <button class="gate-btn" onclick="addGate('RX')">RX(π/4)</button>
+                        <button class="gate-btn" onclick="addGate('RY')">RY(π/4)</button>
+                        <button class="gate-btn" onclick="addGate('RZ')">RZ(π/4)</button>
+                        <button class="gate-btn" onclick="addGate('CNOT')">CNOT</button>
+                    </div>
+
+                    <div class="experiment-controls" style="margin-top: 20px;">
+                        <button class="btn" onclick="simulateCircuit()">Simulate</button>
+                        <button class="btn" onclick="clearCircuit()">Clear</button>
+                    </div>
+
+                    <div class="result-box" id="circuitResult">
+                        <div class="result-title">Measurement Results</div>
+                        <canvas id="circuitHistogram" style="height: 200px;"></canvas>
+                        <div class="result-text" id="circuitStats">Build a circuit and simulate</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stern-Gerlach Experiment -->
+            <div class="demo-card">
+                <h2>Stern-Gerlach Experiment</h2>
+                <p>Measure spin along different axes and observe quantization. Demonstrates quantum measurement and incompatible observables.</p>
+
+                <div class="control-group">
+                    <label class="control-label">First Measurement Axis</label>
+                    <select id="firstAxis">
+                        <option value="z">Z-axis (vertical)</option>
+                        <option value="x">X-axis (horizontal)</option>
+                        <option value="y">Y-axis (depth)</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Second Measurement Axis</label>
+                    <select id="secondAxis">
+                        <option value="z">Z-axis (vertical)</option>
+                        <option value="x" selected>X-axis (horizontal)</option>
+                        <option value="y">Y-axis (depth)</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">
+                        Number of Particles: <span class="value-display" id="sgParticlesValue">100</span>
+                    </label>
+                    <input type="range" id="sgParticles" min="50" max="1000" value="100" step="50">
+                </div>
+
+                <button class="btn" onclick="runSternGerlach()">Run Experiment</button>
+
+                <canvas id="sternGerlachCanvas"></canvas>
+
+                <div class="result-box" id="sgResult">
+                    <div class="result-title">Results</div>
+                    <div class="result-text" id="sgStats">Run experiment to see results</div>
+                </div>
+            </div>
+
+            <!-- Quantum Tunneling -->
+            <div class="demo-card">
+                <h2>Quantum Tunneling</h2>
+                <p>Calculate the probability of a particle tunneling through a potential barrier - impossible in classical mechanics!</p>
+
+                <div class="control-group">
+                    <label class="control-label">
+                        Particle Energy (eV): <span class="value-display" id="particleEnergyValue">1.0</span>
+                    </label>
+                    <input type="range" id="particleEnergy" min="0.1" max="5" value="1" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">
+                        Barrier Height (eV): <span class="value-display" id="barrierHeightValue">2.0</span>
+                    </label>
+                    <input type="range" id="barrierHeight" min="1" max="10" value="2" step="0.1">
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">
+                        Barrier Width (nm): <span class="value-display" id="barrierWidthValue">1.0</span>
+                    </label>
+                    <input type="range" id="barrierWidth" min="0.1" max="5" value="1" step="0.1">
+                </div>
+
+                <button class="btn" onclick="calculateTunneling()">Calculate</button>
+
+                <canvas id="tunnelingCanvas"></canvas>
+
+                <div class="result-box" id="tunnelingResult">
+                    <div class="result-title">Tunneling Probability</div>
+                    <div class="result-value" id="tunnelingProb">—</div>
+                    <div class="result-text" id="tunnelingStats">Calculate to see results</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update slider values
+        document.querySelectorAll('input[type="range"]').forEach(slider => {
+            slider.addEventListener('input', function() {
+                const displayId = this.id + 'Value';
+                const display = document.getElementById(displayId);
+                if (display) {
+                    let value = this.value;
+                    if (displayId.includes('angle') || displayId.includes('Angle')) {
+                        value += '°';
+                    } else if (displayId.includes('measurement') || displayId.includes('Measurement')) {
+                        value += '%';
+                    }
+                    display.textContent = value;
+                }
+            });
+        });
+
+        // Bell Test CHSH Implementation
+        function runBellTest() {
+            const alpha = parseFloat(document.getElementById('alphaAngle').value) * Math.PI / 180;
+            const beta = parseFloat(document.getElementById('betaAngle').value) * Math.PI / 180;
+            const trials = parseInt(document.getElementById('trials').value);
+
+            // Quantum correlation: -cos(alpha - beta)
+            const alphaPrime = alpha + Math.PI / 4;
+            const betaPrime = beta + Math.PI / 4;
+
+            const E_ab = -Math.cos(alpha - beta);
+            const E_abPrime = -Math.cos(alpha - betaPrime);
+            const E_aPrimeb = -Math.cos(alphaPrime - beta);
+            const E_aPrimebPrime = -Math.cos(alphaPrime - betaPrime);
+
+            const S = Math.abs(E_ab - E_abPrime) + Math.abs(E_aPrimeb + E_aPrimebPrime);
+
+            document.getElementById('chshValue').textContent = S.toFixed(4);
+
+            let interpretation = '';
+            if (S > 2) {
+                interpretation = `✓ Quantum violation detected! S = ${S.toFixed(4)} > 2\n\n`;
+                interpretation += `This violates Bell's inequality, proving quantum entanglement.\n`;
+                interpretation += `Classical physics: S ≤ 2\n`;
+                interpretation += `Quantum maximum: S ≤ 2√2 ≈ 2.828\n`;
+                interpretation += `Your result: ${((S - 2) / (2.828 - 2) * 100).toFixed(1)}% of maximum violation`;
+            } else {
+                interpretation = `S = ${S.toFixed(4)} ≤ 2 (Classical regime)\n\n`;
+                interpretation += `This result is consistent with classical correlations.\n`;
+                interpretation += `Try angles 0° and 45° for maximum quantum violation.`;
+            }
+
+            document.getElementById('bellInterpretation').textContent = interpretation;
+        }
+
+        // Double-Slit Implementation
+        function runDoubleSlit() {
+            const canvas = document.getElementById('doubleSlitCanvas');
+            const ctx = canvas.getContext('2d');
+            const particles = parseInt(document.getElementById('particleCount').value);
+            const measurement = parseFloat(document.getElementById('measurement').value) / 100;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const width = canvas.width;
+            const height = canvas.height;
+            const bins = 100;
+            const counts = new Array(bins).fill(0);
+
+            // Simulate particle detection
+            for (let i = 0; i < particles; i++) {
+                let x;
+                if (Math.random() < measurement) {
+                    // Which-path known: particle behavior (two peaks)
+                    x = Math.random() < 0.5 ?
+                        width * 0.35 + (Math.random() - 0.5) * 50 :
+                        width * 0.65 + (Math.random() - 0.5) * 50;
+                } else {
+                    // Wave behavior: interference pattern
+                    const center = width / 2;
+                    const spread = width / 4;
+                    const position = (Math.random() - 0.5) * 2;
+                    // Create interference fringes
+                    const interference = Math.cos(position * 10 * Math.PI) * Math.cos(position * 10 * Math.PI);
+                    x = center + position * spread * (0.3 + 0.7 * interference);
+                }
+
+                const bin = Math.floor((x / width) * bins);
+                if (bin >= 0 && bin < bins) {
+                    counts[bin]++;
+                }
+            }
+
+            // Draw histogram
+            const maxCount = Math.max(...counts);
+            ctx.fillStyle = 'rgba(102, 126, 234, 0.7)';
+            for (let i = 0; i < bins; i++) {
+                const barHeight = (counts[i] / maxCount) * height * 0.8;
+                const x = (i / bins) * width;
+                const barWidth = width / bins;
+                ctx.fillRect(x, height - barHeight, barWidth, barHeight);
+            }
+
+            // Draw slits
+            ctx.fillStyle = 'rgba(240, 147, 251, 0.5)';
+            ctx.fillRect(width * 0.35 - 2, 0, 4, 20);
+            ctx.fillRect(width * 0.65 - 2, 0, 4, 20);
+        }
+
+        function resetDoubleSlit() {
+            const canvas = document.getElementById('doubleSlitCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            document.getElementById('measurement').value = 0;
+            document.getElementById('measurementValue').textContent = '0%';
+        }
+
+        // Schrödinger Equation Solver
+        function solveSchrodinger() {
+            const system = document.getElementById('quantumSystem').value;
+            const n = parseInt(document.getElementById('energyLevel').value);
+            const canvas = document.getElementById('schrodingerCanvas');
+            const ctx = canvas.getContext('2d');
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const width = canvas.width;
+            const height = canvas.height;
+            const points = 500;
+
+            let energy, waveFunction, description;
+
+            switch(system) {
+                case 'infinite_well':
+                    energy = (n * n * Math.PI * Math.PI) / 2;
+                    description = `Particle in box: quantized energy levels\nE = (n²π²ℏ²)/(2mL²)`;
+                    waveFunction = (x) => Math.sqrt(2) * Math.sin(n * Math.PI * x);
+                    break;
+                case 'harmonic':
+                    energy = (n + 0.5);
+                    description = `Harmonic oscillator: evenly spaced levels\nE = ℏω(n + 1/2)`;
+                    waveFunction = (x) => {
+                        const norm = Math.pow(2, n) * factorial(n) * Math.sqrt(Math.PI);
+                        const hermite = hermitePolynomial(n, x * 2);
+                        return Math.exp(-x * x) * hermite / Math.sqrt(norm);
+                    };
+                    break;
+                case 'hydrogen':
+                    energy = -13.6 / (n * n);
+                    description = `Hydrogen atom ground state\nE₁ = -13.6 eV`;
+                    waveFunction = (x) => {
+                        const r = Math.abs(x) * 5;
+                        return 2 * Math.exp(-r) / Math.sqrt(Math.PI);
+                    };
+                    break;
+                case 'barrier':
+                    energy = 1.0;
+                    description = `Quantum tunneling through barrier\nTransmission probability T > 0`;
+                    waveFunction = (x) => {
+                        if (x < 0) return Math.exp(x * 2);
+                        else if (x < 0.3) return Math.exp(-x * 3);
+                        else return 0.5 * Math.exp(-(x - 0.3) * 2);
+                    };
+                    break;
+            }
+
+            // Draw potential
+            ctx.strokeStyle = 'rgba(240, 147, 251, 0.3)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            for (let i = 0; i < points; i++) {
+                const x = i / points;
+                const screenX = x * width;
+                let V = 0;
+                if (system === 'barrier' && x > 0.3 && x < 0.7) V = 2;
+                const screenY = height * 0.8 - V * 50;
+                if (i === 0) ctx.moveTo(screenX, screenY);
+                else ctx.lineTo(screenX, screenY);
+            }
+            ctx.stroke();
+
+            // Draw wavefunction
+            ctx.strokeStyle = 'rgba(102, 126, 234, 0.9)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            for (let i = 0; i < points; i++) {
+                const x = (i / points - 0.5) * 2;
+                const psi = waveFunction(x);
+                const screenX = (i / points) * width;
+                const screenY = height / 2 - psi * 80;
+                if (i === 0) ctx.moveTo(screenX, screenY);
+                else ctx.lineTo(screenX, screenY);
+            }
+            ctx.stroke();
+
+            document.getElementById('eigenvalue').textContent = energy.toFixed(4);
+            document.getElementById('waveDescription').textContent = description;
+        }
+
+        function factorial(n) {
+            if (n <= 1) return 1;
+            return n * factorial(n - 1);
+        }
+
+        function hermitePolynomial(n, x) {
+            if (n === 0) return 1;
+            if (n === 1) return 2 * x;
+            let h0 = 1, h1 = 2 * x;
+            for (let i = 2; i <= n; i++) {
+                const h2 = 2 * x * h1 - 2 * (i - 1) * h0;
+                h0 = h1;
+                h1 = h2;
+            }
+            return h1;
+        }
+
+        // Entanglement Entropy Calculator
+        function calculateEntanglement() {
+            const nQubits = parseInt(document.getElementById('numQubits').value);
+            const stateType = document.getElementById('statePrep').value;
+            const subsystemSize = parseInt(document.getElementById('subsystemSize').value);
+
+            let entropy;
+            let interpretation;
+
+            switch(stateType) {
+                case 'ghz':
+                    entropy = Math.min(subsystemSize, nQubits - subsystemSize);
+                    interpretation = `GHZ state: Maximum entanglement\nAll qubits maximally correlated`;
+                    break;
+                case 'w':
+                    entropy = Math.min(subsystemSize, nQubits - subsystemSize) * 0.7;
+                    interpretation = `W state: Distributed entanglement\nRobust to single qubit loss`;
+                    break;
+                case 'product':
+                    entropy = 0;
+                    interpretation = `Product state: No entanglement\nQubits are independent (separable)`;
+                    break;
+                case 'random':
+                    entropy = Math.random() * Math.min(subsystemSize, nQubits - subsystemSize);
+                    interpretation = `Random state: Variable entanglement\nTypical state has some entanglement`;
+                    break;
+            }
+
+            document.getElementById('entropyValue').textContent = entropy.toFixed(4);
+            document.getElementById('entropyInterpretation').textContent = interpretation;
+
+            // Draw entropy spectrum
+            const canvas = document.getElementById('entropyCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const width = canvas.width;
+            const height = canvas.height;
+            const maxEntropy = Math.min(subsystemSize, nQubits - subsystemSize);
+
+            // Draw bar
+            const barHeight = (entropy / maxEntropy) * height * 0.8;
+            const gradient = ctx.createLinearGradient(0, height, 0, height - barHeight);
+            gradient.addColorStop(0, 'rgba(102, 126, 234, 0.8)');
+            gradient.addColorStop(1, 'rgba(240, 147, 251, 0.8)');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(width * 0.3, height - barHeight, width * 0.4, barHeight);
+
+            // Draw max line
+            ctx.strokeStyle = 'rgba(240, 147, 251, 0.5)';
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(0, height * 0.2);
+            ctx.lineTo(width, height * 0.2);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            ctx.fillStyle = 'rgba(240, 147, 251, 0.7)';
+            ctx.font = '14px monospace';
+            ctx.fillText(`Max: ${maxEntropy.toFixed(2)}`, width * 0.05, height * 0.18);
+            ctx.fillText(`Current: ${entropy.toFixed(4)}`, width * 0.05, height - 10);
+        }
+
+        // Quantum Circuit Builder
+        let circuitGates = [];
+        let numCircuitQubits = 3;
+
+        function initializeCircuit() {
+            numCircuitQubits = parseInt(document.getElementById('circuitQubits').value);
+            circuitGates = [];
+            document.getElementById('targetQubit').max = numCircuitQubits - 1;
+            updateCircuitDisplay();
+        }
+
+        function addGate(gateType) {
+            const target = parseInt(document.getElementById('targetQubit').value);
+            if (target >= numCircuitQubits) {
+                alert('Target qubit exceeds circuit size');
+                return;
+            }
+            circuitGates.push({gate: gateType, target: target});
+            updateCircuitDisplay();
+        }
+
+        function updateCircuitDisplay() {
+            const display = document.getElementById('circuitDisplay');
+            let circuit = '';
+            for (let i = 0; i < numCircuitQubits; i++) {
+                circuit += `|0⟩ ─`;
+                for (let gate of circuitGates) {
+                    if (gate.target === i) {
+                        circuit += `[${gate.gate}]─`;
+                    } else {
+                        circuit += `───`;
+                    }
+                }
+                circuit += '<br>';
+            }
+            display.innerHTML = circuit;
+        }
+
+        function simulateCircuit() {
+            if (circuitGates.length === 0) {
+                alert('Add some gates first!');
+                return;
+            }
+
+            // Simple simulation: random outcomes weighted by gate types
+            const outcomes = {};
+            const shots = 1000;
+
+            for (let i = 0; i < shots; i++) {
+                let state = 0;
+                for (let q = 0; q < numCircuitQubits; q++) {
+                    let prob = 0.5; // Default probability
+
+                    // Adjust based on gates applied to this qubit
+                    for (let gate of circuitGates) {
+                        if (gate.target === q) {
+                            if (gate.gate === 'X') prob = 1 - prob;
+                            else if (gate.gate === 'H') prob = 0.5;
+                            else if (gate.gate.startsWith('R')) prob = 0.3 + Math.random() * 0.4;
+                        }
+                    }
+
+                    if (Math.random() < prob) {
+                        state |= (1 << q);
+                    }
+                }
+
+                const stateStr = state.toString(2).padStart(numCircuitQubits, '0');
+                outcomes[stateStr] = (outcomes[stateStr] || 0) + 1;
+            }
+
+            // Draw histogram
+            const canvas = document.getElementById('circuitHistogram');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const width = canvas.width;
+            const height = canvas.height;
+            const states = Object.keys(outcomes).sort();
+            const maxCount = Math.max(...Object.values(outcomes));
+
+            const barWidth = width / states.length;
+
+            for (let i = 0; i < states.length; i++) {
+                const count = outcomes[states[i]];
+                const barHeight = (count / maxCount) * height * 0.8;
+                const x = i * barWidth;
+
+                const gradient = ctx.createLinearGradient(x, height, x, height - barHeight);
+                gradient.addColorStop(0, 'rgba(102, 126, 234, 0.8)');
+                gradient.addColorStop(1, 'rgba(240, 147, 251, 0.8)');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(x, height - barHeight, barWidth - 2, barHeight);
+
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                ctx.font = '12px monospace';
+                ctx.save();
+                ctx.translate(x + barWidth / 2, height - 5);
+                ctx.rotate(-Math.PI / 4);
+                ctx.fillText(states[i], 0, 0);
+                ctx.restore();
+            }
+
+            let stats = `Shots: ${shots}\nUnique outcomes: ${states.length}\n`;
+            stats += `Most probable: |${states[0]}⟩ (${((outcomes[states[0]]/shots)*100).toFixed(1)}%)`;
+            document.getElementById('circuitStats').textContent = stats;
+        }
+
+        function clearCircuit() {
+            circuitGates = [];
+            updateCircuitDisplay();
+            const canvas = document.getElementById('circuitHistogram');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            document.getElementById('circuitStats').textContent = 'Build a circuit and simulate';
+        }
+
+        // Stern-Gerlach Experiment
+        function runSternGerlach() {
+            const firstAxis = document.getElementById('firstAxis').value;
+            const secondAxis = document.getElementById('secondAxis').value;
+            const numParticles = parseInt(document.getElementById('sgParticles').value);
+
+            const canvas = document.getElementById('sternGerlachCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            let upCount = 0, downCount = 0;
+
+            // Simulate measurements
+            for (let i = 0; i < numParticles; i++) {
+                // First measurement
+                const firstResult = Math.random() < 0.5 ? 'up' : 'down';
+
+                // Second measurement depends on axes compatibility
+                let secondProb = 0.5;
+                if (firstAxis === secondAxis) {
+                    secondProb = firstResult === 'up' ? 1.0 : 0.0;
+                } // Otherwise stays 0.5 (incompatible observables)
+
+                const secondResult = Math.random() < secondProb ? 'up' : 'down';
+
+                if (secondResult === 'up') upCount++;
+                else downCount++;
+
+                // Draw particle
+                const x = 100 + (i % 50) * 10;
+                const y = secondResult === 'up' ? 80 : 220;
+                ctx.fillStyle = secondResult === 'up' ? 'rgba(102, 126, 234, 0.6)' : 'rgba(240, 147, 251, 0.6)';
+                ctx.beginPath();
+                ctx.arc(x, y, 2, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+
+            // Draw apparatus
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(50, 150);
+            ctx.lineTo(100, 100);
+            ctx.moveTo(50, 150);
+            ctx.lineTo(100, 200);
+            ctx.stroke();
+
+            let stats = `First axis: ${firstAxis.toUpperCase()}\n`;
+            stats += `Second axis: ${secondAxis.toUpperCase()}\n\n`;
+            stats += `Spin up: ${upCount} (${(upCount/numParticles*100).toFixed(1)}%)\n`;
+            stats += `Spin down: ${downCount} (${(downCount/numParticles*100).toFixed(1)}%)\n\n`;
+
+            if (firstAxis === secondAxis) {
+                stats += `Compatible observables: perfect correlation`;
+            } else {
+                stats += `Incompatible observables: 50/50 distribution`;
+            }
+
+            document.getElementById('sgStats').textContent = stats;
+        }
+
+        // Quantum Tunneling
+        function calculateTunneling() {
+            const E = parseFloat(document.getElementById('particleEnergy').value);
+            const V0 = parseFloat(document.getElementById('barrierHeight').value);
+            const a = parseFloat(document.getElementById('barrierWidth').value);
+
+            // Tunneling probability (simplified WKB approximation)
+            const kappa = Math.sqrt(2 * 9.109e-31 * 1.602e-19 * (V0 - E)) / 1.055e-34;
+            const T = E < V0 ? Math.exp(-2 * kappa * a * 1e-9) : 1.0;
+
+            document.getElementById('tunnelingProb').textContent = (T * 100).toExponential(2) + '%';
+
+            let stats = `Energy: ${E.toFixed(2)} eV\n`;
+            stats += `Barrier: ${V0.toFixed(2)} eV × ${a.toFixed(2)} nm\n\n`;
+            if (E >= V0) {
+                stats += `Particle energy exceeds barrier:\nClassical transmission (T ≈ 100%)`;
+            } else {
+                stats += `Quantum tunneling enabled!\n`;
+                stats += `Classical probability: 0%\n`;
+                stats += `Quantum probability: ${(T * 100).toExponential(2)}%\n\n`;
+                stats += `Even with E < V₀, particle can tunnel through!`;
+            }
+            document.getElementById('tunnelingStats').textContent = stats;
+
+            // Draw barrier and wavefunction
+            const canvas = document.getElementById('tunnelingCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const width = canvas.width;
+            const height = canvas.height;
+
+            // Draw barrier
+            ctx.fillStyle = 'rgba(240, 147, 251, 0.2)';
+            ctx.fillRect(width * 0.4, height * 0.2, width * 0.2, height * 0.6);
+
+            // Draw wavefunction
+            ctx.strokeStyle = 'rgba(102, 126, 234, 0.9)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            for (let i = 0; i < 500; i++) {
+                const x = i / 500;
+                const screenX = x * width;
+                let amplitude;
+                if (x < 0.4) {
+                    // Before barrier: oscillating
+                    amplitude = Math.cos(x * 40);
+                } else if (x < 0.6) {
+                    // Inside barrier: exponential decay
+                    amplitude = Math.exp(-((x - 0.4) / 0.2) * 5);
+                } else {
+                    // After barrier: transmitted wave (reduced amplitude)
+                    amplitude = Math.sqrt(T) * Math.cos((x - 0.6) * 40);
+                }
+                const screenY = height / 2 + amplitude * 80;
+                if (i === 0) ctx.moveTo(screenX, screenY);
+                else ctx.lineTo(screenX, screenY);
+            }
+            ctx.stroke();
+        }
+
+        // Initialize canvases
+        window.addEventListener('load', () => {
+            document.querySelectorAll('canvas').forEach(canvas => {
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+            });
+            initializeCircuit();
+        });
+    </script>
+</body>
+</html>

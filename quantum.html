@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Computing - AI:OS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00ff88;
+            --secondary: #ff00ff;
+            --dark: #0a0a0a;
+            --darker: #050505;
+            --light: #ffffff;
+            --quantum-blue: #00d4ff;
+            --quantum-purple: #a855f7;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .quantum-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(ellipse at center, #0a0a1a 0%, #000000 100%);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero */
+        .hero {
+            padding: 8rem 5% 4rem;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--quantum-blue) 50%, var(--quantum-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 800px;
+            margin: 0 auto 3rem;
+        }
+
+        /* Content Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 5%;
+        }
+
+        .section {
+            margin-bottom: 6rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 3rem;
+        }
+
+        /* Algorithm Grid */
+        .algorithm-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .algorithm-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .algorithm-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.05), rgba(168, 85, 247, 0.05));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .algorithm-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .algorithm-card:hover::before {
+            opacity: 1;
+        }
+
+        .algorithm-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .algorithm-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .algorithm-desc {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .algorithm-use {
+            font-size: 0.9rem;
+            color: var(--quantum-blue);
+            font-weight: 600;
+        }
+
+        /* Code Block */
+        .code-example {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+            overflow-x: auto;
+        }
+
+        .code-example pre {
+            color: var(--primary);
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .code-example .keyword {
+            color: var(--quantum-purple);
+        }
+
+        .code-example .string {
+            color: var(--quantum-blue);
+        }
+
+        .code-example .comment {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 212, 255, 0.1));
+            border: 1px solid var(--primary);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--primary);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Feature List */
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 136, 0.1);
+        }
+
+        .feature-check {
+            color: var(--primary);
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .feature-text {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* CTA */
+        .cta-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: rgba(0, 255, 136, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            margin: 4rem 0;
+        }
+
+        .cta-title {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            margin: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--quantum-blue));
+            color: var(--dark);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Quantum Background -->
+    <div class="quantum-bg"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="index.html" class="logo-text">AI:OS</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="quantum.html">Quantum</a></li>
+            <li><a href="demos.html">Demos</a></li>
+            <li><a href="docs.html">Docs</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1 class="hero-title">⚛️ Quantum Computing Suite</h1>
+        <p class="hero-subtitle">
+            23 cutting-edge quantum algorithms ready to accelerate your applications
+        </p>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-number">23</span>
+                <span class="stat-label">Quantum Algorithms</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">50+</span>
+                <span class="stat-label">Qubit Simulation</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">Exp</span>
+                <span class="stat-label">Quantum Speedup</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">100%</span>
+                <span class="stat-label">Open Source</span>
+            </div>
+        </div>
+
+        <!-- Quantum ML Section -->
+        <section class="section">
+            <h2 class="section-title">Quantum Machine Learning</h2>
+            <p class="section-subtitle">Leverage quantum computing for exponential speedups in ML tasks</p>
+
+            <div class="algorithm-grid">
+                <div class="algorithm-card">
+                    <span class="algorithm-icon">🧬</span>
+                    <h3 class="algorithm-name">VQE</h3>
+                    <p class="algorithm-desc">Variational Quantum Eigensolver for finding ground states of quantum systems.</p>
+                    <span class="algorithm-use">Quantum Chemistry, Material Science</span>
+                </div>
+
+                <div class="algorithm-card">
+                    <span class="algorithm-icon">🎯</span>
+                    <h3 class="algorithm-name">QAOA</h3>
+                    <p class="algorithm-desc">Quantum Approximate Optimization Algorithm for combinatorial problems.</p>
+                    <span class="algorithm-use">Logistics, Portfolio Optimization</span>
+                </div>
+
+                <div class="algorithm-card">
+                    <span class="algorithm-icon">🧠</span>
+                    <h3 class="algorithm-name">Quantum Neural Network</h3>
+                    <p class="algorithm-desc">QNN with parameterized quantum circuits for classification and regression.</p>
+                    <span class="algorithm-use">Pattern Recognition, Forecasting</span>
+                </div>
+
+                <div class="algorithm-card">
+                    <span class="algorithm-icon">🎨</span>
+                    <h3 class="algorithm-name">Quantum GAN</h3>
+                    <p class="algorithm-desc">Generative Adversarial Network powered by quantum circuits.</p>
+                    <span class="algorithm-use">Data Generation, Image Synthesis</span>
+                </div>
+
+                <div class="algorithm-card">
+                    <span class="algorithm-icon">🎮</span>
+                    <h3 class="algorithm-name">Quantum RL</h3>
+                    <p class="algorithm-desc">Reinforcement learning with quantum policy gradients.</p>
+                    <span class="algorithm-use">Game Playing, Robotics</span>
+                </div>
+
+                <div class="algorithm-card">
+                    <span class="algorithm-icon">📊</span>
+                    <h3 class="algorithm-name">Quantum Kernel ML</h3>
+                    <p class="algorithm-desc">Kernel methods using quantum feature spaces for SVM and regression.</p>
+                    <span class="algorithm-use">Classification, Anomaly Detection</span>
+                </div>
+
+                <div class="algorithm-card">
+                    <span class="algorithm-icon">🔮</span>
+                    <h3 class="algorithm-name">Quantum Bayesian Inference</h3>
+                    <p class="algorithm-desc">Fast posterior sampling using amplitude estimation.</p>
+                    <span class="algorithm-use">Uncertainty Quantification</span>
+                </div>
+
+                <div class="algorithm-card">
+                    <span class="algorithm-icon">🌡️</span>
+                    <h3 class="algorithm-name">Quantum Boltzmann Machine</h3>
+                    <p class="algorithm-desc">QBM for sampling complex probability distributions.</p>
+                    <span class="algorithm-use">Probabilistic Modeling</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Linear Algebra Section -->
+        <section class="section">
+            <h2 class="section-title">Quantum Linear Algebra</h2>
+            <p class="section-subtitle">Exponential speedups for solving linear systems and matrix operations</p>
+
+            <div class="algorithm-grid">
+                <div class="algorithm-card">
+                    <span class="algorithm-icon">⚡</span>
+                    <h3 class="algorithm-name">HHL Algorithm</h3>
+                    <p class="algorithm-desc">Solve Ax = b with O(log N) complexity vs O(N³) classical.</p>
+                    <span class="algorithm-use">Differential Equations, Simulations</span>
+                </div>
+
+                <div class="algorithm-card">
+                    <span class="algorithm-icon">⏱️</span>
+                    <h3 class="algorithm-name">Quantum Temporal Linear Solver</h3>
+                    <p class="algorithm-desc">Time-dependent linear systems with quantum advantage.</p>
+                    <span class="algorithm-use">Dynamical Systems, Control Theory</span>
+                </div>
+
+                <div class="algorithm-card">
+                    <span class="algorithm-icon">📉</span>
+                    <h3 class="algorithm-name">Quantum Amplitude Estimation</h3>
+                    <p class="algorithm-desc">Quadratic speedup for estimating expectation values.</p>
+                    <span class="algorithm-use">Monte Carlo, Risk Analysis</span>
+                </div>
+
+                <div class="algorithm-card">
+                    <span class="algorithm-icon">🎲</span>
+                    <h3 class="algorithm-name">Stochastic Quantum Solver</h3>
+                    <p class="algorithm-desc">Handle noisy linear systems with quantum resilience.</p>
+                    <span class="algorithm-use">Noisy Data, Sensor Fusion</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advanced Algorithms Section -->
+        <section class="section">
+            <h2 class="section-title">Advanced Quantum Algorithms</h2>
+            <p class="section-subtitle">Cutting-edge research implementations</p>
+
+            <div class="algorithm-grid">
+                <div class="algorithm-card">
+                    <span class="algorithm-icon">🧪</span>
+                    <h3 class="algorithm-name">Variational Quantum Dynamics</h3>
+                    <p class="algorithm-desc">Simulate time evolution of quantum systems variationally.</p>
+                    <span class="algorithm-use">Quantum Simulation, Chemistry</span>
+                </div>
+
+                <div class="algorithm-card">
+                    <span class="algorithm-icon">📡</span>
+                    <h3 class="algorithm-name">Quantum Kalman Filter</h3>
+                    <p class="algorithm-desc">State estimation with quantum-enhanced predictions.</p>
+                    <span class="algorithm-use">Signal Processing, Tracking</span>
+                </div>
+
+                <div class="algorithm-card">
+                    <span class="algorithm-icon">🎛️</span>
+                    <h3 class="algorithm-name">Quantum Optimal Control</h3>
+                    <p class="algorithm-desc">Design optimal control pulses for quantum gates.</p>
+                    <span class="algorithm-use">Quantum Hardware, Gate Design</span>
+                </div>
+
+                <div class="algorithm-card">
+                    <span class="algorithm-icon">🔬</span>
+                    <h3 class="algorithm-name">Quantum Hamiltonian NN</h3>
+                    <p class="algorithm-desc">Learn Hamiltonian dynamics from quantum data.</p>
+                    <span class="algorithm-use">System Identification</span>
+                </div>
+
+                <div class="algorithm-card">
+                    <span class="algorithm-icon">📈</span>
+                    <h3 class="algorithm-name">Quantum Neural ODE</h3>
+                    <p class="algorithm-desc">Continuous-depth quantum neural networks.</p>
+                    <span class="algorithm-use">Time-Series, Dynamics</span>
+                </div>
+
+                <div class="algorithm-card">
+                    <span class="algorithm-icon">🎯</span>
+                    <h3 class="algorithm-name">Meta-Hamiltonian Learning</h3>
+                    <p class="algorithm-desc">Meta-learning for quantum systems across tasks.</p>
+                    <span class="algorithm-use">Few-Shot Learning, Transfer</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Code Example -->
+        <section class="section">
+            <h2 class="section-title">Quick Start</h2>
+            <p class="section-subtitle">Get started with quantum computing in minutes</p>
+
+            <div class="code-example">
+                <pre><span class="keyword">from</span> aios <span class="keyword">import</span> QuantumStateEngine, QuantumVQE
+
+<span class="comment"># Create quantum state engine (auto-selects backend)</span>
+qc = QuantumStateEngine(num_qubits=<span class="string">5</span>)
+
+<span class="comment"># Build superposition</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="string">5</span>):
+    qc.hadamard(i)
+
+<span class="comment"># Measure expectation value</span>
+energy = qc.expectation_value(<span class="string">'Z0'</span>)
+print(<span class="string">f"Energy: {energy}"</span>)
+
+<span class="comment"># Run VQE for ground state</span>
+vqe = QuantumVQE(num_qubits=<span class="string">4</span>, depth=<span class="string">3</span>)
+ground_energy, params = vqe.optimize(hamiltonian)
+print(<span class="string">f"Ground state: {ground_energy:.6f}"</span>)</pre>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="section">
+            <h2 class="section-title">Why AI:OS Quantum?</h2>
+
+            <div class="feature-list">
+                <div class="feature-item">
+                    <span class="feature-check">✓</span>
+                    <span class="feature-text">Automatic backend selection (Statevector, Tensor Network, MPS)</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-check">✓</span>
+                    <span class="feature-text">Scales to 50+ qubits with approximations</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-check">✓</span>
+                    <span class="feature-text">GPU acceleration when available</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-check">✓</span>
+                    <span class="feature-text">Seamless integration with IBM Quantum, AWS Braket, Google Cirq</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-check">✓</span>
+                    <span class="feature-text">Pure Python implementation (no external dependencies)</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-check">✓</span>
+                    <span class="feature-text">Comprehensive error handling and validation</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-check">✓</span>
+                    <span class="feature-text">Built-in noise models for realistic simulations</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-check">✓</span>
+                    <span class="feature-text">Quantum circuit optimization and compilation</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <div class="cta-section">
+            <h2 class="cta-title">Ready to Go Quantum?</h2>
+            <p style="color: rgba(255,255,255,0.7); margin-bottom: 2rem;">
+                Start building quantum-enhanced applications today
+            </p>
+            <a href="docs.html" class="btn btn-primary">View Documentation</a>
+            <a href="demos.html" class="btn btn-primary">Try Live Demos</a>
+        </div>
+    </div>
+</body>
+</html>

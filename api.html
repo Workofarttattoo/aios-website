@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Reference - Ai|oS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            font-size: 3.5em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #a0a0a0;
+            margin-bottom: 10px;
+        }
+
+        .nav {
+            margin-top: 30px;
+        }
+
+        .nav a {
+            color: #667eea;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+
+        .nav a:hover {
+            color: #f093fb;
+        }
+
+        .docs-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 40px;
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 25px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .sidebar-section {
+            margin-bottom: 25px;
+        }
+
+        .sidebar-section h4 {
+            color: #f093fb;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 8px;
+        }
+
+        .sidebar-nav a {
+            color: #a0a0a0;
+            text-decoration: none;
+            display: block;
+            padding: 6px 10px;
+            border-radius: 5px;
+            transition: all 0.2s;
+            font-size: 0.9em;
+        }
+
+        .sidebar-nav a:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            transform: translateX(3px);
+        }
+
+        .sidebar-nav a.active {
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            border-left: 3px solid #667eea;
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .section h3 {
+            color: #f093fb;
+            font-size: 1.8em;
+            margin-top: 40px;
+            margin-bottom: 15px;
+        }
+
+        .section h4 {
+            color: #a0a0d0;
+            font-size: 1.3em;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+
+        .section p {
+            color: #c0c0c0;
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .api-method {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .api-method h4 {
+            color: #667eea;
+            font-size: 1.4em;
+            margin: 0 0 15px 0;
+            font-family: 'SF Mono', monospace;
+        }
+
+        .method-signature {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        .method-signature code {
+            color: #f093fb;
+            font-size: 1em;
+        }
+
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .param-table th {
+            background: rgba(102, 126, 234, 0.15);
+            color: #667eea;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .param-table td {
+            padding: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: #c0c0c0;
+            font-size: 0.9em;
+        }
+
+        .param-table code {
+            color: #f093fb;
+            background: rgba(240, 147, 251, 0.1);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+
+        .code-example {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-example pre {
+            color: #e0e0e0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .example-label {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 0.85em;
+            margin-right: 8px;
+            font-weight: 600;
+        }
+
+        .badge.quantum {
+            background: rgba(240, 147, 251, 0.2);
+            color: #f093fb;
+        }
+
+        .badge.ml {
+            background: rgba(0, 255, 127, 0.2);
+            color: #00ff7f;
+        }
+
+        .info-box {
+            background: rgba(102, 126, 234, 0.1);
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .info-box p {
+            color: #d0d0d0;
+            margin-bottom: 10px;
+        }
+
+        .returns {
+            background: rgba(240, 147, 251, 0.1);
+            border-left: 4px solid #f093fb;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+
+        .returns strong {
+            color: #f093fb;
+        }
+
+        @media (max-width: 1024px) {
+            .docs-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>API Reference</h1>
+            <p class="subtitle">Complete API Documentation for Ai|oS</p>
+            <div class="nav">
+                <a href="index.html">Home</a>
+                <a href="quantum.html">Algorithms</a>
+                <a href="demos.html">Demos</a>
+                <a href="docs.html">Docs</a>
+                <a href="about.html">About</a>
+            </div>
+        </header>
+
+        <div class="docs-layout">
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar">
+                <h3>API Index</h3>
+
+                <div class="sidebar-section">
+                    <h4>Quantum Computing</h4>
+                    <ul class="sidebar-nav">
+                        <li><a href="#quantum-state-engine" class="active">QuantumStateEngine</a></li>
+                        <li><a href="#quantum-vqe">QuantumVQE</a></li>
+                        <li><a href="#hhl-solver">HHL Solver</a></li>
+                        <li><a href="#qaoa">QAOA</a></li>
+                        <li><a href="#quantum-ml">Quantum ML</a></li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h4>ML Algorithms</h4>
+                    <ul class="sidebar-nav">
+                        <li><a href="#mamba">Mamba (SSM)</a></li>
+                        <li><a href="#flow-matching">Flow Matching</a></li>
+                        <li><a href="#mcts">MCTS</a></li>
+                        <li><a href="#particle-filter">Particle Filter</a></li>
+                        <li><a href="#nuts">NUTS</a></li>
+                        <li><a href="#sparse-gp">Sparse GP</a></li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h4>Autonomous Discovery</h4>
+                    <ul class="sidebar-nav">
+                        <li><a href="#autonomous-agent">AutonomousLLMAgent</a></li>
+                        <li><a href="#inference-engine">InferenceEngine</a></li>
+                        <li><a href="#knowledge-graph">KnowledgeGraph</a></li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h4>Utilities</h4>
+                    <ul class="sidebar-nav">
+                        <li><a href="#algorithm-catalog">Algorithm Catalog</a></li>
+                        <li><a href="#dependencies">Dependencies</a></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="content">
+                <!-- Quantum Computing API -->
+                <section id="quantum-state-engine" class="section">
+                    <h2>Quantum Computing API</h2>
+
+                    <h3>QuantumStateEngine</h3>
+                    <p>
+                        <span class="badge quantum">Quantum</span>
+                        <span class="badge">Core</span>
+                    </p>
+                    <p>
+                        Core quantum state simulator with automatic backend selection based on qubit count.
+                        Supports exact statevector simulation (1-20 qubits), tensor networks (20-40 qubits),
+                        and MPS approximation (40-50 qubits).
+                    </p>
+
+                    <!-- Constructor -->
+                    <div class="api-method">
+                        <h4>__init__(num_qubits, backend=None)</h4>
+                        <p>Initialize quantum circuit with specified number of qubits.</p>
+
+                        <table class="param-table">
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                            <tr>
+                                <td><code>num_qubits</code></td>
+                                <td>int</td>
+                                <td>Number of qubits in the circuit (1-50)</td>
+                            </tr>
+                            <tr>
+                                <td><code>backend</code></td>
+                                <td>str, optional</td>
+                                <td>Force specific backend ('statevector', 'tensor_network', 'mps')</td>
+                            </tr>
+                        </table>
+
+                        <div class="code-example">
+                            <span class="example-label">Example:</span>
+                            <pre>from aios.quantum_ml_algorithms import QuantumStateEngine
+
+# Automatic backend selection
+qc = QuantumStateEngine(num_qubits=10)
+
+# Force specific backend
+qc_large = QuantumStateEngine(num_qubits=30, backend='tensor_network')</pre>
+                        </div>
+                    </div>
+
+                    <!-- hadamard -->
+                    <div class="api-method">
+                        <h4>hadamard(qubit)</h4>
+                        <p>Apply Hadamard gate to create superposition.</p>
+
+                        <div class="method-signature">
+                            <code>qc.hadamard(qubit: int) → None</code>
+                        </div>
+
+                        <table class="param-table">
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                            <tr>
+                                <td><code>qubit</code></td>
+                                <td>int</td>
+                                <td>Target qubit index (0 to num_qubits-1)</td>
+                            </tr>
+                        </table>
+
+                        <div class="code-example">
+                            <span class="example-label">Example:</span>
+                            <pre># Create superposition on all qubits
+for i in range(5):
+    qc.hadamard(i)</pre>
+                        </div>
+                    </div>
+
+                    <!-- cnot -->
+                    <div class="api-method">
+                        <h4>cnot(control, target)</h4>
+                        <p>Apply CNOT (controlled-NOT) gate for entanglement.</p>
+
+                        <div class="method-signature">
+                            <code>qc.cnot(control: int, target: int) → None</code>
+                        </div>
+
+                        <table class="param-table">
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                            <tr>
+                                <td><code>control</code></td>
+                                <td>int</td>
+                                <td>Control qubit index</td>
+                            </tr>
+                            <tr>
+                                <td><code>target</code></td>
+                                <td>int</td>
+                                <td>Target qubit index</td>
+                            </tr>
+                        </table>
+
+                        <div class="code-example">
+                            <span class="example-label">Example:</span>
+                            <pre># Create entanglement chain
+for i in range(4):
+    qc.cnot(i, i + 1)</pre>
+                        </div>
+                    </div>
+
+                    <!-- rotation gates -->
+                    <div class="api-method">
+                        <h4>rx(qubit, angle), ry(qubit, angle), rz(qubit, angle)</h4>
+                        <p>Apply rotation gates around X, Y, or Z axis.</p>
+
+                        <div class="method-signature">
+                            <code>qc.rx(qubit: int, angle: float) → None</code>
+                        </div>
+
+                        <table class="param-table">
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                            <tr>
+                                <td><code>qubit</code></td>
+                                <td>int</td>
+                                <td>Target qubit index</td>
+                            </tr>
+                            <tr>
+                                <td><code>angle</code></td>
+                                <td>float</td>
+                                <td>Rotation angle in radians</td>
+                            </tr>
+                        </table>
+
+                        <div class="code-example">
+                            <span class="example-label">Example:</span>
+                            <pre>import numpy as np
+
+# Rotate qubit 0 by π/4 around X-axis
+qc.rx(0, np.pi / 4)
+
+# Parameterized rotation
+theta = np.random.uniform(0, 2 * np.pi)
+qc.ry(1, theta)</pre>
+                        </div>
+                    </div>
+
+                    <!-- measure -->
+                    <div class="api-method">
+                        <h4>measure(shots=1000)</h4>
+                        <p>Measure all qubits and return outcome distribution.</p>
+
+                        <div class="method-signature">
+                            <code>qc.measure(shots: int = 1000) → Dict[str, int]</code>
+                        </div>
+
+                        <table class="param-table">
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                            <tr>
+                                <td><code>shots</code></td>
+                                <td>int</td>
+                                <td>Number of measurement repetitions</td>
+                            </tr>
+                        </table>
+
+                        <div class="returns">
+                            <strong>Returns:</strong> Dictionary mapping bitstrings to counts
+                        </div>
+
+                        <div class="code-example">
+                            <span class="example-label">Example:</span>
+                            <pre>results = qc.measure(shots=1000)
+# {'00': 245, '01': 253, '10': 247, '11': 255}
+
+# Get most common outcome
+most_common = max(results, key=results.get)
+print(f"Most common: {most_common} ({results[most_common]} times)")</pre>
+                        </div>
+                    </div>
+
+                    <!-- expectation_value -->
+                    <div class="api-method">
+                        <h4>expectation_value(observable)</h4>
+                        <p>Compute expectation value of an observable.</p>
+
+                        <div class="method-signature">
+                            <code>qc.expectation_value(observable: str) → float</code>
+                        </div>
+
+                        <table class="param-table">
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                            <tr>
+                                <td><code>observable</code></td>
+                                <td>str</td>
+                                <td>Observable string (e.g., 'Z0', 'Z0*Z1', 'X0*Y1')</td>
+                            </tr>
+                        </table>
+
+                        <div class="returns">
+                            <strong>Returns:</strong> Expectation value as float
+                        </div>
+
+                        <div class="code-example">
+                            <span class="example-label">Example:</span>
+                            <pre># Single-qubit observable
+z0 = qc.expectation_value('Z0')
+
+# Two-qubit correlation
+z0z1 = qc.expectation_value('Z0*Z1')
+
+# Complex observable
+energy = qc.expectation_value('X0*X1') + 0.5 * qc.expectation_value('Z0')</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VQE -->
+                <section id="quantum-vqe" class="section">
+                    <h3>QuantumVQE</h3>
+                    <p>
+                        <span class="badge quantum">Quantum</span>
+                        <span class="badge">Optimization</span>
+                    </p>
+                    <p>
+                        Variational Quantum Eigensolver for finding ground state energies.
+                        Uses hardware-efficient ansatz circuits with classical optimization loop.
+                    </p>
+
+                    <div class="api-method">
+                        <h4>__init__(num_qubits, depth=3, optimizer='adam')</h4>
+
+                        <table class="param-table">
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                            <tr>
+                                <td><code>num_qubits</code></td>
+                                <td>int</td>
+                                <td>Number of qubits</td>
+                            </tr>
+                            <tr>
+                                <td><code>depth</code></td>
+                                <td>int</td>
+                                <td>Circuit depth (more = more expressive)</td>
+                            </tr>
+                            <tr>
+                                <td><code>optimizer</code></td>
+                                <td>str</td>
+                                <td>Optimizer ('adam', 'l-bfgs-b', 'cobyla')</td>
+                            </tr>
+                        </table>
+
+                        <div class="code-example">
+                            <span class="example-label">Example:</span>
+                            <pre>from aios.quantum_ml_algorithms import QuantumVQE
+
+# Define Hamiltonian
+def hamiltonian(qc):
+    return qc.expectation_value('Z0*Z1') - 0.5 * qc.expectation_value('Z0')
+
+# Initialize VQE
+vqe = QuantumVQE(num_qubits=4, depth=3)
+
+# Optimize
+energy, params = vqe.optimize(hamiltonian, max_iter=100)
+
+print(f"Ground state energy: {energy:.6f}")
+print(f"Optimal parameters: {params}")</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- HHL -->
+                <section id="hhl-solver" class="section">
+                    <h3>HHL Linear System Solver</h3>
+                    <p>
+                        <span class="badge quantum">Quantum</span>
+                        <span class="badge">Linear Algebra</span>
+                    </p>
+                    <p>
+                        Harrow-Hassidim-Lloyd algorithm for solving linear systems Ax = b with exponential speedup.
+                        Complexity: O(log(N)κ²) vs O(N³) classical.
+                    </p>
+
+                    <div class="api-method">
+                        <h4>hhl_linear_system_solver(A, b)</h4>
+
+                        <div class="method-signature">
+                            <code>hhl_linear_system_solver(A: np.ndarray, b: np.ndarray) → Dict</code>
+                        </div>
+
+                        <table class="param-table">
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                            <tr>
+                                <td><code>A</code></td>
+                                <td>np.ndarray</td>
+                                <td>Coefficient matrix (N × N)</td>
+                            </tr>
+                            <tr>
+                                <td><code>b</code></td>
+                                <td>np.ndarray</td>
+                                <td>Right-hand side vector (N,)</td>
+                            </tr>
+                        </table>
+
+                        <div class="returns">
+                            <strong>Returns:</strong> Dictionary with solution expectation values, success probability, quantum advantage factor, and condition number
+                        </div>
+
+                        <div class="code-example">
+                            <span class="example-label">Example:</span>
+                            <pre>from aios.quantum_hhl_algorithm import hhl_linear_system_solver
+import numpy as np
+
+# Define linear system
+A = np.array([[2.0, -0.5], [-0.5, 2.0]])
+b = np.array([1.0, 0.0])
+
+# Solve with quantum advantage
+result = hhl_linear_system_solver(A, b)
+
+print(f"Success probability: {result['success_probability']:.4f}")
+print(f"Quantum advantage: {result['quantum_advantage']:.1f}x")
+print(f"Condition number κ: {result['condition_number']:.2f}")
+
+# Note: HHL outputs expectation values, not full solution vector
+print(f"Solution expectation: {result['solution_expectation']}")</pre>
+                        </div>
+
+                        <div class="info-box">
+                            <p><strong>Important:</strong> HHL algorithm outputs expectation values ⟨x|M|x⟩, not the full solution vector x. This is sufficient for many applications (e.g., expectation values in quantum chemistry, optimization objectives).</p>
+                            <p><strong>When to use:</strong> Best for sparse, well-conditioned matrices (low κ). For dense or ill-conditioned systems, classical methods may be more efficient.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ML Algorithms -->
+                <section id="mamba" class="section">
+                    <h2>ML Algorithms API</h2>
+
+                    <h3>Mamba (Adaptive State Space)</h3>
+                    <p>
+                        <span class="badge ml">ML</span>
+                        <span class="badge">Sequence Modeling</span>
+                    </p>
+                    <p>
+                        Mamba architecture with O(N) complexity vs O(N²) for attention.
+                        Input-dependent parameters enable content-based reasoning.
+                    </p>
+
+                    <div class="api-method">
+                        <h4>AdaptiveStateSpace(input_dim, state_dim, output_dim)</h4>
+
+                        <table class="param-table">
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                            <tr>
+                                <td><code>input_dim</code></td>
+                                <td>int</td>
+                                <td>Input feature dimension</td>
+                            </tr>
+                            <tr>
+                                <td><code>state_dim</code></td>
+                                <td>int</td>
+                                <td>Hidden state dimension</td>
+                            </tr>
+                            <tr>
+                                <td><code>output_dim</code></td>
+                                <td>int</td>
+                                <td>Output feature dimension</td>
+                            </tr>
+                        </table>
+
+                        <div class="code-example">
+                            <span class="example-label">Example:</span>
+                            <pre>from aios.ml_algorithms import AdaptiveStateSpace
+import torch
+
+# Initialize Mamba layer
+mamba = AdaptiveStateSpace(
+    input_dim=512,
+    state_dim=128,
+    output_dim=512
+)
+
+# Process long sequence efficiently
+x = torch.randn(32, 10000, 512)  # (batch, length, features)
+output, final_state = mamba(x)
+
+print(f"Output shape: {output.shape}")  # (32, 10000, 512)
+print(f"Final state: {final_state.shape}")  # (32, 128)
+
+# Complexity: O(N) vs O(N²) for attention!</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Flow Matching -->
+                <section id="flow-matching" class="section">
+                    <h3>Optimal Transport Flow Matching</h3>
+                    <p>
+                        <span class="badge ml">ML</span>
+                        <span class="badge">Generative</span>
+                    </p>
+                    <p>
+                        Fast generative modeling with 10-20 sampling steps vs 1000 for diffusion models.
+                        Direct velocity field learning with straight sampling paths.
+                    </p>
+
+                    <div class="api-method">
+                        <h4>OptimalTransportFlowMatcher(data_dim, time_dim)</h4>
+
+                        <table class="param-table">
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                            <tr>
+                                <td><code>data_dim</code></td>
+                                <td>int</td>
+                                <td>Data dimension (e.g., 784 for 28×28 images)</td>
+                            </tr>
+                            <tr>
+                                <td><code>time_dim</code></td>
+                                <td>int</td>
+                                <td>Time embedding dimension</td>
+                            </tr>
+                        </table>
+
+                        <div class="code-example">
+                            <span class="example-label">Example:</span>
+                            <pre>from aios.ml_algorithms import OptimalTransportFlowMatcher
+import torch
+
+# Initialize flow matcher
+flow = OptimalTransportFlowMatcher(
+    data_dim=784,  # 28×28 images
+    time_dim=32
+)
+
+# Fast sampling: only 20 steps!
+samples = flow.sample(
+    num_samples=16,
+    num_steps=20  # vs 1000 for diffusion
+)
+
+print(f"Generated samples: {samples.shape}")  # (16, 784)
+
+# 50x faster sampling than diffusion models!</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- MCTS -->
+                <section id="mcts" class="section">
+                    <h3>Neural-Guided MCTS</h3>
+                    <p>
+                        <span class="badge ml">ML</span>
+                        <span class="badge">Planning</span>
+                    </p>
+                    <p>
+                        Monte Carlo Tree Search with neural policy/value guidance (AlphaGo-style).
+                        PUCT algorithm balances exploration and exploitation.
+                    </p>
+
+                    <div class="api-method">
+                        <h4>NeuralGuidedMCTS(policy_fn, value_fn, num_simulations, c_puct)</h4>
+
+                        <div class="code-example">
+                            <span class="example-label">Example:</span>
+                            <pre>from aios.ml_algorithms import NeuralGuidedMCTS
+
+# Define neural network functions
+def policy_fn(state):
+    """Neural network policy: returns [(action, prob), ...]"""
+    # Your neural network here
+    return [(action, prob) for action, prob in action_probs]
+
+def value_fn(state):
+    """Neural network value estimate"""
+    # Your neural network here
+    return estimated_value
+
+# Initialize MCTS
+mcts = NeuralGuidedMCTS(
+    policy_fn=policy_fn,
+    value_fn=value_fn,
+    num_simulations=800,  # AlphaGo uses 800-1600
+    c_puct=1.0  # Exploration constant
+)
+
+# Search for best move
+best_action = mcts.search(current_state)
+print(f"Best action: {best_action}")</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Particle Filter -->
+                <section id="particle-filter" class="section">
+                    <h3>Adaptive Particle Filter</h3>
+                    <p>
+                        <span class="badge ml">ML</span>
+                        <span class="badge">Bayesian</span>
+                    </p>
+                    <p>
+                        Sequential Monte Carlo for real-time state estimation and sensor fusion.
+                        Adaptive resampling based on effective sample size.
+                    </p>
+
+                    <div class="api-method">
+                        <h4>AdaptiveParticleFilter(num_particles, state_dim, obs_dim)</h4>
+
+                        <div class="code-example">
+                            <span class="example-label">Example:</span>
+                            <pre>from aios.ml_algorithms import AdaptiveParticleFilter
+import numpy as np
+
+# Initialize filter
+pf = AdaptiveParticleFilter(
+    num_particles=1000,
+    state_dim=4,  # [x, y, vx, vy]
+    obs_dim=2     # [x, y] measurements
+)
+
+# Time update (prediction)
+def transition_fn(x):
+    """State transition model"""
+    x_new = x.copy()
+    x_new[:2] += x_new[2:] * 0.1  # Position update
+    return x_new
+
+pf.predict(transition_fn=transition_fn, process_noise=0.05)
+
+# Measurement update
+def likelihood_fn(x, obs):
+    """Measurement likelihood"""
+    diff = x[:2] - obs
+    return np.exp(-0.5 * np.sum(diff**2))
+
+observation = np.array([1.0, 2.0])
+pf.update(observation=observation, likelihood_fn=likelihood_fn)
+
+# Get state estimate
+estimate = pf.estimate()
+print(f"State estimate: {estimate}")</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Autonomous Discovery -->
+                <section id="autonomous-agent" class="section">
+                    <h2>Autonomous Discovery API</h2>
+
+                    <h3>AutonomousLLMAgent</h3>
+                    <p>
+                        <span class="badge ml">ML</span>
+                        <span class="badge">Level 4</span>
+                    </p>
+                    <p>
+                        Level 4 autonomous agent with self-directed learning capabilities.
+                        Synthesizes goals, builds knowledge graphs, and pursues learning independently.
+                    </p>
+
+                    <div class="api-method">
+                        <h4>__init__(model_name, autonomy_level)</h4>
+
+                        <table class="param-table">
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                            <tr>
+                                <td><code>model_name</code></td>
+                                <td>str</td>
+                                <td>LLM model name (e.g., "deepseek-r1")</td>
+                            </tr>
+                            <tr>
+                                <td><code>autonomy_level</code></td>
+                                <td>AgentAutonomy</td>
+                                <td>Level 0-4 (use AgentAutonomy.LEVEL_4)</td>
+                            </tr>
+                        </table>
+
+                        <div class="code-example">
+                            <span class="example-label">Example:</span>
+                            <pre>from aios.autonomous_discovery import AutonomousLLMAgent, AgentAutonomy
+
+# Create Level 4 autonomous agent
+agent = AutonomousLLMAgent(
+    model_name="deepseek-r1",
+    autonomy_level=AgentAutonomy.LEVEL_4
+)
+
+# Give it a mission
+agent.set_mission(
+    "quantum computing machine learning applications",
+    duration_hours=1.0
+)
+
+# Agent autonomously:
+# - Decomposes mission into learning objectives
+# - Balances exploration vs exploitation
+# - Builds knowledge graph
+# - Self-evaluates and adapts
+await agent.pursue_autonomous_learning()
+
+# Export discovered knowledge
+knowledge = agent.export_knowledge_graph()
+
+print(f"Discovered {knowledge['stats']['total_concepts']} concepts")
+print(f"Average confidence: {knowledge['stats']['average_confidence']:.2f}")
+print(f"High confidence count: {knowledge['stats']['high_confidence_count']}")</pre>
+                        </div>
+                    </div>
+
+                    <div class="api-method">
+                        <h4>export_knowledge_graph()</h4>
+
+                        <div class="method-signature">
+                            <code>agent.export_knowledge_graph() → Dict</code>
+                        </div>
+
+                        <div class="returns">
+                            <strong>Returns:</strong> Dictionary with 'nodes' (concepts with confidence scores), 'edges' (relationships), and 'stats' (summary statistics)
+                        </div>
+
+                        <div class="code-example">
+                            <span class="example-label">Example:</span>
+                            <pre>knowledge = agent.export_knowledge_graph()
+
+# Structure:
+{
+    "nodes": {
+        "quantum_entanglement": {
+            "confidence": 0.95,
+            "timestamp": "2025-10-13T10:30:00Z",
+            "parent": "quantum_mechanics"
+        },
+        ...
+    },
+    "edges": [
+        {"source": "quantum_computing", "target": "quantum_entanglement", "type": "requires"},
+        ...
+    ],
+    "stats": {
+        "total_concepts": 247,
+        "average_confidence": 0.87,
+        "high_confidence_count": 189
+    }
+}</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Utilities -->
+                <section id="algorithm-catalog" class="section">
+                    <h2>Utilities</h2>
+
+                    <h3>Algorithm Catalog</h3>
+
+                    <div class="api-method">
+                        <h4>get_algorithm_catalog()</h4>
+                        <p>Get comprehensive catalog of all available algorithms with metadata.</p>
+
+                        <div class="code-example">
+                            <span class="example-label">Example:</span>
+                            <pre>from aios.ml_algorithms import get_algorithm_catalog
+
+catalog = get_algorithm_catalog()
+
+for name, info in catalog.items():
+    print(f"{name}:")
+    print(f"  Category: {info['category']}")
+    print(f"  Complexity: {info['complexity']}")
+    print(f"  Available: {info['available']}")
+    print(f"  Requires: {info['requires']}")
+    print()</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="dependencies" class="section">
+                    <h3>Dependency Checking</h3>
+
+                    <div class="api-method">
+                        <h4>check_dependencies()</h4>
+
+                        <div class="code-example">
+                            <span class="example-label">Example:</span>
+                            <pre># Check quantum algorithms
+from aios.quantum_ml_algorithms import check_dependencies as check_quantum
+status = check_quantum()
+print(f"Quantum algorithms available: {status['available']}")
+
+# Check autonomous discovery
+from aios.autonomous_discovery import check_autonomous_discovery_dependencies
+status = check_autonomous_discovery_dependencies()
+print(f"Autonomous discovery ready: {status['ready']}")</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Quick Reference -->
+                <section class="section" style="background: rgba(102, 126, 234, 0.05); border: 2px solid rgba(102, 126, 234, 0.3);">
+                    <h2>Quick Reference</h2>
+
+                    <h3>Import Cheatsheet</h3>
+                    <div class="code-example">
+                        <pre># Quantum Computing
+from aios.quantum_ml_algorithms import (
+    QuantumStateEngine,
+    QuantumVQE,
+    QuantumQAOA,
+    QuantumNeuralNetwork
+)
+from aios.quantum_hhl_algorithm import hhl_linear_system_solver
+
+# ML Algorithms
+from aios.ml_algorithms import (
+    AdaptiveStateSpace,           # Mamba
+    OptimalTransportFlowMatcher,  # Flow Matching
+    NeuralGuidedMCTS,             # AlphaGo-style
+    AdaptiveParticleFilter,       # Bayesian tracking
+    NoUTurnSampler,               # NUTS HMC
+    SparseGaussianProcess,        # Scalable GP
+    get_algorithm_catalog         # List all
+)
+
+# Autonomous Discovery
+from aios.autonomous_discovery import (
+    AutonomousLLMAgent,
+    AgentAutonomy,
+    create_autonomous_discovery_action
+)</pre>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling for sidebar navigation
+        document.querySelectorAll('.sidebar-nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+
+                // Update active state
+                document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+
+                // Smooth scroll
+                targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        // Update active section on scroll
+        const sections = document.querySelectorAll('.section[id]');
+        const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            sidebarLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
