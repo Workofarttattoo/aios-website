@@ -1,18 +1,23 @@
-// Ai|oS Cookie Consent & Visitor Tracking System
+// Ai|oS Cookie Consent & Visitor Tracking System - SUPABASE VERSION
 // GDPR/CCPA Compliant - Click = Consent
 
 (function() {
   'use strict';
 
-  const TRACKING_API = 'https://your-backend.railway.app/api/track'; // TODO: Set up backend
+  // TODO: Replace with your Supabase credentials from https://supabase.com/dashboard
+  const SUPABASE_URL = 'https://your-project.supabase.co';
+  const SUPABASE_ANON_KEY = 'your-anon-key-here';
+
   const COOKIE_NAME = 'aios_consent';
   const COOKIE_EXPIRY_DAYS = 365;
 
+  // Initialize Supabase client (using CDN version)
+  const { createClient } = supabase;
+  const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
   // Detect visitor type (government/judicial/enterprise/individual)
   function detectVisitorType() {
-    const hostname = window.location.hostname;
     const referrer = document.referrer.toLowerCase();
-    const userAgent = navigator.userAgent.toLowerCase();
 
     // Government TLDs: .gov, .mil, .gc.ca, etc.
     const isGov = /\.gov|\.mil|\.gc\.ca|\.gov\.uk|\.gouv\.fr/.test(referrer);
@@ -39,7 +44,7 @@
         region: data.region,
         city: data.city,
         ip: data.ip,
-        org: data.org // ISP/Organization name
+        org: data.org
       };
     } catch (error) {
       console.error('Geolocation failed:', error);
@@ -63,63 +68,77 @@
     document.cookie = `${COOKIE_NAME}=${encodeURIComponent(cookieValue)}; expires=${expires.toUTCString()}; path=/; SameSite=Strict`;
   }
 
-  // Send tracking data to backend
+  // Send tracking data to Supabase
   async function trackVisitor(eventType = 'pageview') {
     const location = await getLocation();
     const visitorType = detectVisitorType();
 
     const trackingData = {
-      // Who
-      visitorId: generateVisitorId(),
-      visitorType: visitorType,
-      userAgent: navigator.userAgent,
+      // Database columns
+      visitor_id: generateVisitorId(),
+      visitor_type: visitorType,
+      user_agent: navigator.userAgent,
       language: navigator.language,
       organization: location?.org || 'Unknown',
 
-      // What
-      eventType: eventType,
-      page: window.location.pathname,
-      pageTitle: document.title,
+      event_type: eventType,
+      page_path: window.location.pathname,
+      page_title: document.title,
 
-      // When
       timestamp: new Date().toISOString(),
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 
-      // Where
-      location: location,
-      referrer: document.referrer || 'Direct',
+      country: location?.country || null,
+      region: location?.region || null,
+      city: location?.city || null,
+      ip_address: location?.ip || null,
 
-      // Why (inferred from behavior)
+      referrer: document.referrer || 'Direct',
       intent: inferIntent(),
 
-      // Device & Tech
-      screenResolution: `${screen.width}x${screen.height}`,
+      screen_resolution: `${screen.width}x${screen.height}`,
       viewport: `${window.innerWidth}x${window.innerHeight}`,
-      deviceType: getDeviceType(),
+      device_type: getDeviceType(),
 
-      // Session
-      sessionId: getSessionId(),
-      isReturningVisitor: hasConsent()
+      session_id: getSessionId(),
+      is_returning: hasConsent()
     };
 
-    // Send to backend
     try {
-      await fetch(TRACKING_API, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(trackingData)
-      });
+      // Insert into Supabase
+      const { data, error } = await supabaseClient
+        .from('visitors')
+        .insert([trackingData]);
+
+      if (error) throw error;
+
+      console.log('[Tracking] Event recorded:', eventType);
 
       // If government/judicial visitor, show enterprise pitch
       if (visitorType === 'government_judicial') {
         showEnterprisePitch();
+
+        // Also insert into enterprise_leads table
+        await supabaseClient
+          .from('enterprise_leads')
+          .insert([{
+            visitor_id: trackingData.visitor_id,
+            organization: trackingData.organization,
+            country: trackingData.country,
+            region: trackingData.region,
+            city: trackingData.city,
+            referrer: trackingData.referrer,
+            pitch_shown: eventType === 'enterprise_pitch_shown',
+            priority: 'high',
+            timestamp: new Date().toISOString()
+          }]);
       }
 
       // Set consent cookie
       setConsent(trackingData);
 
     } catch (error) {
-      console.error('Tracking failed:', error);
+      console.error('[Tracking] Failed:', error);
     }
   }
 
