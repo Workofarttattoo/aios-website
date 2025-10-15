@@ -664,7 +664,7 @@
             <li><a href="#features">Features</a></li>
             <li><a href="#quantum">Quantum</a></li>
             <li><a href="#docs">Documentation</a></li>
-            <li><a href="https://github.com/aios" target="_blank">GitHub</a></li>
+            <li><a href="https://github.com/Workofarttattoo/AioS" target="_blank">GitHub</a></li>
         </ul>
     </nav>
 
@@ -686,8 +686,8 @@
         </p>
 
         <div class="cta-buttons">
-            <a href="#" class="btn btn-primary">Launch System</a>
-            <a href="#" class="btn btn-secondary">Explore Docs</a>
+            <a href="javascript:launchAioS()" class="btn btn-primary">Launch Now - 3 Days Free</a>
+            <a href="docs.html" class="btn btn-secondary">Explore Docs</a>
         </div>
 
         <div class="stats">
@@ -901,6 +901,245 @@
                 grid.style.transform = `translateY(${scrolled * 0.3}px)`;
             }
         });
+
+        // 3-Day Free Trial + Paywall System
+        function launchAioS() {
+            // Check if user has started their free trial
+            const trialStartDate = localStorage.getItem('aios_trial_start');
+            const trialStatus = localStorage.getItem('aios_trial_status');
+            const isPaid = localStorage.getItem('aios_paid') === 'true';
+
+            // If already paid, launch directly
+            if (isPaid) {
+                window.location.href = 'https://github.com/Workofarttattoo/AioS/releases/latest';
+                return;
+            }
+
+            const now = new Date().getTime();
+            const threeDaysInMs = 3 * 24 * 60 * 60 * 1000; // 3 days
+
+            // If no trial started, start it now
+            if (!trialStartDate) {
+                localStorage.setItem('aios_trial_start', now.toString());
+                localStorage.setItem('aios_trial_status', 'active');
+
+                // Show welcome modal
+                showModal(
+                    '🎉 Welcome to Your 3-Day Free Trial!',
+                    'You now have 3 days of full access to Ai|oS. Explore all features including:\\n\\n' +
+                    '✅ Level 6 Autonomous Agents\\n' +
+                    '✅ Quantum Computing Suite\\n' +
+                    '✅ Sovereign Security Toolkit\\n' +
+                    '✅ Self-Evolving ML Algorithms\\n\\n' +
+                    'Your trial ends in 72 hours. Downloading now...',
+                    () => {
+                        window.location.href = 'https://github.com/Workofarttattoo/AioS/releases/latest';
+                    }
+                );
+                return;
+            }
+
+            // Check if trial has expired
+            const trialElapsed = now - parseInt(trialStartDate);
+            const trialRemaining = threeDaysInMs - trialElapsed;
+
+            if (trialRemaining <= 0) {
+                // Trial expired - show paywall
+                localStorage.setItem('aios_trial_status', 'expired');
+                showPaywall();
+                return;
+            }
+
+            // Trial still active - show time remaining and launch
+            const daysRemaining = Math.ceil(trialRemaining / (24 * 60 * 60 * 1000));
+            const hoursRemaining = Math.floor(trialRemaining / (60 * 60 * 1000));
+
+            showModal(
+                '⚡ Trial Active',
+                `You have ${daysRemaining} day${daysRemaining !== 1 ? 's' : ''} (${hoursRemaining} hours) remaining in your free trial.\\n\\n` +
+                'Launching Ai|oS now...',
+                () => {
+                    window.location.href = 'https://github.com/Workofarttattoo/AioS/releases/latest';
+                }
+            );
+        }
+
+        function showModal(title, message, onClose) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                backdrop-filter: blur(10px);
+            `;
+
+            modal.innerHTML = `
+                <div style="
+                    background: linear-gradient(135deg, #1a0033, #330066);
+                    border: 2px solid #00ff88;
+                    border-radius: 20px;
+                    padding: 3rem;
+                    max-width: 500px;
+                    text-align: center;
+                    box-shadow: 0 20px 60px rgba(0, 255, 136, 0.3);
+                ">
+                    <h2 style="
+                        font-size: 2rem;
+                        color: #00ff88;
+                        margin-bottom: 1.5rem;
+                        text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+                    ">${title}</h2>
+                    <p style="
+                        font-size: 1.1rem;
+                        color: rgba(255, 255, 255, 0.9);
+                        line-height: 1.8;
+                        white-space: pre-line;
+                        margin-bottom: 2rem;
+                    ">${message}</p>
+                    <button onclick="this.closest('div').parentElement.remove(); ${onClose ? 'arguments[0]()' : ''}" style="
+                        padding: 1rem 2.5rem;
+                        font-size: 1.1rem;
+                        font-weight: 700;
+                        background: linear-gradient(135deg, #00ff88, #00d4ff);
+                        color: #000;
+                        border: none;
+                        border-radius: 50px;
+                        cursor: pointer;
+                        transition: all 0.3s;
+                    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                        Continue
+                    </button>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+
+            // Auto-close and execute callback after 3 seconds
+            if (onClose) {
+                setTimeout(() => {
+                    modal.remove();
+                    onClose();
+                }, 3000);
+            }
+        }
+
+        function showPaywall() {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.95);
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                backdrop-filter: blur(15px);
+            `;
+
+            modal.innerHTML = `
+                <div style="
+                    background: linear-gradient(135deg, #1a0033, #330066);
+                    border: 3px solid #ff00ff;
+                    border-radius: 20px;
+                    padding: 3rem;
+                    max-width: 600px;
+                    text-align: center;
+                    box-shadow: 0 20px 80px rgba(255, 0, 255, 0.5);
+                ">
+                    <h2 style="
+                        font-size: 2.5rem;
+                        color: #ff00ff;
+                        margin-bottom: 1rem;
+                        text-shadow: 0 0 30px rgba(255, 0, 255, 0.8);
+                    ">🔒 Trial Expired</h2>
+                    <p style="
+                        font-size: 1.2rem;
+                        color: rgba(255, 255, 255, 0.9);
+                        line-height: 1.8;
+                        margin-bottom: 2rem;
+                    ">
+                        Your 3-day free trial has ended. Upgrade now to continue using Ai|oS with:
+                    </p>
+                    <div style="text-align: left; margin: 2rem auto; max-width: 400px;">
+                        <p style="color: #00ff88; font-size: 1.1rem; margin: 0.5rem 0;">✅ Lifetime Access to Ai|oS</p>
+                        <p style="color: #00ff88; font-size: 1.1rem; margin: 0.5rem 0;">✅ All Future Updates</p>
+                        <p style="color: #00ff88; font-size: 1.1rem; margin: 0.5rem 0;">✅ Priority Support</p>
+                        <p style="color: #00ff88; font-size: 1.1rem; margin: 0.5rem 0;">✅ Commercial License</p>
+                    </div>
+                    <div style="margin: 2rem 0;">
+                        <p style="font-size: 3rem; font-weight: 900; color: #00ff88; margin: 0.5rem 0;">$99</p>
+                        <p style="color: rgba(255, 255, 255, 0.6); font-size: 0.9rem;">One-time payment</p>
+                    </div>
+                    <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+                        <button onclick="purchaseAioS()" style="
+                            padding: 1.2rem 3rem;
+                            font-size: 1.2rem;
+                            font-weight: 700;
+                            background: linear-gradient(135deg, #ff00ff, #cc00cc);
+                            color: #fff;
+                            border: none;
+                            border-radius: 50px;
+                            cursor: pointer;
+                            transition: all 0.3s;
+                        " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                            💳 Purchase Now
+                        </button>
+                        <button onclick="this.closest('div').parentElement.remove()" style="
+                            padding: 1.2rem 2rem;
+                            font-size: 1rem;
+                            background: transparent;
+                            color: rgba(255, 255, 255, 0.6);
+                            border: 2px solid rgba(255, 255, 255, 0.3);
+                            border-radius: 50px;
+                            cursor: pointer;
+                        ">
+                            Maybe Later
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+        }
+
+        function purchaseAioS() {
+            // In production, integrate with Stripe/PayPal
+            // For now, simulate purchase
+            alert('Payment integration coming soon!\\n\\nContact: joshua@thegavl.com for early access pricing.');
+
+            // Simulate successful purchase (remove in production)
+            if (confirm('Simulate successful purchase for testing?')) {
+                localStorage.setItem('aios_paid', 'true');
+                localStorage.setItem('aios_purchase_date', new Date().toISOString());
+
+                showModal(
+                    '🎉 Welcome to Ai|oS Premium!',
+                    'Thank you for your purchase!\\n\\nDownloading the latest version now...',
+                    () => {
+                        window.location.href = 'https://github.com/Workofarttattoo/AioS/releases/latest';
+                    }
+                );
+            }
+        }
+
+        // Add reset trial function for testing (remove in production)
+        window.resetTrial = function() {
+            localStorage.removeItem('aios_trial_start');
+            localStorage.removeItem('aios_trial_status');
+            localStorage.removeItem('aios_paid');
+            localStorage.removeItem('aios_purchase_date');
+            console.log('[DEBUG] Trial reset. Click "Launch Now" to start a new 3-day trial.');
+        };
     </script>
 
     <!-- Supabase Client Library -->
