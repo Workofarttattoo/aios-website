@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Your Ai|oS Journey - 3 Day Free Trial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00ff88;
+            --secondary: #ff00ff;
+            --quantum-blue: #00d4ff;
+            --dark: #0a0a0a;
+            --darker: #050505;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(180deg, #0a0a1a 0%, #000511 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .quantum-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image:
+                linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: grid-move 10s linear infinite;
+        }
+
+        @keyframes grid-move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 30px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 80px rgba(0, 255, 136, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 212, 255, 0.1));
+            padding: 3rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--quantum-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+        }
+
+        .trial-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--quantum-blue));
+            color: #000;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .content {
+            padding: 3rem 2rem;
+        }
+
+        .section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .payment-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .payment-option {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .payment-option:hover {
+            border-color: var(--primary);
+            background: rgba(0, 255, 136, 0.05);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.3);
+        }
+
+        .payment-option.selected {
+            border-color: var(--primary);
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .payment-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .payment-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .payment-subtitle {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .card-details {
+            display: none;
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .card-details.active {
+            display: block;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .price-display {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 212, 255, 0.1));
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--quantum-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .price-label {
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 0.5rem;
+        }
+
+        .benefits {
+            margin: 2rem 0;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background: rgba(0, 255, 136, 0.05);
+            border-radius: 10px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1.2rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--quantum-blue));
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.5);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .paypal-button-container {
+            margin-top: 1rem;
+        }
+
+        .security-badges {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.9rem;
+        }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .back-link a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .back-link a:hover {
+            color: var(--quantum-blue);
+        }
+
+        @media (max-width: 768px) {
+            .payment-options {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .price {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="quantum-bg"></div>
+
+    <div class="container">
+        <div class="header">
+            <div class="logo">Ai|oS</div>
+            <h1>🚀 Start Your Free Trial</h1>
+            <p>Get instant access to the quantum-enhanced autonomous OS</p>
+            <div class="trial-badge">✨ 3 DAYS FREE TRIAL</div>
+        </div>
+
+        <div class="content">
+            <!-- User Information -->
+            <div class="section">
+                <h2 class="section-title">📋 Your Information</h2>
+
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" placeholder="your@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" placeholder="John Doe" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="company">Company / Organization (Optional)</label>
+                    <input type="text" id="company" placeholder="Acme Inc.">
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Billing Address *</label>
+                    <textarea id="address" rows="3" placeholder="123 Main St, City, State, ZIP, Country" required></textarea>
+                </div>
+            </div>
+
+            <!-- Pricing Display -->
+            <div class="price-display">
+                <div class="price">$99</div>
+                <div class="price-label">One-time payment • Lifetime access</div>
+                <div class="price-label" style="margin-top: 1rem; color: var(--primary);">
+                    First 3 days FREE • Cancel anytime
+                </div>
+            </div>
+
+            <!-- What You Get -->
+            <div class="benefits">
+                <div class="benefit-item">
+                    <span style="font-size: 1.5rem;">✅</span>
+                    <span>Full access to Level 6 autonomous agents</span>
+                </div>
+                <div class="benefit-item">
+                    <span style="font-size: 1.5rem;">✅</span>
+                    <span>Quantum computing suite with 50+ qubit simulation</span>
+                </div>
+                <div class="benefit-item">
+                    <span style="font-size: 1.5rem;">✅</span>
+                    <span>Sovereign Security Toolkit (Burp Suite alternative)</span>
+                </div>
+                <div class="benefit-item">
+                    <span style="font-size: 1.5rem;">✅</span>
+                    <span>All future updates and improvements</span>
+                </div>
+                <div class="benefit-item">
+                    <span style="font-size: 1.5rem;">✅</span>
+                    <span>Priority email support</span>
+                </div>
+            </div>
+
+            <!-- Payment Options -->
+            <div class="section">
+                <h2 class="section-title">💳 Choose Payment Method</h2>
+
+                <div class="payment-options" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                    <!-- Trial with Card Hold -->
+                    <div class="payment-option selected" id="trialOption" onclick="selectPaymentOption('trial')">
+                        <div class="payment-icon">⏱️</div>
+                        <div class="payment-title">Start Trial</div>
+                        <div class="payment-subtitle">3 days free, card on file</div>
+                    </div>
+
+                    <!-- PayPal Option -->
+                    <div class="payment-option" id="paypalOption" onclick="selectPaymentOption('paypal')">
+                        <div class="payment-icon">💙</div>
+                        <div class="payment-title">PayPal</div>
+                        <div class="payment-subtitle">Pay $99 now</div>
+                    </div>
+
+                    <!-- Zelle Option -->
+                    <div class="payment-option" id="zelleOption" onclick="selectPaymentOption('zelle')">
+                        <div class="payment-icon">💸</div>
+                        <div class="payment-title">Zelle</div>
+                        <div class="payment-subtitle">Pay $99 now</div>
+                    </div>
+
+                    <!-- CashApp Option -->
+                    <div class="payment-option" id="cashappOption" onclick="selectPaymentOption('cashapp')">
+                        <div class="payment-icon">💵</div>
+                        <div class="payment-title">Cash App</div>
+                        <div class="payment-subtitle">Pay $99 now</div>
+                    </div>
+
+                    <!-- Crypto Option -->
+                    <div class="payment-option" id="cryptoOption" onclick="selectPaymentOption('crypto')">
+                        <div class="payment-icon">₿</div>
+                        <div class="payment-title">Crypto</div>
+                        <div class="payment-subtitle">BTC / ETH</div>
+                    </div>
+                </div>
+
+                <!-- Card Details Form (shows for trial) -->
+                <div class="card-details active" id="cardDetails">
+                    <div class="form-group">
+                        <label for="cardNumber">Card Number</label>
+                        <div id="cardNumberElement"></div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="cardExpiry">Expiry Date</label>
+                            <div id="cardExpiryElement"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="cardCvc">CVC</label>
+                            <div id="cardCvcElement"></div>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.5); margin-top: 1rem;">
+                        🔒 Your card will be authorized but not charged during the free trial. Cancel anytime before day 4 to avoid charges.
+                    </p>
+                </div>
+
+                <!-- PayPal Container -->
+                <div class="card-details" id="paypalDetails">
+                    <div id="paypal-button-container"></div>
+                </div>
+
+                <!-- Zelle Details -->
+                <div class="card-details" id="zelleDetails">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">💸</div>
+                        <h3 style="color: var(--primary); margin-bottom: 1rem;">Send $99 via Zelle</h3>
+                        <div style="background: rgba(0, 255, 136, 0.1); padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem;">
+                            <p style="font-size: 1.3rem; font-weight: 700; color: var(--primary);">
+                                📞 (725) 224-2617
+                            </p>
+                        </div>
+                        <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; margin-bottom: 1rem;">
+                            After sending payment, click the button below to confirm.
+                        </p>
+                        <button class="btn btn-primary" onclick="confirmZellePayment()">
+                            ✅ I've Sent Payment via Zelle
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CashApp Details -->
+                <div class="card-details" id="cashappDetails">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">💵</div>
+                        <h3 style="color: var(--primary); margin-bottom: 1rem;">Send $99 via Cash App</h3>
+                        <div style="background: rgba(0, 255, 136, 0.1); padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem;">
+                            <p style="font-size: 1.3rem; font-weight: 700; color: var(--primary);">
+                                💰 $workofarttattoo
+                            </p>
+                        </div>
+                        <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; margin-bottom: 1rem;">
+                            After sending payment, click the button below to confirm.
+                        </p>
+                        <button class="btn btn-primary" onclick="confirmCashAppPayment()">
+                            ✅ I've Sent Payment via Cash App
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Crypto Details -->
+                <div class="card-details" id="cryptoDetails">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">₿</div>
+                        <h3 style="color: var(--primary); margin-bottom: 1.5rem;">Pay with Cryptocurrency</h3>
+
+                        <div style="margin-bottom: 2rem;">
+                            <h4 style="color: var(--quantum-blue); margin-bottom: 0.5rem;">Bitcoin (BTC)</h4>
+                            <div style="background: rgba(0, 0, 0, 0.5); padding: 1rem; border-radius: 10px; margin-bottom: 1rem;">
+                                <p id="btcWallet" style="font-family: monospace; font-size: 0.9rem; word-break: break-all; color: rgba(255, 255, 255, 0.9);">
+                                    Wallet setup in progress...
+                                </p>
+                                <button onclick="copyToClipboard('btcWallet')" style="margin-top: 0.5rem; padding: 0.5rem 1rem; background: var(--primary); color: #000; border: none; border-radius: 5px; cursor: pointer;">
+                                    📋 Copy Address
+                                </button>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 2rem;">
+                            <h4 style="color: var(--quantum-blue); margin-bottom: 0.5rem;">Ethereum (ETH)</h4>
+                            <div style="background: rgba(0, 0, 0, 0.5); padding: 1rem; border-radius: 10px; margin-bottom: 1rem;">
+                                <p id="ethWallet" style="font-family: monospace; font-size: 0.9rem; word-break: break-all; color: rgba(255, 255, 255, 0.9);">
+                                    Wallet setup in progress...
+                                </p>
+                                <button onclick="copyToClipboard('ethWallet')" style="margin-top: 0.5rem; padding: 0.5rem 1rem; background: var(--primary); color: #000; border: none; border-radius: 5px; cursor: pointer;">
+                                    📋 Copy Address
+                                </button>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(255, 165, 0, 0.1); border: 1px solid rgba(255, 165, 0, 0.3); border-radius: 10px; padding: 1rem; margin-bottom: 1.5rem;">
+                            <p style="color: rgba(255, 165, 0, 0.9); font-size: 0.9rem;">
+                                ⚠️ Wallets are being set up. For immediate crypto payment, email:
+                            </p>
+                            <p style="color: var(--primary); font-weight: 700; margin-top: 0.5rem;">
+                                <a href="mailto:joshua@thegavl.com" style="color: var(--primary); text-decoration: none;">joshua@thegavl.com</a>
+                            </p>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="confirmCryptoPayment()">
+                            ✅ I've Sent Crypto Payment
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button class="btn btn-primary" id="submitButton" onclick="handleSubmit()">
+                <span id="buttonText">🚀 Start My Free Trial</span>
+            </button>
+
+            <!-- Security Badges -->
+            <div class="security-badges">
+                <div class="security-badge">
+                    <span>🔒</span>
+                    <span>SSL Encrypted</span>
+                </div>
+                <div class="security-badge">
+                    <span>💳</span>
+                    <span>PCI Compliant</span>
+                </div>
+                <div class="security-badge">
+                    <span>✅</span>
+                    <span>Money Back Guarantee</span>
+                </div>
+            </div>
+
+            <div class="back-link">
+                <a href="index.html">← Back to home</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <!-- PayPal SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
+
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        // Initialize Supabase
+        const SUPABASE_URL = 'https://your-project.supabase.co';
+        const SUPABASE_ANON_KEY = 'your-anon-key-here';
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Initialize Stripe
+        const stripe = Stripe('pk_test_YOUR_PUBLISHABLE_KEY'); // Replace with your Stripe publishable key
+        const elements = stripe.elements();
+
+        // Create card elements with styling
+        const elementStyles = {
+            base: {
+                color: '#fff',
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '16px',
+                '::placeholder': {
+                    color: 'rgba(255, 255, 255, 0.4)',
+                }
+            },
+            invalid: {
+                color: '#ff5555',
+            }
+        };
+
+        const cardNumberElement = elements.create('cardNumber', {
+            style: elementStyles,
+            placeholder: '1234 5678 9012 3456'
+        });
+        cardNumberElement.mount('#cardNumberElement');
+
+        const cardExpiryElement = elements.create('cardExpiry', {
+            style: elementStyles
+        });
+        cardExpiryElement.mount('#cardExpiryElement');
+
+        const cardCvcElement = elements.create('cardCvc', {
+            style: elementStyles,
+            placeholder: '123'
+        });
+        cardCvcElement.mount('#cardCvcElement');
+
+        // Add CSS to Stripe elements containers
+        const style = document.createElement('style');
+        style.textContent = `
+            #cardNumberElement, #cardExpiryElement, #cardCvcElement {
+                padding: 1rem;
+                background: rgba(0, 0, 0, 0.3);
+                border: 2px solid rgba(0, 255, 136, 0.3);
+                border-radius: 10px;
+                transition: all 0.3s;
+            }
+            #cardNumberElement:focus-within, #cardExpiryElement:focus-within, #cardCvcElement:focus-within {
+                border-color: var(--primary);
+                box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Payment option selection
+        let selectedPaymentMethod = 'trial';
+
+        function selectPaymentOption(option) {
+            selectedPaymentMethod = option;
+
+            // Update UI - remove selected from all
+            ['trialOption', 'paypalOption', 'zelleOption', 'cashappOption', 'cryptoOption'].forEach(id => {
+                document.getElementById(id).classList.remove('selected');
+            });
+
+            // Add selected to current option
+            const optionMap = {
+                'trial': 'trialOption',
+                'paypal': 'paypalOption',
+                'zelle': 'zelleOption',
+                'cashapp': 'cashappOption',
+                'crypto': 'cryptoOption'
+            };
+            document.getElementById(optionMap[option]).classList.add('selected');
+
+            // Show/hide payment forms
+            document.getElementById('cardDetails').classList.toggle('active', option === 'trial');
+            document.getElementById('paypalDetails').classList.toggle('active', option === 'paypal');
+            document.getElementById('zelleDetails').classList.toggle('active', option === 'zelle');
+            document.getElementById('cashappDetails').classList.toggle('active', option === 'cashapp');
+            document.getElementById('cryptoDetails').classList.toggle('active', option === 'crypto');
+
+            // Update submit button visibility and text
+            const submitButton = document.getElementById('submitButton');
+            if (['zelle', 'cashapp', 'crypto', 'paypal'].includes(option)) {
+                submitButton.style.display = 'none'; // Hide main button, use payment-specific buttons
+            } else {
+                submitButton.style.display = 'block';
+                submitButton.querySelector('#buttonText').textContent = option === 'trial'
+                    ? '🚀 Start My Free Trial'
+                    : '💰 Pay $99 Now';
+            }
+        }
+
+        // Copy to clipboard function
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ Address copied to clipboard!');
+            });
+        }
+
+        // Zelle payment confirmation
+        async function confirmZellePayment() {
+            if (!validateForm()) return;
+
+            await saveOnboardingData('zelle', 'pending_confirmation', {
+                zelle_phone: '(725) 224-2617',
+                status: 'pending_verification'
+            });
+
+            alert('🎉 Payment confirmation received!\\n\\nWe\'ll verify your payment and send download instructions to your email within 24 hours.\\n\\nContact: joshua@thegavl.com');
+            window.location.href = 'index.html';
+        }
+
+        // CashApp payment confirmation
+        async function confirmCashAppPayment() {
+            if (!validateForm()) return;
+
+            await saveOnboardingData('cashapp', 'pending_confirmation', {
+                cashapp_tag: '$workofarttattoo',
+                status: 'pending_verification'
+            });
+
+            alert('🎉 Payment confirmation received!\\n\\nWe\'ll verify your payment and send download instructions to your email within 24 hours.\\n\\nContact: joshua@thegavl.com');
+            window.location.href = 'index.html';
+        }
+
+        // Crypto payment confirmation
+        async function confirmCryptoPayment() {
+            if (!validateForm()) return;
+
+            await saveOnboardingData('crypto', 'pending_confirmation', {
+                status: 'pending_verification',
+                note: 'User to email joshua@thegavl.com or use crypto wallet'
+            });
+
+            alert('🎉 Payment confirmation received!\\n\\nWe\'ll verify your payment and send download instructions to your email within 24 hours.\\n\\nFor crypto questions: joshua@thegavl.com');
+            window.location.href = 'index.html';
+        }
+
+        // Initialize PayPal
+        if (typeof paypal !== 'undefined') {
+            paypal.Buttons({
+                createOrder: function(data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: '99.00',
+                                currency_code: 'USD'
+                            },
+                            description: 'Ai|oS Lifetime License'
+                        }]
+                    });
+                },
+                onApprove: async function(data, actions) {
+                    const order = await actions.order.capture();
+
+                    // Save to Supabase
+                    await saveOnboardingData('paypal', order.id, order);
+
+                    // Mark as paid and redirect
+                    localStorage.setItem('aios_paid', 'true');
+                    localStorage.setItem('aios_purchase_date', new Date().toISOString());
+
+                    alert('🎉 Payment successful! Redirecting to download...');
+                    window.location.href = 'https://github.com/Workofarttattoo/AioS/releases/latest';
+                },
+                onError: function(err) {
+                    console.error('PayPal error:', err);
+                    alert('Payment failed. Please try again or contact support.');
+                }
+            }).render('#paypal-button-container');
+        }
+
+        // Form validation
+        function validateForm() {
+            const email = document.getElementById('email').value.trim();
+            const name = document.getElementById('name').value.trim();
+            const address = document.getElementById('address').value.trim();
+
+            if (!email || !name || !address) {
+                alert('Please fill in all required fields.');
+                return false;
+            }
+
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                alert('Please enter a valid email address.');
+                return false;
+            }
+
+            return true;
+        }
+
+        // Handle form submission
+        async function handleSubmit() {
+            if (!validateForm()) return;
+
+            const button = document.getElementById('submitButton');
+            button.disabled = true;
+            button.innerHTML = '<span>⏳ Processing...</span>';
+
+            try {
+                if (selectedPaymentMethod === 'trial') {
+                    // Create payment method with Stripe
+                    const {paymentMethod, error} = await stripe.createPaymentMethod({
+                        type: 'card',
+                        card: cardNumberElement,
+                        billing_details: {
+                            name: document.getElementById('name').value,
+                            email: document.getElementById('email').value,
+                            address: {
+                                line1: document.getElementById('address').value
+                            }
+                        }
+                    });
+
+                    if (error) {
+                        throw new Error(error.message);
+                    }
+
+                    // In production: Send to your backend to create a setup intent
+                    // For now, save to Supabase
+                    await saveOnboardingData('trial_card', paymentMethod.id, {
+                        card_brand: paymentMethod.card.brand,
+                        card_last4: paymentMethod.card.last4
+                    });
+
+                    // Start trial
+                    localStorage.setItem('aios_trial_start', new Date().getTime().toString());
+                    localStorage.setItem('aios_trial_status', 'active');
+                    localStorage.setItem('aios_payment_method', paymentMethod.id);
+
+                    alert('🎉 Trial started! Redirecting to download...');
+                    window.location.href = 'https://github.com/Workofarttattoo/AioS/releases/latest';
+
+                } else {
+                    // PayPal handled by PayPal button
+                    alert('Please use the PayPal button above to complete payment.');
+                }
+
+            } catch (error) {
+                console.error('Payment error:', error);
+                alert('Error: ' + error.message);
+                button.disabled = false;
+                button.innerHTML = '<span id="buttonText">🚀 Start My Free Trial</span>';
+            }
+        }
+
+        // Save onboarding data to Supabase
+        async function saveOnboardingData(paymentType, paymentId, paymentDetails) {
+            const data = {
+                email: document.getElementById('email').value,
+                name: document.getElementById('name').value,
+                company: document.getElementById('company').value || null,
+                address: document.getElementById('address').value,
+                payment_type: paymentType,
+                payment_id: paymentId,
+                payment_details: paymentDetails,
+                trial_start: new Date().toISOString(),
+                status: paymentType === 'paypal' ? 'paid' : 'trial',
+                created_at: new Date().toISOString()
+            };
+
+            const { error } = await supabase
+                .from('onboarding')
+                .insert([data]);
+
+            if (error) {
+                console.error('Supabase error:', error);
+            }
+        }
+
+        // Pre-fill from localStorage if available
+        window.addEventListener('load', () => {
+            const savedEmail = localStorage.getItem('aios_user_email');
+            if (savedEmail) {
+                document.getElementById('email').value = savedEmail;
+            }
+        });
+    </script>
+</body>
+</html>
