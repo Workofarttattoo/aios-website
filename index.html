@@ -126,6 +126,151 @@
             border-bottom-color: var(--primary);
         }
 
+        /* Hamburger Menu */
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 1001;
+            position: relative;
+        }
+
+        .hamburger span {
+            width: 30px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        .hamburger:hover span {
+            background: var(--quantum-blue);
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(9px, 9px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(9px, -9px);
+        }
+
+        /* Side Menu */
+        .side-menu {
+            position: fixed;
+            left: -400px;
+            top: 0;
+            width: 380px;
+            height: 100vh;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(20px);
+            border-right: 2px solid var(--primary);
+            padding: 100px 20px 20px;
+            overflow-y: auto;
+            z-index: 999;
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 5px 0 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .side-menu.active {
+            left: 0;
+        }
+
+        .side-menu h3 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .tool-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            margin-bottom: 8px;
+        }
+
+        .tool-link:hover {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--primary);
+            transform: translateX(10px);
+        }
+
+        .tool-icon {
+            font-size: 1.5rem;
+            width: 30px;
+            text-align: center;
+        }
+
+        /* Consciousness Project Link */
+        .consciousness-link {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--quantum-purple), var(--secondary));
+            border-radius: 25px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 5px 15px rgba(168, 85, 247, 0.4);
+        }
+
+        .consciousness-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.6);
+        }
+
+        /* Modules Button */
+        .modules-btn {
+            padding: 10px 25px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid var(--primary);
+            border-radius: 25px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .modules-btn:hover {
+            background: var(--primary);
+            color: var(--dark);
+            transform: translateY(-2px);
+        }
+
+        /* Overlay for menu */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 998;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
         /* New Quantum Logo Design */
         .logo-container {
             display: flex;
@@ -411,6 +556,57 @@
             letter-spacing: 0.1em;
         }
 
+        /* Tools Showcase Section */
+        .tools-showcase {
+            padding: 6rem 5%;
+            background: rgba(0, 255, 136, 0.02);
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .tools-showcase-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .tool-card-mini {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-decoration: none;
+            color: var(--light);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .tool-card-mini:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .tool-card-mini .tool-icon {
+            font-size: 2.5rem;
+        }
+
+        .tool-card-mini .tool-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
         /* Interactive Feature Cards */
         .features {
             padding: 8rem 5%;
@@ -636,36 +832,144 @@
         <div class="quantum-particles" id="particles"></div>
     </div>
 
+    <!-- Overlay -->
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+    <!-- Side Menu -->
+    <div class="side-menu" id="sideMenu">
+        <h3>🛠️ Security Tools</h3>
+        <a href="https://red-team-tools.aios.is/docs/aurorascan.html" class="tool-link">
+            <span class="tool-icon">🔍</span>
+            <span>AuroraScan</span>
+        </a>
+        <a href="https://red-team-tools.aios.is/docs/burpsuite.html" class="tool-link">
+            <span class="tool-icon">🔥</span>
+            <span>BurpSuite</span>
+        </a>
+        <a href="https://red-team-tools.aios.is/docs/cipherspear.html" class="tool-link">
+            <span class="tool-icon">💉</span>
+            <span>CipherSpear</span>
+        </a>
+        <a href="https://red-team-tools.aios.is/docs/cryptkeeper.html" class="tool-link">
+            <span class="tool-icon">🔐</span>
+            <span>CryptKeeper</span>
+        </a>
+        <a href="https://red-team-tools.aios.is/docs/dataforge.html" class="tool-link">
+            <span class="tool-icon">⚡</span>
+            <span>DataForge</span>
+        </a>
+        <a href="https://red-team-tools.aios.is/docs/dirreaper.html" class="tool-link">
+            <span class="tool-icon">📁</span>
+            <span>DirReaper</span>
+        </a>
+        <a href="https://red-team-tools.aios.is/docs/echostrike.html" class="tool-link">
+            <span class="tool-icon">📢</span>
+            <span>EchoStrike</span>
+        </a>
+        <a href="https://red-team-tools.aios.is/docs/ghostnet.html" class="tool-link">
+            <span class="tool-icon">👤</span>
+            <span>GhostNet</span>
+        </a>
+        <a href="https://red-team-tools.aios.is/docs/mythickey.html" class="tool-link">
+            <span class="tool-icon">🔑</span>
+            <span>MythicKey</span>
+        </a>
+        <a href="https://red-team-tools.aios.is/docs/nemesishydra.html" class="tool-link">
+            <span class="tool-icon">🐍</span>
+            <span>NemesisHydra</span>
+        </a>
+        <a href="https://red-team-tools.aios.is/docs/network-viz.html" class="tool-link">
+            <span class="tool-icon">🕸️</span>
+            <span>Network Visualizer</span>
+        </a>
+        <a href="https://red-team-tools.aios.is/docs/nmappro.html" class="tool-link">
+            <span class="tool-icon">🗺️</span>
+            <span>NmapPro</span>
+        </a>
+        <a href="https://red-team-tools.aios.is/docs/obsidianhunt.html" class="tool-link">
+            <span class="tool-icon">🛡️</span>
+            <span>ObsidianHunt</span>
+        </a>
+        <a href="https://red-team-tools.aios.is/docs/osint-workflows.html" class="tool-link">
+            <span class="tool-icon">🔎</span>
+            <span>OSINT Workflows</span>
+        </a>
+        <a href="https://red-team-tools.aios.is/docs/payloadforge.html" class="tool-link">
+            <span class="tool-icon">⚒️</span>
+            <span>PayloadForge</span>
+        </a>
+        <a href="https://red-team-tools.aios.is/docs/proxyphantom.html" class="tool-link">
+            <span class="tool-icon">👻</span>
+            <span>ProxyPhantom</span>
+        </a>
+        <a href="https://red-team-tools.aios.is/docs/scribe.html" class="tool-link">
+            <span class="tool-icon">📝</span>
+            <span>Scribe</span>
+        </a>
+        <a href="https://red-team-tools.aios.is/docs/skybreaker.html" class="tool-link">
+            <span class="tool-icon">📡</span>
+            <span>SkyBreaker</span>
+        </a>
+        <a href="https://red-team-tools.aios.is/docs/sovereign-suite.html" class="tool-link">
+            <span class="tool-icon">👑</span>
+            <span>Sovereign Suite</span>
+        </a>
+        <a href="https://red-team-tools.aios.is/docs/spectratrace.html" class="tool-link">
+            <span class="tool-icon">📊</span>
+            <span>SpectraTrace</span>
+        </a>
+        <a href="https://red-team-tools.aios.is/docs/vectorflux.html" class="tool-link">
+            <span class="tool-icon">🎯</span>
+            <span>VectorFlux</span>
+        </a>
+        <a href="https://red-team-tools.aios.is/docs/vulnhunter.html" class="tool-link">
+            <span class="tool-icon">🎣</span>
+            <span>VulnHunter</span>
+        </a>
+    </div>
+
     <!-- Navigation -->
     <nav>
-        <div class="logo-container" onclick="animateLogo()">
-            <svg class="quantum-logo" viewBox="0 0 100 100">
-                <defs>
-                    <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#00ff88;stop-opacity:1" />
-                        <stop offset="50%" style="stop-color:#00d4ff;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#a855f7;stop-opacity:1" />
-                    </linearGradient>
-                </defs>
-                <circle cx="50" cy="50" r="45" fill="none" stroke="url(#logoGrad)" stroke-width="2" opacity="0.8">
-                    <animate attributeName="r" values="45;48;45" dur="2s" repeatCount="indefinite"/>
-                </circle>
-                <circle cx="50" cy="50" r="35" fill="none" stroke="url(#logoGrad)" stroke-width="1.5" opacity="0.6">
-                    <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="10s" repeatCount="indefinite"/>
-                </circle>
-                <circle cx="50" cy="50" r="25" fill="none" stroke="url(#logoGrad)" stroke-width="1" opacity="0.4">
-                    <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="-360 50 50" dur="15s" repeatCount="indefinite"/>
-                </circle>
-                <text x="50" y="58" text-anchor="middle" font-size="24" font-weight="bold" fill="#fff">Ai</text>
-            </svg>
-            <span class="logo-text">Ai|oS</span>
+        <div style="display: flex; align-items: center; gap: 2rem;">
+            <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="logo-container" onclick="animateLogo()">
+                <svg class="quantum-logo" viewBox="0 0 100 100">
+                    <defs>
+                        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#00ff88;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#00d4ff;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#a855f7;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="url(#logoGrad)" stroke-width="2" opacity="0.8">
+                        <animate attributeName="r" values="45;48;45" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="50" cy="50" r="35" fill="none" stroke="url(#logoGrad)" stroke-width="1.5" opacity="0.6">
+                        <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="10s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="50" cy="50" r="25" fill="none" stroke="url(#logoGrad)" stroke-width="1" opacity="0.4">
+                        <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="-360 50 50" dur="15s" repeatCount="indefinite"/>
+                    </circle>
+                    <text x="50" y="58" text-anchor="middle" font-size="24" font-weight="bold" fill="#fff">Ai</text>
+                </svg>
+                <span class="logo-text">Ai|oS</span>
+            </div>
         </div>
         <ul class="nav-links">
             <li><a href="#features">Features</a></li>
             <li><a href="#quantum">Quantum</a></li>
+            <li><a href="https://red-team-tools.aios.is" class="modules-btn">Modules</a></li>
             <li><a href="#docs">Documentation</a></li>
             <li><a href="https://github.com/Workofarttattoo/AioS" target="_blank">GitHub</a></li>
         </ul>
+        <a href="https://consciousness-project.aios.is" class="consciousness-link">
+            <span>🧠</span>
+            <span>Consciousness Project</span>
+        </a>
     </nav>
 
     <!-- Hero Section -->
@@ -706,6 +1010,109 @@
             <div class="stat" onclick="animateStat(this)">
                 <span class="stat-number">24/7</span>
                 <span class="stat-label">Self-Update</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Showcase Section -->
+    <section class="tools-showcase">
+        <div class="tools-showcase-content">
+            <h2 class="section-title">22+ Security Tools</h2>
+            <p style="color: rgba(255, 255, 255, 0.7); font-size: 1.2rem; margin-bottom: 1rem;">
+                Comprehensive defensive security toolkit for authorized testing
+            </p>
+            <div class="tools-grid">
+                <a href="https://red-team-tools.aios.is/docs/aurorascan.html" class="tool-card-mini">
+                    <span class="tool-icon">🔍</span>
+                    <span class="tool-name">AuroraScan</span>
+                </a>
+                <a href="https://red-team-tools.aios.is/docs/burpsuite.html" class="tool-card-mini">
+                    <span class="tool-icon">🔥</span>
+                    <span class="tool-name">BurpSuite</span>
+                </a>
+                <a href="https://red-team-tools.aios.is/docs/cipherspear.html" class="tool-card-mini">
+                    <span class="tool-icon">💉</span>
+                    <span class="tool-name">CipherSpear</span>
+                </a>
+                <a href="https://red-team-tools.aios.is/docs/cryptkeeper.html" class="tool-card-mini">
+                    <span class="tool-icon">🔐</span>
+                    <span class="tool-name">CryptKeeper</span>
+                </a>
+                <a href="https://red-team-tools.aios.is/docs/dataforge.html" class="tool-card-mini">
+                    <span class="tool-icon">⚡</span>
+                    <span class="tool-name">DataForge</span>
+                </a>
+                <a href="https://red-team-tools.aios.is/docs/dirreaper.html" class="tool-card-mini">
+                    <span class="tool-icon">📁</span>
+                    <span class="tool-name">DirReaper</span>
+                </a>
+                <a href="https://red-team-tools.aios.is/docs/echostrike.html" class="tool-card-mini">
+                    <span class="tool-icon">📢</span>
+                    <span class="tool-name">EchoStrike</span>
+                </a>
+                <a href="https://red-team-tools.aios.is/docs/ghostnet.html" class="tool-card-mini">
+                    <span class="tool-icon">👤</span>
+                    <span class="tool-name">GhostNet</span>
+                </a>
+                <a href="https://red-team-tools.aios.is/docs/mythickey.html" class="tool-card-mini">
+                    <span class="tool-icon">🔑</span>
+                    <span class="tool-name">MythicKey</span>
+                </a>
+                <a href="https://red-team-tools.aios.is/docs/nemesishydra.html" class="tool-card-mini">
+                    <span class="tool-icon">🐍</span>
+                    <span class="tool-name">NemesisHydra</span>
+                </a>
+                <a href="https://red-team-tools.aios.is/docs/network-viz.html" class="tool-card-mini">
+                    <span class="tool-icon">🕸️</span>
+                    <span class="tool-name">Network Viz</span>
+                </a>
+                <a href="https://red-team-tools.aios.is/docs/nmappro.html" class="tool-card-mini">
+                    <span class="tool-icon">🗺️</span>
+                    <span class="tool-name">NmapPro</span>
+                </a>
+                <a href="https://red-team-tools.aios.is/docs/obsidianhunt.html" class="tool-card-mini">
+                    <span class="tool-icon">🛡️</span>
+                    <span class="tool-name">ObsidianHunt</span>
+                </a>
+                <a href="https://red-team-tools.aios.is/docs/osint-workflows.html" class="tool-card-mini">
+                    <span class="tool-icon">🔎</span>
+                    <span class="tool-name">OSINT Workflows</span>
+                </a>
+                <a href="https://red-team-tools.aios.is/docs/payloadforge.html" class="tool-card-mini">
+                    <span class="tool-icon">⚒️</span>
+                    <span class="tool-name">PayloadForge</span>
+                </a>
+                <a href="https://red-team-tools.aios.is/docs/proxyphantom.html" class="tool-card-mini">
+                    <span class="tool-icon">👻</span>
+                    <span class="tool-name">ProxyPhantom</span>
+                </a>
+                <a href="https://red-team-tools.aios.is/docs/scribe.html" class="tool-card-mini">
+                    <span class="tool-icon">📝</span>
+                    <span class="tool-name">Scribe</span>
+                </a>
+                <a href="https://red-team-tools.aios.is/docs/skybreaker.html" class="tool-card-mini">
+                    <span class="tool-icon">📡</span>
+                    <span class="tool-name">SkyBreaker</span>
+                </a>
+                <a href="https://red-team-tools.aios.is/docs/sovereign-suite.html" class="tool-card-mini">
+                    <span class="tool-icon">👑</span>
+                    <span class="tool-name">Sovereign Suite</span>
+                </a>
+                <a href="https://red-team-tools.aios.is/docs/spectratrace.html" class="tool-card-mini">
+                    <span class="tool-icon">📊</span>
+                    <span class="tool-name">SpectraTrace</span>
+                </a>
+                <a href="https://red-team-tools.aios.is/docs/vectorflux.html" class="tool-card-mini">
+                    <span class="tool-icon">🎯</span>
+                    <span class="tool-name">VectorFlux</span>
+                </a>
+                <a href="https://red-team-tools.aios.is/docs/vulnhunter.html" class="tool-card-mini">
+                    <span class="tool-icon">🎣</span>
+                    <span class="tool-name">VulnHunter</span>
+                </a>
+            </div>
+            <div style="margin-top: 3rem;">
+                <a href="https://red-team-tools.aios.is" class="btn btn-primary">View All Tools →</a>
             </div>
         </div>
     </section>
@@ -880,6 +1287,17 @@
                     }, 500);
                 }, i * 100);
             });
+        }
+
+        // Toggle menu function
+        function toggleMenu() {
+            const sideMenu = document.getElementById('sideMenu');
+            const hamburger = document.getElementById('hamburger');
+            const overlay = document.getElementById('overlay');
+
+            sideMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+            overlay.classList.toggle('active');
         }
 
         // Smooth scroll
