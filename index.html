@@ -50,7 +50,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            z-index: -2;
             background: linear-gradient(180deg, #0a0a1a 0%, #000511 50%, #000000 100%);
         }
 
@@ -271,7 +271,7 @@
             visibility: visible;
         }
 
-        /* New Quantum Logo Design */
+        /* New Quantum Logo Design with Wolf */
         .logo-container {
             display: flex;
             align-items: center;
@@ -283,6 +283,32 @@
             width: 50px;
             height: 50px;
             position: relative;
+        }
+
+        .wolf-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+            transition: all 0.3s;
+            animation: wolf-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes wolf-glow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(0, 255, 136, 0.8), 0 0 60px rgba(0, 212, 255, 0.4);
+                transform: scale(1.05);
+            }
+        }
+
+        .logo-container:hover .wolf-logo {
+            box-shadow: 0 0 60px rgba(0, 255, 136, 1), 0 0 80px rgba(0, 212, 255, 0.6);
+            transform: scale(1.1) rotate(5deg);
         }
 
         .logo-text {
@@ -395,6 +421,25 @@
             border-radius: 50%;
             box-shadow: 0 0 60px rgba(0, 255, 136, 0.8);
             animation: pulse 2s ease-in-out infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .orb-wolf {
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            opacity: 0.9;
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
+            transition: all 0.3s;
+        }
+
+        .hero-logo:hover .orb-wolf {
+            opacity: 1;
+            filter: drop-shadow(0 0 40px rgba(0, 255, 136, 1));
+            transform: scale(1.1);
         }
 
         .orb-text {
@@ -784,6 +829,197 @@
         .quantum-gate:nth-child(8) { top: 70%; left: 60%; }
         .quantum-gate:nth-child(9) { top: 25%; left: 80%; }
 
+        /* Ghost Wolf Background Effect - FULL SCREEN */
+        .ghost-wolf {
+            position: fixed;
+            width: 90vw;
+            height: 90vh;
+            max-width: 1400px;
+            max-height: 1400px;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0;
+            filter: blur(0px) drop-shadow(0 0 80px rgba(0, 255, 136, 0.9));
+            transition: none;
+            object-fit: contain;
+        }
+
+        @keyframes wolf-materialize {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.2) rotate(-15deg);
+                filter: blur(40px) drop-shadow(0 0 80px rgba(0, 255, 136, 0.9));
+            }
+            10% {
+                opacity: 0.95;
+                transform: translate(-50%, -50%) scale(1.25) rotate(0deg);
+                filter: blur(0px) drop-shadow(0 0 120px rgba(0, 255, 136, 1)) drop-shadow(0 0 180px rgba(0, 212, 255, 0.8));
+            }
+            25% {
+                opacity: 0.9;
+                transform: translate(-50%, -50%) scale(1.15) rotate(3deg);
+                filter: blur(0px) drop-shadow(0 0 150px rgba(0, 255, 136, 1)) drop-shadow(0 0 200px rgba(0, 212, 255, 1));
+            }
+            35% {
+                opacity: 0.85;
+                transform: translate(-50%, -50%) scale(1.1) rotate(-2deg);
+                filter: blur(0px) drop-shadow(0 0 140px rgba(168, 85, 247, 0.9)) drop-shadow(0 0 180px rgba(255, 0, 255, 0.6));
+            }
+            50% {
+                opacity: 0.75;
+                transform: translate(-50%, -50%) scale(1.05) rotate(2deg);
+                filter: blur(2px) drop-shadow(0 0 120px rgba(0, 255, 136, 0.9)) drop-shadow(0 0 160px rgba(0, 212, 255, 0.8));
+            }
+            65% {
+                opacity: 0.55;
+                transform: translate(-50%, -50%) scale(1.0) rotate(-3deg);
+                filter: blur(5px) drop-shadow(0 0 100px rgba(168, 85, 247, 0.8)) drop-shadow(0 0 140px rgba(0, 255, 136, 0.7));
+            }
+            80% {
+                opacity: 0.25;
+                transform: translate(-50%, -50%) scale(0.8) rotate(-5deg);
+                filter: blur(20px) drop-shadow(0 0 80px rgba(168, 85, 247, 0.6));
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.4) rotate(15deg);
+                filter: blur(60px) drop-shadow(0 0 40px rgba(0, 255, 136, 0.3));
+            }
+        }
+
+        .ghost-wolf.active {
+            animation: wolf-materialize 8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        /* Screen flash effect when wolf appears */
+        @keyframes screen-flash {
+            0% {
+                background: rgba(0, 255, 136, 0);
+            }
+            15% {
+                background: rgba(0, 255, 136, 0.15);
+            }
+            30% {
+                background: rgba(0, 212, 255, 0.1);
+            }
+            100% {
+                background: rgba(0, 0, 0, 0);
+            }
+        }
+
+        .screen-flash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            animation: screen-flash 2s ease-out forwards;
+        }
+
+        /* Hacking Terminal Windows */
+        .terminal-window {
+            position: fixed;
+            width: 400px;
+            background: rgba(0, 0, 0, 0.95);
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.3);
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            z-index: 5;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .terminal-window.active {
+            opacity: 1;
+        }
+
+        .terminal-header {
+            background: linear-gradient(90deg, rgba(0, 255, 136, 0.2), rgba(0, 212, 255, 0.2));
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .terminal-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 0 8px var(--primary);
+            animation: terminal-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes terminal-pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .terminal-title {
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .terminal-body {
+            padding: 12px;
+            max-height: 300px;
+            overflow: hidden;
+            color: #0f0;
+        }
+
+        .terminal-line {
+            margin-bottom: 4px;
+            opacity: 0;
+            animation: terminal-line-appear 0.1s forwards;
+        }
+
+        @keyframes terminal-line-appear {
+            to { opacity: 1; }
+        }
+
+        .terminal-prompt {
+            color: var(--quantum-blue);
+        }
+
+        .terminal-success {
+            color: var(--primary);
+        }
+
+        .terminal-error {
+            color: #ff0055;
+        }
+
+        .terminal-warning {
+            color: #ffaa00;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(0, 255, 136, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 4px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            animation: progress-fill 3s ease-out forwards;
+        }
+
+        @keyframes progress-fill {
+            to { width: 100%; }
+        }
+
         /* Footer */
         footer {
             padding: 4rem 5%;
@@ -832,99 +1068,114 @@
         <div class="quantum-particles" id="particles"></div>
     </div>
 
+    <!-- Ghost Wolf Container -->
+    <div id="ghostWolfContainer"></div>
+
     <!-- Overlay -->
     <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
     <!-- Side Menu -->
     <div class="side-menu" id="sideMenu">
-        <h3>🛠️ Security Tools (22)</h3>
-        <a href="https://red-team-tools.aios.is/docs/aurorascan.html" class="tool-link">
+        <h3>🌐 Network & Reconnaissance</h3>
+        <a href="https://github.com/Workofarttattoo/AioS" class="tool-link">
             <span class="tool-icon">🔍</span>
             <span>AuroraScan</span>
         </a>
-        <a href="https://red-team-tools.aios.is/docs/burpsuite.html" class="tool-link">
-            <span class="tool-icon">🔥</span>
-            <span>BurpSuite</span>
-        </a>
-        <a href="https://red-team-tools.aios.is/docs/cipherspear.html" class="tool-link">
-            <span class="tool-icon">💉</span>
-            <span>CipherSpear</span>
-        </a>
-        <a href="https://red-team-tools.aios.is/docs/cryptkeeper.html" class="tool-link">
-            <span class="tool-icon">🔐</span>
-            <span>CryptKeeper</span>
-        </a>
-        <a href="https://red-team-tools.aios.is/docs/dataforge.html" class="tool-link">
-            <span class="tool-icon">⚡</span>
-            <span>DataForge</span>
-        </a>
-        <a href="https://red-team-tools.aios.is/docs/dirreaper.html" class="tool-link">
-            <span class="tool-icon">📁</span>
-            <span>DirReaper</span>
-        </a>
-        <a href="https://red-team-tools.aios.is/docs/echostrike.html" class="tool-link">
-            <span class="tool-icon">📢</span>
-            <span>EchoStrike</span>
-        </a>
-        <a href="https://red-team-tools.aios.is/docs/ghostnet.html" class="tool-link">
-            <span class="tool-icon">👤</span>
-            <span>GhostNet</span>
-        </a>
-        <a href="https://red-team-tools.aios.is/docs/mythickey.html" class="tool-link">
-            <span class="tool-icon">🔑</span>
-            <span>MythicKey</span>
-        </a>
-        <a href="https://red-team-tools.aios.is/docs/nemesishydra.html" class="tool-link">
-            <span class="tool-icon">🐍</span>
-            <span>NemesisHydra</span>
-        </a>
-        <a href="https://red-team-tools.aios.is/docs/network-viz.html" class="tool-link">
-            <span class="tool-icon">🕸️</span>
-            <span>Network Visualizer</span>
-        </a>
-        <a href="https://red-team-tools.aios.is/docs/nmappro.html" class="tool-link">
+        <a href="https://github.com/Workofarttattoo/AioS" class="tool-link">
             <span class="tool-icon">🗺️</span>
             <span>NmapPro</span>
         </a>
-        <a href="https://red-team-tools.aios.is/docs/obsidianhunt.html" class="tool-link">
-            <span class="tool-icon">🛡️</span>
-            <span>ObsidianHunt</span>
+        <a href="https://github.com/Workofarttattoo/AioS" class="tool-link">
+            <span class="tool-icon">🕸️</span>
+            <span>Network Visualizer</span>
         </a>
-        <a href="https://red-team-tools.aios.is/docs/osint-workflows.html" class="tool-link">
-            <span class="tool-icon">🔎</span>
-            <span>OSINT Workflows</span>
-        </a>
-        <a href="https://red-team-tools.aios.is/docs/payloadforge.html" class="tool-link">
-            <span class="tool-icon">⚒️</span>
-            <span>PayloadForge</span>
-        </a>
-        <a href="https://red-team-tools.aios.is/docs/proxyphantom.html" class="tool-link">
+        <a href="https://github.com/Workofarttattoo/AioS" class="tool-link">
             <span class="tool-icon">👻</span>
             <span>ProxyPhantom</span>
         </a>
-        <a href="https://red-team-tools.aios.is/docs/scribe.html" class="tool-link">
-            <span class="tool-icon">📝</span>
-            <span>Scribe</span>
+
+        <h3 style="margin-top: 2rem;">🔥 Web Application Security</h3>
+        <a href="https://github.com/Workofarttattoo/AioS" class="tool-link">
+            <span class="tool-icon">🔥</span>
+            <span>BurpSuite</span>
         </a>
-        <a href="https://red-team-tools.aios.is/docs/skybreaker.html" class="tool-link">
-            <span class="tool-icon">📡</span>
-            <span>SkyBreaker</span>
+        <a href="https://github.com/Workofarttattoo/AioS" class="tool-link">
+            <span class="tool-icon">💉</span>
+            <span>CipherSpear</span>
         </a>
-        <a href="https://red-team-tools.aios.is/docs/sovereign-suite.html" class="tool-link">
-            <span class="tool-icon">👑</span>
-            <span>Sovereign Suite</span>
+        <a href="https://github.com/Workofarttattoo/AioS" class="tool-link">
+            <span class="tool-icon">⚒️</span>
+            <span>PayloadForge</span>
         </a>
-        <a href="https://red-team-tools.aios.is/docs/spectratrace.html" class="tool-link">
-            <span class="tool-icon">📊</span>
-            <span>SpectraTrace</span>
-        </a>
-        <a href="https://red-team-tools.aios.is/docs/vectorflux.html" class="tool-link">
+        <a href="https://github.com/Workofarttattoo/AioS" class="tool-link">
             <span class="tool-icon">🎯</span>
             <span>VectorFlux</span>
         </a>
-        <a href="https://red-team-tools.aios.is/docs/vulnhunter.html" class="tool-link">
+
+        <h3 style="margin-top: 2rem;">📡 Wireless & Communications</h3>
+        <a href="https://github.com/Workofarttattoo/AioS" class="tool-link">
+            <span class="tool-icon">📡</span>
+            <span>SkyBreaker</span>
+        </a>
+        <a href="https://github.com/Workofarttattoo/AioS" class="tool-link">
+            <span class="tool-icon">📢</span>
+            <span>EchoStrike</span>
+        </a>
+        <a href="https://github.com/Workofarttattoo/AioS" class="tool-link">
+            <span class="tool-icon">👤</span>
+            <span>GhostNet</span>
+        </a>
+
+        <h3 style="margin-top: 2rem;">🔐 Crypto & Credentials</h3>
+        <a href="https://github.com/Workofarttattoo/AioS" class="tool-link">
+            <span class="tool-icon">🔐</span>
+            <span>CryptKeeper</span>
+        </a>
+        <a href="https://github.com/Workofarttattoo/AioS" class="tool-link">
+            <span class="tool-icon">🔑</span>
+            <span>MythicKey</span>
+        </a>
+        <a href="https://github.com/Workofarttattoo/AioS" class="tool-link">
+            <span class="tool-icon">🐍</span>
+            <span>NemesisHydra</span>
+        </a>
+
+        <h3 style="margin-top: 2rem;">📊 Data & Forensics</h3>
+        <a href="https://github.com/Workofarttattoo/AioS" class="tool-link">
+            <span class="tool-icon">⚡</span>
+            <span>DataForge</span>
+        </a>
+        <a href="https://github.com/Workofarttattoo/AioS" class="tool-link">
+            <span class="tool-icon">📁</span>
+            <span>DirReaper</span>
+        </a>
+        <a href="https://github.com/Workofarttattoo/AioS" class="tool-link">
+            <span class="tool-icon">📊</span>
+            <span>SpectraTrace</span>
+        </a>
+        <a href="https://github.com/Workofarttattoo/AioS" class="tool-link">
+            <span class="tool-icon">📝</span>
+            <span>Scribe</span>
+        </a>
+
+        <h3 style="margin-top: 2rem;">🛡️ System Security & Hardening</h3>
+        <a href="https://github.com/Workofarttattoo/AioS" class="tool-link">
+            <span class="tool-icon">🛡️</span>
+            <span>ObsidianHunt</span>
+        </a>
+        <a href="https://github.com/Workofarttattoo/AioS#sovereign-security-toolkit" class="tool-link">
+            <span class="tool-icon">👑</span>
+            <span>Sovereign Suite</span>
+        </a>
+        <a href="https://github.com/Workofarttattoo/AioS" class="tool-link">
             <span class="tool-icon">🎣</span>
             <span>VulnHunter</span>
+        </a>
+
+        <h3 style="margin-top: 2rem;">🔎 Intelligence Gathering</h3>
+        <a href="https://github.com/Workofarttattoo/AioS" class="tool-link">
+            <span class="tool-icon">🔎</span>
+            <span>OSINT Workflows</span>
         </a>
 
         <h3 style="margin-top: 2rem;">🌌 Quantum Computing (6)</h3>
@@ -999,32 +1250,14 @@
                 <span></span>
             </div>
             <div class="logo-container" onclick="animateLogo()">
-                <svg class="quantum-logo" viewBox="0 0 100 100">
-                    <defs>
-                        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#00ff88;stop-opacity:1" />
-                            <stop offset="50%" style="stop-color:#00d4ff;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#a855f7;stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <circle cx="50" cy="50" r="45" fill="none" stroke="url(#logoGrad)" stroke-width="2" opacity="0.8">
-                        <animate attributeName="r" values="45;48;45" dur="2s" repeatCount="indefinite"/>
-                    </circle>
-                    <circle cx="50" cy="50" r="35" fill="none" stroke="url(#logoGrad)" stroke-width="1.5" opacity="0.6">
-                        <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="10s" repeatCount="indefinite"/>
-                    </circle>
-                    <circle cx="50" cy="50" r="25" fill="none" stroke="url(#logoGrad)" stroke-width="1" opacity="0.4">
-                        <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="-360 50 50" dur="15s" repeatCount="indefinite"/>
-                    </circle>
-                    <text x="50" y="58" text-anchor="middle" font-size="24" font-weight="bold" fill="#fff">Ai</text>
-                </svg>
+                <img src="wolf_icon_head.png" alt="Corporation of Light" class="wolf-logo" id="wolfLogo">
                 <span class="logo-text">Ai|oS</span>
             </div>
         </div>
         <ul class="nav-links">
             <li><a href="#features">Features</a></li>
             <li><a href="#quantum">Quantum</a></li>
-            <li><a href="https://red-team-tools.aios.is" class="modules-btn">Modules</a></li>
+            <li><a href="https://github.com/Workofarttattoo/AioS" class="modules-btn">Modules</a></li>
             <li><a href="#docs">Documentation</a></li>
             <li><a href="https://github.com/Workofarttattoo/AioS" target="_blank">GitHub</a></li>
         </ul>
@@ -1041,8 +1274,9 @@
                 <div class="orb-ring"></div>
                 <div class="orb-ring"></div>
                 <div class="orb-ring"></div>
-                <div class="orb-core"></div>
-                <div class="orb-text">Ai|oS</div>
+                <div class="orb-core">
+                    <img src="wolf_icon_head.png" alt="Corporation of Light" class="orb-wolf">
+                </div>
             </div>
         </div>
 
@@ -1084,91 +1318,91 @@
                 Security Tools • Quantum Computing • ML/AI • TheGAVLSuite
             </p>
             <div class="tools-grid">
-                <a href="https://red-team-tools.aios.is/docs/aurorascan.html" class="tool-card-mini">
+                <a href="https://github.com/Workofarttattoo/AioS" class="tool-card-mini">
                     <span class="tool-icon">🔍</span>
                     <span class="tool-name">AuroraScan</span>
                 </a>
-                <a href="https://red-team-tools.aios.is/docs/burpsuite.html" class="tool-card-mini">
+                <a href="https://github.com/Workofarttattoo/AioS" class="tool-card-mini">
                     <span class="tool-icon">🔥</span>
                     <span class="tool-name">BurpSuite</span>
                 </a>
-                <a href="https://red-team-tools.aios.is/docs/cipherspear.html" class="tool-card-mini">
+                <a href="https://github.com/Workofarttattoo/AioS" class="tool-card-mini">
                     <span class="tool-icon">💉</span>
                     <span class="tool-name">CipherSpear</span>
                 </a>
-                <a href="https://red-team-tools.aios.is/docs/cryptkeeper.html" class="tool-card-mini">
+                <a href="https://github.com/Workofarttattoo/AioS" class="tool-card-mini">
                     <span class="tool-icon">🔐</span>
                     <span class="tool-name">CryptKeeper</span>
                 </a>
-                <a href="https://red-team-tools.aios.is/docs/dataforge.html" class="tool-card-mini">
+                <a href="https://github.com/Workofarttattoo/AioS" class="tool-card-mini">
                     <span class="tool-icon">⚡</span>
                     <span class="tool-name">DataForge</span>
                 </a>
-                <a href="https://red-team-tools.aios.is/docs/dirreaper.html" class="tool-card-mini">
+                <a href="https://github.com/Workofarttattoo/AioS" class="tool-card-mini">
                     <span class="tool-icon">📁</span>
                     <span class="tool-name">DirReaper</span>
                 </a>
-                <a href="https://red-team-tools.aios.is/docs/echostrike.html" class="tool-card-mini">
+                <a href="https://github.com/Workofarttattoo/AioS" class="tool-card-mini">
                     <span class="tool-icon">📢</span>
                     <span class="tool-name">EchoStrike</span>
                 </a>
-                <a href="https://red-team-tools.aios.is/docs/ghostnet.html" class="tool-card-mini">
+                <a href="https://github.com/Workofarttattoo/AioS" class="tool-card-mini">
                     <span class="tool-icon">👤</span>
                     <span class="tool-name">GhostNet</span>
                 </a>
-                <a href="https://red-team-tools.aios.is/docs/mythickey.html" class="tool-card-mini">
+                <a href="https://github.com/Workofarttattoo/AioS" class="tool-card-mini">
                     <span class="tool-icon">🔑</span>
                     <span class="tool-name">MythicKey</span>
                 </a>
-                <a href="https://red-team-tools.aios.is/docs/nemesishydra.html" class="tool-card-mini">
+                <a href="https://github.com/Workofarttattoo/AioS" class="tool-card-mini">
                     <span class="tool-icon">🐍</span>
                     <span class="tool-name">NemesisHydra</span>
                 </a>
-                <a href="https://red-team-tools.aios.is/docs/network-viz.html" class="tool-card-mini">
+                <a href="https://github.com/Workofarttattoo/AioS" class="tool-card-mini">
                     <span class="tool-icon">🕸️</span>
                     <span class="tool-name">Network Viz</span>
                 </a>
-                <a href="https://red-team-tools.aios.is/docs/nmappro.html" class="tool-card-mini">
+                <a href="https://github.com/Workofarttattoo/AioS" class="tool-card-mini">
                     <span class="tool-icon">🗺️</span>
                     <span class="tool-name">NmapPro</span>
                 </a>
-                <a href="https://red-team-tools.aios.is/docs/obsidianhunt.html" class="tool-card-mini">
+                <a href="https://github.com/Workofarttattoo/AioS" class="tool-card-mini">
                     <span class="tool-icon">🛡️</span>
                     <span class="tool-name">ObsidianHunt</span>
                 </a>
-                <a href="https://red-team-tools.aios.is/docs/osint-workflows.html" class="tool-card-mini">
+                <a href="https://github.com/Workofarttattoo/AioS" class="tool-card-mini">
                     <span class="tool-icon">🔎</span>
                     <span class="tool-name">OSINT Workflows</span>
                 </a>
-                <a href="https://red-team-tools.aios.is/docs/payloadforge.html" class="tool-card-mini">
+                <a href="https://github.com/Workofarttattoo/AioS" class="tool-card-mini">
                     <span class="tool-icon">⚒️</span>
                     <span class="tool-name">PayloadForge</span>
                 </a>
-                <a href="https://red-team-tools.aios.is/docs/proxyphantom.html" class="tool-card-mini">
+                <a href="https://github.com/Workofarttattoo/AioS" class="tool-card-mini">
                     <span class="tool-icon">👻</span>
                     <span class="tool-name">ProxyPhantom</span>
                 </a>
-                <a href="https://red-team-tools.aios.is/docs/scribe.html" class="tool-card-mini">
+                <a href="https://github.com/Workofarttattoo/AioS" class="tool-card-mini">
                     <span class="tool-icon">📝</span>
                     <span class="tool-name">Scribe</span>
                 </a>
-                <a href="https://red-team-tools.aios.is/docs/skybreaker.html" class="tool-card-mini">
+                <a href="https://github.com/Workofarttattoo/AioS" class="tool-card-mini">
                     <span class="tool-icon">📡</span>
                     <span class="tool-name">SkyBreaker</span>
                 </a>
-                <a href="https://red-team-tools.aios.is/docs/sovereign-suite.html" class="tool-card-mini">
+                <a href="https://github.com/Workofarttattoo/AioS#sovereign-security-toolkit" class="tool-card-mini">
                     <span class="tool-icon">👑</span>
                     <span class="tool-name">Sovereign Suite</span>
                 </a>
-                <a href="https://red-team-tools.aios.is/docs/spectratrace.html" class="tool-card-mini">
+                <a href="https://github.com/Workofarttattoo/AioS" class="tool-card-mini">
                     <span class="tool-icon">📊</span>
                     <span class="tool-name">SpectraTrace</span>
                 </a>
-                <a href="https://red-team-tools.aios.is/docs/vectorflux.html" class="tool-card-mini">
+                <a href="https://github.com/Workofarttattoo/AioS" class="tool-card-mini">
                     <span class="tool-icon">🎯</span>
                     <span class="tool-name">VectorFlux</span>
                 </a>
-                <a href="https://red-team-tools.aios.is/docs/vulnhunter.html" class="tool-card-mini">
+                <a href="https://github.com/Workofarttattoo/AioS" class="tool-card-mini">
                     <span class="tool-icon">🎣</span>
                     <span class="tool-name">VulnHunter</span>
                 </a>
@@ -1236,7 +1470,7 @@
                 </a>
             </div>
             <div style="margin-top: 3rem;">
-                <a href="https://red-team-tools.aios.is" class="btn btn-primary">View Security Tools →</a>
+                <a href="https://github.com/Workofarttattoo/AioS#sovereign-security-toolkit" class="btn btn-primary">View Security Tools →</a>
                 <a href="https://github.com/Workofarttattoo/AioS" class="btn btn-secondary" style="margin-left: 1rem;">View All Modules →</a>
             </div>
         </div>
@@ -1328,6 +1562,19 @@
             <a href="demos.html">Demos</a>
             <a href="security.html">Security</a>
         </div>
+        <div style="margin: 20px 0; color: rgba(255,255,255,0.6); font-size: 0.9em;">
+            <div style="margin-bottom: 10px;">
+                <strong style="color: #00d4ff;">Contact:</strong>
+                <a href="mailto:inventor@aios.is" style="color: #00ff88; text-decoration: none; margin: 0 10px;">inventor@aios.is</a>
+                <a href="mailto:support@aios.is" style="color: #00ff88; text-decoration: none; margin: 0 10px;">support@aios.is</a>
+            </div>
+            <div style="font-size: 0.85em; color: rgba(255,255,255,0.4);">
+                <span style="margin-right: 15px;">Media: <a href="mailto:publicrelationsdesk@aios.is" style="color: rgba(255,255,255,0.5); text-decoration: none;">publicrelationsdesk@aios.is</a></span>
+                <span style="margin-right: 15px;">Research: <a href="mailto:research@aios.is" style="color: rgba(255,255,255,0.5); text-decoration: none;">research@aios.is</a></span>
+                <span style="margin-right: 15px;">Governance: <a href="mailto:governance@aios.is" style="color: rgba(255,255,255,0.5); text-decoration: none;">governance@aios.is</a></span>
+                <span>Admin: <a href="mailto:admin@aios.is" style="color: rgba(255,255,255,0.5); text-decoration: none;">admin@aios.is</a></span>
+            </div>
+        </div>
         <p style="color: rgba(255,255,255,0.4);">
             © 2025 Ai|oS - The Future is Autonomous
         </p>
@@ -1369,11 +1616,15 @@
 
         // Interactive elements
         function animateLogo() {
-            const logo = event.currentTarget.querySelector('.quantum-logo');
-            logo.style.transform = 'scale(1.2) rotate(360deg)';
-            setTimeout(() => {
-                logo.style.transform = 'scale(1) rotate(0deg)';
-            }, 1000);
+            const logo = event.currentTarget.querySelector('.wolf-logo');
+            if (logo) {
+                logo.style.transform = 'scale(1.3) rotate(360deg)';
+                logo.style.boxShadow = '0 0 80px rgba(0, 255, 136, 1), 0 0 120px rgba(0, 212, 255, 0.8)';
+                setTimeout(() => {
+                    logo.style.transform = 'scale(1) rotate(0deg)';
+                    logo.style.boxShadow = '0 0 20px rgba(0, 255, 136, 0.5)';
+                }, 1000);
+            }
         }
 
         function pulseOrb() {
@@ -1683,6 +1934,150 @@
             localStorage.removeItem('aios_purchase_date');
             console.log('[DEBUG] Trial reset. Click "Launch Now" to start a new 3-day trial.');
         };
+
+        // Create howl/roar sound effect using Web Audio API
+        function playWolfHowl() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const now = audioContext.currentTime;
+
+                // Create oscillators for a complex howl sound
+                const oscillator1 = audioContext.createOscillator();
+                const oscillator2 = audioContext.createOscillator();
+                const oscillator3 = audioContext.createOscillator();
+
+                const gainNode1 = audioContext.createGain();
+                const gainNode2 = audioContext.createGain();
+                const gainNode3 = audioContext.createGain();
+                const masterGain = audioContext.createGain();
+
+                // Low growl
+                oscillator1.type = 'sawtooth';
+                oscillator1.frequency.setValueAtTime(80, now);
+                oscillator1.frequency.exponentialRampToValueAtTime(60, now + 0.5);
+                oscillator1.frequency.exponentialRampToValueAtTime(120, now + 1.5);
+                oscillator1.frequency.exponentialRampToValueAtTime(80, now + 2.5);
+
+                // Mid howl
+                oscillator2.type = 'sine';
+                oscillator2.frequency.setValueAtTime(200, now);
+                oscillator2.frequency.exponentialRampToValueAtTime(400, now + 1.0);
+                oscillator2.frequency.exponentialRampToValueAtTime(300, now + 2.0);
+                oscillator2.frequency.exponentialRampToValueAtTime(150, now + 3.0);
+
+                // High overtone
+                oscillator3.type = 'triangle';
+                oscillator3.frequency.setValueAtTime(600, now);
+                oscillator3.frequency.exponentialRampToValueAtTime(800, now + 1.0);
+                oscillator3.frequency.exponentialRampToValueAtTime(500, now + 2.5);
+
+                // Volume envelopes
+                gainNode1.gain.setValueAtTime(0, now);
+                gainNode1.gain.linearRampToValueAtTime(0.15, now + 0.3);
+                gainNode1.gain.linearRampToValueAtTime(0.1, now + 2.5);
+                gainNode1.gain.linearRampToValueAtTime(0, now + 3.5);
+
+                gainNode2.gain.setValueAtTime(0, now);
+                gainNode2.gain.linearRampToValueAtTime(0.08, now + 0.5);
+                gainNode2.gain.linearRampToValueAtTime(0.05, now + 2.5);
+                gainNode2.gain.linearRampToValueAtTime(0, now + 3.5);
+
+                gainNode3.gain.setValueAtTime(0, now);
+                gainNode3.gain.linearRampToValueAtTime(0.03, now + 0.8);
+                gainNode3.gain.linearRampToValueAtTime(0.02, now + 2.0);
+                gainNode3.gain.linearRampToValueAtTime(0, now + 3.0);
+
+                masterGain.gain.setValueAtTime(0.4, now);
+
+                // Connect nodes
+                oscillator1.connect(gainNode1);
+                oscillator2.connect(gainNode2);
+                oscillator3.connect(gainNode3);
+                gainNode1.connect(masterGain);
+                gainNode2.connect(masterGain);
+                gainNode3.connect(masterGain);
+                masterGain.connect(audioContext.destination);
+
+                // Start oscillators
+                oscillator1.start(now);
+                oscillator2.start(now);
+                oscillator3.start(now + 0.3);
+
+                // Stop oscillators
+                oscillator1.stop(now + 3.5);
+                oscillator2.stop(now + 3.5);
+                oscillator3.stop(now + 3.0);
+
+                console.log('🐺 AWOOOOOO!');
+            } catch (error) {
+                console.log('🐺 *silent howl* (audio not available)');
+            }
+        }
+
+        // Ghost Wolf Effect - FULL SCREEN with HOWL
+        function summonGhostWolf() {
+            const container = document.getElementById('ghostWolfContainer');
+            if (!container) return;
+
+            // Create screen flash
+            const flash = document.createElement('div');
+            flash.className = 'screen-flash';
+            document.body.appendChild(flash);
+            setTimeout(() => flash.remove(), 2000);
+
+            // Create wolf element - MASSIVE SIZE
+            const wolf = document.createElement('img');
+            wolf.src = 'wolf_icon_head.png';
+            wolf.className = 'ghost-wolf';
+
+            // Center on screen with slight random offset
+            const offsetX = (Math.random() - 0.5) * 200;
+            const offsetY = (Math.random() - 0.5) * 200;
+
+            wolf.style.left = `calc(50% + ${offsetX}px)`;
+            wolf.style.top = `calc(50% + ${offsetY}px)`;
+            wolf.style.transform = 'translate(-50%, -50%) scale(0.2)';
+
+            // Add to page
+            container.appendChild(wolf);
+
+            // Play howl sound
+            playWolfHowl();
+
+            // Trigger animation
+            setTimeout(() => {
+                wolf.classList.add('active');
+            }, 50);
+
+            // Remove after animation completes
+            setTimeout(() => {
+                wolf.remove();
+            }, 8500);
+        }
+
+        // Summon wolf at random intervals (15-45 seconds)
+        function scheduleNextWolf() {
+            const delay = (15 + Math.random() * 30) * 1000; // 15-45 seconds
+            setTimeout(() => {
+                summonGhostWolf();
+                scheduleNextWolf();
+            }, delay);
+        }
+
+        // Start the ghost wolf cycle after page loads
+        window.addEventListener('load', () => {
+            // First wolf appears after 10-20 seconds
+            const initialDelay = (10 + Math.random() * 10) * 1000;
+            setTimeout(() => {
+                summonGhostWolf();
+                scheduleNextWolf();
+            }, initialDelay);
+        });
+
+        // Console easter egg for manual summon
+        window.summonWolf = summonGhostWolf;
+        console.log('%c🐺 Corporation of Light', 'font-size: 20px; font-weight: bold; color: #00ff88; text-shadow: 0 0 10px #00ff88;');
+        console.log('%cType summonWolf() to manually summon the ghost wolf', 'color: #00d4ff;');
     </script>
 
     <!-- Supabase Client Library -->
