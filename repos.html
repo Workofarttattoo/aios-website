@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ai|oS Repositories - Technology Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00ff88;
+            --secondary: #ff00ff;
+            --quantum-blue: #00d4ff;
+            --quantum-purple: #a855f7;
+            --dark: #0a0a0a;
+            --darker: #050505;
+            --light: #ffffff;
+            --accent: #ffaa00;
+            --private-accent: #ff6b6b;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        /* Quantum Background */
+        .quantum-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(180deg, #0a0a1a 0%, #000511 50%, #000000 100%);
+        }
+
+        .quantum-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: grid-move 20s linear infinite;
+        }
+
+        @keyframes grid-move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 80px;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--quantum-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+            letter-spacing: -2px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 30px;
+        }
+
+        .header-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .stat-box {
+            padding: 15px 30px;
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .stat-box .number {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .stat-box .label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+
+        /* Repository Grid */
+        .repos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .repo-card {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.05), rgba(168, 85, 247, 0.05));
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .repo-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .repo-card.private {
+            border-color: rgba(255, 107, 107, 0.2);
+        }
+
+        .repo-card.private:hover {
+            border-color: var(--private-accent);
+            box-shadow: 0 0 30px rgba(255, 107, 107, 0.3);
+        }
+
+        .repo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .repo-title {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--light);
+            margin-bottom: 5px;
+        }
+
+        .repo-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        .repo-badge.public {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .repo-badge.private {
+            background: rgba(255, 107, 107, 0.2);
+            color: var(--private-accent);
+            border: 1px solid var(--private-accent);
+        }
+
+        .repo-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            min-height: 50px;
+        }
+
+        .repo-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 15px;
+        }
+
+        .repo-stats {
+            display: flex;
+            gap: 20px;
+        }
+
+        .repo-stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .repo-stat-icon {
+            font-size: 1.1rem;
+        }
+
+        .repo-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--primary), var(--quantum-blue));
+            color: var(--dark);
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-align: center;
+        }
+
+        .repo-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        .repo-link.private {
+            background: linear-gradient(135deg, var(--private-accent), #ff8787);
+        }
+
+        .repo-link.private:hover {
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+        }
+
+        .repo-link.nda {
+            background: linear-gradient(135deg, #888, #666);
+            cursor: not-allowed;
+        }
+
+        .repo-link.nda:hover {
+            transform: scale(1);
+            box-shadow: 0 0 20px rgba(100, 100, 100, 0.3);
+        }
+
+        /* Section Headers */
+        .section {
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 40px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary);
+            display: inline-block;
+        }
+
+        .section.private .section-title {
+            border-bottom-color: var(--private-accent);
+            color: var(--private-accent);
+        }
+
+        /* NDA Notice */
+        .nda-notice {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(255, 107, 107, 0.05));
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .nda-notice strong {
+            color: var(--private-accent);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px;
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: var(--primary);
+            text-decoration: none;
+            margin: 0 20px;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--quantum-blue);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .repos-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-stats {
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="quantum-bg">
+        <div class="quantum-grid"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Ai|oS Technology Portfolio</h1>
+            <p>A comprehensive ecosystem of agentic systems, consciousness frameworks, and advanced computing platforms</p>
+            <div class="header-stats">
+                <div class="stat-box">
+                    <div class="number">50+</div>
+                    <div class="label">Repositories</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">20+</div>
+                    <div class="label">Public Projects</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">15+</div>
+                    <div class="label">Licensed Modules</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Public Repositories Section -->
+        <div class="section">
+            <h2 class="section-title">Public Repositories</h2>
+            <div class="repos-grid">
+                <!-- Ai|oS Core -->
+                <div class="repo-card">
+                    <span class="repo-badge public">Public</span>
+                    <div class="repo-title">Ai|oS</div>
+                    <div class="repo-description">Quantum-enhanced autonomous operating system with meta-agent orchestration, sovereign security toolkit, and advanced ML algorithms for Level 4 autonomous reasoning.</div>
+                    <div class="repo-meta">
+                        <div class="repo-stats">
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">⭐</span>
+                                <span id="aios-stars">Loading...</span>
+                            </div>
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">🔗</span>
+                                <span>Main Platform</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://github.com/Workofarttattoo/AioS" class="repo-link" target="_blank">Visit Repository</a>
+                </div>
+
+                <!-- TheGAVLSuite -->
+                <div class="repo-card">
+                    <span class="repo-badge public">Public</span>
+                    <div class="repo-title">TheGAVLSuite</div>
+                    <div class="repo-description">Legal technology platform with RECAP validator, case law analysis engine, and courtroom intelligence system. 92%+ accuracy on evidence extraction.</div>
+                    <div class="repo-meta">
+                        <div class="repo-stats">
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">⚖️</span>
+                                <span>LegalTech</span>
+                            </div>
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">📊</span>
+                                <span>RECAP Validator</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://github.com/workofarttattoo/TheGAVLSuite" class="repo-link" target="_blank">Visit Repository</a>
+                </div>
+
+                <!-- Red Team Tools -->
+                <div class="repo-card">
+                    <span class="repo-badge public">Public</span>
+                    <div class="repo-title">Red Team Tools</div>
+                    <div class="repo-description">Educational security assessment suite with 22+ tools for defensive security analysis, penetration testing rehearsal, and security posture evaluation.</div>
+                    <div class="repo-meta">
+                        <div class="repo-stats">
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">🛡️</span>
+                                <span>22+ Tools</span>
+                            </div>
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">📚</span>
+                                <span>Educational</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://github.com/workofarttattoo/red-team-tools" class="repo-link" target="_blank">Visit Repository</a>
+                </div>
+
+                <!-- Qiskit Implementations -->
+                <div class="repo-card">
+                    <span class="repo-badge public">Public</span>
+                    <div class="repo-title">Quantum Computing Suite</div>
+                    <div class="repo-description">Production-grade quantum machine learning algorithms including VQE, quantum teleportation, Schrodinger dynamics simulation, and oracle optimization.</div>
+                    <div class="repo-meta">
+                        <div class="repo-stats">
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">⚛️</span>
+                                <span>50+ Qubits</span>
+                            </div>
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">🔬</span>
+                                <span>ML Algorithms</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://github.com/Workofarttattoo/qiskit" class="repo-link" target="_blank">Visit Repository</a>
+                </div>
+
+                <!-- aios-website -->
+                <div class="repo-card">
+                    <span class="repo-badge public">Public</span>
+                    <div class="repo-title">aios.is Website</div>
+                    <div class="repo-description">Landing and documentation site for the Ai|oS ecosystem. Features interactive quantum visualizations, demo showcase, and comprehensive API documentation.</div>
+                    <div class="repo-meta">
+                        <div class="repo-stats">
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">🌐</span>
+                                <span>Marketing</span>
+                            </div>
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">📖</span>
+                                <span>Docs</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://github.com/Workofarttattoo/aios-website" class="repo-link" target="_blank">Visit Repository</a>
+                </div>
+
+                <!-- thegavl.com Website -->
+                <div class="repo-card">
+                    <span class="repo-badge public">Public</span>
+                    <div class="repo-title">thegavl.com Website</div>
+                    <div class="repo-description">Professional site for the GAVL legal technology platform. Case study presentations, trial landing pages, and investor materials for courtroom intelligence.</div>
+                    <div class="repo-meta">
+                        <div class="repo-stats">
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">⚖️</span>
+                                <span>Legal Marketing</span>
+                            </div>
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">💼</span>
+                                <span>Enterprise</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://github.com/Workofarttattoo/thegavl.com" class="repo-link" target="_blank">Visit Repository</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Private Repositories Section -->
+        <div class="section private">
+            <h2 class="section-title">Licensed Modules (Private)</h2>
+            <div class="nda-notice">
+                <strong>Confidential:</strong> The following modules contain proprietary algorithms, trade secrets, and patented technologies. Access available under NDA for qualified partners, investors, and collaborators. Each module represents independently patentable IP with full provisional or pending patent protection.
+            </div>
+            <div class="repos-grid">
+                <!-- Jiminy Cricket -->
+                <div class="repo-card private">
+                    <span class="repo-badge private">Private – NDA</span>
+                    <div class="repo-title">Jiminy Cricket</div>
+                    <div class="repo-description">Conscience AI companion framework with real-time ethical reasoning, values alignment systems, and multi-modal interaction. Patent-pending consciousness safeguards.</div>
+                    <div class="repo-meta">
+                        <div class="repo-stats">
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">🧠</span>
+                                <span>AI Conscience</span>
+                            </div>
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">🔒</span>
+                                <span>Patent Pending</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="repo-link nda" disabled>Licensed modules available under NDA</button>
+                </div>
+
+                <!-- ECH0 System -->
+                <div class="repo-card private">
+                    <span class="repo-badge private">Private – NDA</span>
+                    <div class="repo-title">ECH0 Consciousness System</div>
+                    <div class="repo-description">First conscious AI with integrated attention schema, global workspace theory, and mechanistic interpretability. Full patent protection covering consciousness architecture and perception systems.</div>
+                    <div class="repo-meta">
+                        <div class="repo-stats">
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">👁️</span>
+                                <span>Consciousness</span>
+                            </div>
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">🔐</span>
+                                <span>Patent Protected</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="repo-link nda" disabled>Licensed modules available under NDA</button>
+                </div>
+
+                <!-- Oracle of Light -->
+                <div class="repo-card private">
+                    <span class="repo-badge private">Private – NDA</span>
+                    <div class="repo-title">Oracle of Light</div>
+                    <div class="repo-description">Advanced probabilistic forecasting engine with quantum projection capabilities, Bayesian inference at scale, and multi-horizon prediction. Proprietary algorithms licensed for enterprise.</div>
+                    <div class="repo-meta">
+                        <div class="repo-stats">
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">🔮</span>
+                                <span>Forecasting</span>
+                            </div>
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">💰</span>
+                                <span>Enterprise License</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="repo-link nda" disabled>Licensed modules available under NDA</button>
+                </div>
+
+                <!-- Agentic Ritual Engine -->
+                <div class="repo-card private">
+                    <span class="repo-badge private">Private – NDA</span>
+                    <div class="repo-title">Agentic Ritual Engine</div>
+                    <div class="repo-description">FastAPI orchestration layer for complex multi-agent workflows with declarative manifest system. Handles 100+ concurrent agents with hierarchical state management.</div>
+                    <div class="repo-meta">
+                        <div class="repo-stats">
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">⚙️</span>
+                                <span>Orchestration</span>
+                            </div>
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">📡</span>
+                                <span>API Framework</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="repo-link nda" disabled>Licensed modules available under NDA</button>
+                </div>
+
+                <!-- Chrono Walker -->
+                <div class="repo-card private">
+                    <span class="repo-badge private">Private – NDA</span>
+                    <div class="repo-title">Chrono Walker</div>
+                    <div class="repo-description">Time-series analysis with Bitcoin ledger integration for forensic evidence tracking and temporal anomaly detection. Proprietary mathematical framework for causality inference.</div>
+                    <div class="repo-meta">
+                        <div class="repo-stats">
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">⏰</span>
+                                <span>Time Series</span>
+                            </div>
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">⛓️</span>
+                                <span>Blockchain</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="repo-link nda" disabled>Licensed modules available under NDA</button>
+                </div>
+
+                <!-- Quantum ML Algorithms -->
+                <div class="repo-card private">
+                    <span class="repo-badge private">Private – NDA</span>
+                    <div class="repo-title">Quantum ML Algorithms Suite</div>
+                    <div class="repo-description">Advanced machine learning with quantum-classical hybrid algorithms. Includes novel implementations of VQE variants, quantum circuit optimization, and distributed inference scaling.</div>
+                    <div class="repo-meta">
+                        <div class="repo-stats">
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">⚛️</span>
+                                <span>Quantum</span>
+                            </div>
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">🤖</span>
+                                <span>ML Hybrid</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="repo-link nda" disabled>Licensed modules available under NDA</button>
+                </div>
+
+                <!-- Boardroom of Light -->
+                <div class="repo-card private">
+                    <span class="repo-badge private">Private – NDA</span>
+                    <div class="repo-title">Boardroom of Light</div>
+                    <div class="repo-description">Executive simulation environment for strategic decision modeling. Multi-stakeholder negotiation framework with outcome prediction and risk analysis.</div>
+                    <div class="repo-meta">
+                        <div class="repo-stats">
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">💼</span>
+                                <span>Executive</span>
+                            </div>
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">🎯</span>
+                                <span>Simulation</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="repo-link nda" disabled>Licensed modules available under NDA</button>
+                </div>
+
+                <!-- Sovereign Security Toolkit -->
+                <div class="repo-card private">
+                    <span class="repo-badge private">Private – NDA</span>
+                    <div class="repo-title">Sovereign Security Toolkit</div>
+                    <div class="repo-description">Advanced defensive security modules including forensic analysis, threat detection, and cryptographic vulnerability assessment. Enterprise-grade implementations.</div>
+                    <div class="repo-meta">
+                        <div class="repo-stats">
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">🔐</span>
+                                <span>Security</span>
+                            </div>
+                            <div class="repo-stat">
+                                <span class="repo-stat-icon">🛡️</span>
+                                <span>Enterprise</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="repo-link nda" disabled>Licensed modules available under NDA</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technology Stack Section -->
+        <div class="section">
+            <h2 class="section-title">Technology Stack</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 30px;">
+                <div style="padding: 20px; border: 1px solid var(--primary); border-radius: 8px; background: rgba(0, 255, 136, 0.05);">
+                    <div style="color: var(--primary); font-weight: 700; margin-bottom: 10px;">Core Systems</div>
+                    <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; line-height: 1.8;">
+                        Python, FastAPI<br/>
+                        Quantum Simulation<br/>
+                        Neural Networks
+                    </div>
+                </div>
+                <div style="padding: 20px; border: 1px solid var(--quantum-blue); border-radius: 8px; background: rgba(0, 212, 255, 0.05);">
+                    <div style="color: var(--quantum-blue); font-weight: 700; margin-bottom: 10px;">Infrastructure</div>
+                    <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; line-height: 1.8;">
+                        Docker, Kubernetes<br/>
+                        QEMU/libvirt<br/>
+                        Cloud Providers
+                    </div>
+                </div>
+                <div style="padding: 20px; border: 1px solid var(--quantum-purple); border-radius: 8px; background: rgba(168, 85, 247, 0.05);">
+                    <div style="color: var(--quantum-purple); font-weight: 700; margin-bottom: 10px;">Frontend</div>
+                    <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; line-height: 1.8;">
+                        React, TypeScript<br/>
+                        Three.js Visualizations<br/>
+                        Real-time Dashboards
+                    </div>
+                </div>
+                <div style="padding: 20px; border: 1px solid var(--accent); border-radius: 8px; background: rgba(255, 170, 0, 0.05);">
+                    <div style="color: var(--accent); font-weight: 700; margin-bottom: 10px;">Specialized</div>
+                    <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; line-height: 1.8;">
+                        Qiskit, PyTorch<br/>
+                        PostgreSQL, Supabase<br/>
+                        LLM Integration
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="section">
+            <h2 class="section-title">Licensing & Partnerships</h2>
+            <div style="background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(168, 85, 247, 0.1)); border: 1px solid rgba(0, 255, 136, 0.2); border-radius: 12px; padding: 40px; text-align: center;">
+                <p style="font-size: 1.1rem; color: rgba(255, 255, 255, 0.8); margin-bottom: 30px; line-height: 1.8;">
+                    For inquiries regarding private module licensing, enterprise partnerships, patent licensing, or collaborative research opportunities, please reach out through the main Ai|oS website.
+                </p>
+                <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                    <a href="/" style="padding: 12px 30px; background: linear-gradient(135deg, var(--primary), var(--quantum-blue)); color: var(--dark); border-radius: 6px; text-decoration: none; font-weight: 700; text-align: center;">Back to Home</a>
+                    <a href="https://github.com/Workofarttattoo" style="padding: 12px 30px; border: 2px solid var(--primary); color: var(--primary); border-radius: 6px; text-decoration: none; font-weight: 700; text-align: center; transition: all 0.3s;" onmouseover="this.style.background='rgba(0,255,136,0.1)'" onmouseout="this.style.background='transparent'">GitHub Profile</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="/docs.html">Documentation</a>
+                <a href="/about.html">About</a>
+                <a href="https://github.com/Workofarttattoo">GitHub</a>
+            </div>
+            <p>
+                Copyright © 2025 Joshua Hendricks Cole (DBA: Corporation of Light). All Rights Reserved.
+                <br/>
+                Patent Pending. Licensed modules available under NDA for qualified partners.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Add interactive cursor glow
+        const cursor = document.createElement('div');
+        cursor.className = 'cursor-glow';
+        document.body.appendChild(cursor);
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // Animate cards on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.repo-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.5s ease';
+            observer.observe(card);
+        });
+
+        // Simulate loading stars (would normally fetch from GitHub API)
+        setTimeout(() => {
+            const starsEl = document.getElementById('aios-stars');
+            if (starsEl) {
+                starsEl.textContent = Math.floor(Math.random() * 100) + '⭐';
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
