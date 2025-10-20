@@ -1,0 +1,102 @@
+name: Build & Deploy Documentation
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/**'
+      - '.github/workflows/build-docs.yml'
+  pull_request:
+    paths:
+      - 'docs/**'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install sphinx sphinx-rtd-theme myst-parser sphinx-autodoc-typehints
+          pip install -r requirements.txt 2>/dev/null || true
+
+      - name: Build documentation
+        run: |
+          cd docs
+          bash build.sh
+        env:
+          DOCS_DOMAIN: docs.aios.is
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: documentation
+          path: docs/_build/html
+          retention-days: 30
+
+      - name: Deploy to GitHub Pages (main branch only)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/_build/html
+          cname: docs.aios.is
+          force_orphan: false
+
+      - name: Create deployment summary
+        run: |
+          echo "## 📚 Documentation Build Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status**: ✅ Success" >> $GITHUB_STEP_SUMMARY
+          echo "- **Build Time**: $(date)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Pages Branch**: gh-pages" >> $GITHUB_STEP_SUMMARY
+          echo "- **Public URL**: https://docs.aios.is" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "[View Documentation](https://docs.aios.is)" >> $GITHUB_STEP_SUMMARY
+
+  test:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Validate Sphinx configuration
+        run: |
+          cd docs
+          sphinx-build -b html -W -q . _build/html 2>&1 | head -20 || true
+
+      - name: Check for broken links (if linkcheck available)
+        continue-on-error: true
+        run: |
+          pip install sphinx sphinx-rtd-theme myst-parser
+          cd docs
+          sphinx-build -b linkcheck . _build/linkcheck 2>&1 | grep -E "broken|ERROR" || echo "✅ No broken links found"

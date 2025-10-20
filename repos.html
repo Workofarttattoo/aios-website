@@ -762,13 +762,86 @@
             observer.observe(card);
         });
 
-        // Simulate loading stars (would normally fetch from GitHub API)
-        setTimeout(() => {
-            const starsEl = document.getElementById('aios-stars');
-            if (starsEl) {
-                starsEl.textContent = Math.floor(Math.random() * 100) + '⭐';
+        // Fetch GitHub stars for public repositories
+        const repos = {
+            'aios': { owner: 'Workofarttattoo', repo: 'AioS' },
+            'gavl': { owner: 'workofarttattoo', repo: 'TheGAVLSuite' }
+        };
+
+        async function fetchGitHubStars() {
+            for (const [key, data] of Object.entries(repos)) {
+                try {
+                    const response = await fetch(
+                        `https://api.github.com/repos/${data.owner}/${data.repo}`,
+                        {
+                            headers: {
+                                'Accept': 'application/vnd.github.v3+json'
+                            }
+                        }
+                    );
+
+                    if (response.ok) {
+                        const repoData = await response.json();
+                        const stars = repoData.stargazers_count || 0;
+                        const starsEl = document.getElementById(`${key}-stars`);
+                        if (starsEl) {
+                            starsEl.textContent = `${stars}⭐`;
+                        }
+                    }
+                } catch (error) {
+                    console.log(`Could not fetch stars for ${key}:`, error);
+                }
             }
-        }, 1000);
+        }
+
+        // Add CI badge display (GitHub Actions status)
+        function addCIBadges() {
+            const publicRepos = document.querySelectorAll('.repo-card:not(.private)');
+            publicRepos.forEach((card, index) => {
+                const meta = card.querySelector('.repo-meta');
+                if (meta) {
+                    const badgeContainer = document.createElement('div');
+                    badgeContainer.style.marginTop = '10px';
+                    badgeContainer.style.display = 'flex';
+                    badgeContainer.style.gap = '10px';
+                    badgeContainer.style.flexWrap = 'wrap';
+
+                    // Add CI badge
+                    const ciBadge = document.createElement('img');
+                    ciBadge.style.height = '20px';
+                    ciBadge.alt = 'CI Status';
+                    ciBadge.title = 'GitHub Actions CI Status';
+
+                    // Use GitHub Actions badge URL (works without auth)
+                    const repoNames = ['Workofarttattoo/AioS', 'workofarttattoo/TheGAVLSuite', 'workofarttattoo/red-team-tools'];
+                    if (index < repoNames.length) {
+                        ciBadge.src = `https://github.com/${repoNames[index]}/actions/workflows/tests.yml/badge.svg`;
+                    }
+
+                    // Add license badge
+                    const licenseBadge = document.createElement('img');
+                    licenseBadge.src = 'https://img.shields.io/badge/license-Patent%20Pending-green';
+                    licenseBadge.style.height = '20px';
+                    licenseBadge.alt = 'License';
+
+                    badgeContainer.appendChild(ciBadge);
+                    badgeContainer.appendChild(licenseBadge);
+                    meta.parentNode.insertBefore(badgeContainer, meta.nextSibling);
+                }
+            });
+        }
+
+        // Fetch stars on page load
+        window.addEventListener('load', () => {
+            fetchGitHubStars();
+            addCIBadges();
+        });
+
+        // Also try immediately in case page is already loaded
+        setTimeout(() => {
+            fetchGitHubStars();
+            addCIBadges();
+        }, 100);
     </script>
 </body>
 </html>
