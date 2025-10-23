@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telescope Suite - Geographic Desirability Predictor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 0;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, #14b8a6 0%, #2dd4bf 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(20, 184, 166, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #2dd4bf;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+
+        input[type="number"],
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(20, 184, 166, 0.3);
+            border-radius: 10px;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus,
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #14b8a6;
+            background: rgba(15, 23, 42, 0.8);
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: rgba(20, 184, 166, 0.2);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #14b8a6, #2dd4bf);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(20, 184, 166, 0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #14b8a6, #2dd4bf);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 10px rgba(20, 184, 166, 0.5);
+        }
+
+        .slider-value {
+            display: inline-block;
+            background: rgba(20, 184, 166, 0.2);
+            color: #2dd4bf;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-left: 10px;
+            font-weight: 600;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #14b8a6 0%, #2dd4bf 100%);
+            color: #0f172a;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(20, 184, 166, 0.4);
+        }
+
+        .results {
+            display: none;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .metric-box {
+            background: rgba(20, 184, 166, 0.1);
+            border: 1px solid rgba(20, 184, 166, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 15px;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2dd4bf;
+        }
+
+        .metric-subtext {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .dimension-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .dimension-box {
+            background: rgba(20, 184, 166, 0.05);
+            border: 1px solid rgba(20, 184, 166, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .dimension-name {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .dimension-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2dd4bf;
+        }
+
+        .happiness-gauge {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 20px auto;
+        }
+
+        .gauge-circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 8px solid rgba(20, 184, 166, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gauge-fill {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(#14b8a6 var(--percentage), rgba(20, 184, 166, 0.2) 0);
+            animation: fillGauge 1.5s ease-out forwards;
+        }
+
+        @keyframes fillGauge {
+            from { --percentage: 0; }
+            to { --percentage: var(--final-percentage); }
+        }
+
+        .gauge-label {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .gauge-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2dd4bf;
+        }
+
+        .gauge-text {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        .recommendation-item {
+            background: rgba(20, 184, 166, 0.1);
+            border-left: 4px solid #14b8a6;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .section-divider {
+            border-top: 1px solid rgba(20, 184, 166, 0.2);
+            margin: 20px 0;
+            padding-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .dimension-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📍 Geographic Desirability Predictor</h1>
+            <p>Evaluate cities and regions: predict happiness, affordability, quality of life, and job market strength</p>
+        </header>
+
+        <div class="content">
+            <!-- Input Panel -->
+            <div class="card">
+                <h2>📋 Your Profile & Preferences</h2>
+
+                <div class="form-group">
+                    <label for="personalPriority">What matters most to you?</label>
+                    <select id="personalPriority">
+                        <option value="balanced">Balanced (happiness + affordability)</option>
+                        <option value="career">Career growth + salary</option>
+                        <option value="lifestyle">Lifestyle + quality of life</option>
+                        <option value="affordability">Affordability (low cost of living)</option>
+                        <option value="family">Family + schools + safety</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="stage">Life stage / goals</label>
+                    <select id="stage">
+                        <option value="young">Young professional (25-35)</option>
+                        <option value="career">Career focused (35-45)</option>
+                        <option value="family">Family building (35-50)</option>
+                        <option value="established">Established (45+)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="budget">Annual income ($)</label>
+                    <input type="number" id="budget" min="30000" max="500000" value="120000" step="10000" placeholder="Your income">
+                </div>
+
+                <div class="form-group">
+                    <label for="remote">Remote work capability</label>
+                    <select id="remote">
+                        <option value="none">Must be in-person</option>
+                        <option value="hybrid">Hybrid 2-3 days/week</option>
+                        <option value="full">Fully remote (anywhere)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="climate">Climate preference</label>
+                    <select id="climate">
+                        <option value="any">Flexible</option>
+                        <option value="warm">Warm year-round</option>
+                        <option value="moderate">Moderate 4 seasons</option>
+                        <option value="cold">Cold/snow winters</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="urbanPreference">Urban vs Rural preference</label>
+                    <input type="range" id="urbanPreference" min="1" max="10" value="5" step="1">
+                    <span class="slider-value"><span id="urbanValue">5</span>/10 (5=balanced)</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="targetLocation">City/Region to evaluate</label>
+                    <input type="text" id="targetLocation" placeholder="e.g., Austin, San Francisco, Denver" value="Austin, TX">
+                </div>
+
+                <button onclick="runPrediction()">Evaluate Location Fit</button>
+            </div>
+
+            <!-- Results Panel -->
+            <div class="card results" id="results">
+                <h2>🌍 Geographic Fit Analysis</h2>
+
+                <div class="happiness-gauge">
+                    <div class="gauge-fill" id="gaugeOverlay" style="--final-percentage: 0%"></div>
+                    <div class="gauge-circle">
+                        <div class="gauge-label">
+                            <div class="gauge-number" id="happinessScore">72</div>
+                            <div class="gauge-text">Life Fit Score</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-box">
+                    <div class="metric-label">Overall Recommendation</div>
+                    <div class="metric-value" id="recommendation">Strong Fit</div>
+                    <div class="metric-subtext" id="recommendationDetail">Excellent match for your priorities</div>
+                </div>
+
+                <div class="section-divider"></div>
+
+                <h3 style="color: #2dd4bf; margin-bottom: 12px; font-size: 1.2rem;">📊 Life Dimensions</h3>
+
+                <div class="dimension-grid">
+                    <div class="dimension-box">
+                        <div class="dimension-name">Career Growth</div>
+                        <div class="dimension-value" id="careerScore">8.5/10</div>
+                    </div>
+                    <div class="dimension-box">
+                        <div class="dimension-name">Affordability</div>
+                        <div class="dimension-value" id="affordScore">6.5/10</div>
+                    </div>
+                    <div class="dimension-box">
+                        <div class="dimension-name">Quality of Life</div>
+                        <div class="dimension-value" id="qolScore">7.5/10</div>
+                    </div>
+                    <div class="dimension-box">
+                        <div class="dimension-name">Family Friendly</div>
+                        <div class="dimension-value" id="familyScore">7.0/10</div>
+                    </div>
+                </div>
+
+                <div class="metric-box">
+                    <div class="metric-label">Cost of Living vs Income</div>
+                    <div class="metric-value" id="colRatio">42%</div>
+                    <div class="metric-subtext">Housing + living costs (target 30-40%)</div>
+                </div>
+
+                <div class="metric-box">
+                    <div class="metric-label">Estimated Annual Cost of Living</div>
+                    <div class="metric-value" id="costOfLiving">$50K</div>
+                    <div class="metric-subtext">Based on current area data</div>
+                </div>
+
+                <div class="section-divider"></div>
+
+                <h3 style="color: #2dd4bf; margin-bottom: 12px; font-size: 1.2rem;">✅ Strengths of This Location</h3>
+                <div id="strengthsList"></div>
+
+                <div class="section-divider"></div>
+
+                <h3 style="color: #2dd4bf; margin-bottom: 12px; font-size: 1.2rem;">⚠️ Challenges to Consider</h3>
+                <div id="challengesList"></div>
+
+                <div class="section-divider"></div>
+
+                <h3 style="color: #2dd4bf; margin-bottom: 12px; font-size: 1.2rem;">💡 Personalized Recommendations</h3>
+                <div id="recommendationsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('urbanPreference').addEventListener('input', (e) => {
+            const value = parseInt(e.target.value);
+            let label = 'balanced';
+            if (value <= 3) label = 'very rural';
+            else if (value <= 6) label = 'balanced';
+            else label = 'very urban';
+            document.getElementById('urbanValue').textContent = value + '/10 (' + label + ')';
+        });
+
+        function calculateLocationFit(priority, stage, budget, remote, climate, urban, location) {
+            let score = 50;
+
+            // Priority matching
+            if (priority === 'career') score += 15;
+            else if (priority === 'lifestyle') score += 12;
+            else if (priority === 'affordability') score += 10;
+            else if (priority === 'family') score += 12;
+
+            // Remote flexibility helps
+            if (remote === 'full') score += 10;
+            else if (remote === 'hybrid') score += 5;
+
+            // Tech hubs (Austin, SF, NYC, Denver, Seattle, Boston)
+            const techHubs = ['austin', 'san francisco', 'sf', 'nyc', 'new york', 'denver', 'seattle', 'boston'];
+            const isTechHub = techHubs.some(hub => location.toLowerCase().includes(hub));
+
+            if (isTechHub && (priority === 'career' || priority === 'balanced')) {
+                score += 12;
+            }
+
+            // Affordability hubs (Denver, Austin, Portland, Raleigh)
+            const affordableHubs = ['denver', 'austin', 'portland', 'raleigh', 'nashville'];
+            const isAffordable = affordableHubs.some(hub => location.toLowerCase().includes(hub));
+
+            if (isAffordable && (priority === 'affordability' || priority === 'balanced')) {
+                score += 10;
+            }
+
+            return Math.min(95, Math.max(20, score));
+        }
+
+        function getLocationMetrics(location) {
+            const metrics = {
+                'austin': {
+                    career: 8.5,
+                    affordability: 6.5,
+                    qol: 7.5,
+                    family: 7.0,
+                    cost: 50000,
+                    demand: 'Very high - tech boom'
+                },
+                'sf': {
+                    career: 9.5,
+                    affordability: 3.0,
+                    qol: 7.0,
+                    family: 6.5,
+                    cost: 120000,
+                    demand: 'Extremely high'
+                },
+                'denver': {
+                    career: 8.0,
+                    affordability: 7.5,
+                    qol: 8.5,
+                    family: 8.0,
+                    cost: 45000,
+                    demand: 'High - growing tech'
+                },
+                'nyc': {
+                    career: 9.5,
+                    affordability: 4.0,
+                    qol: 7.5,
+                    family: 6.0,
+                    cost: 100000,
+                    demand: 'Extremely high'
+                },
+                'seattle': {
+                    career: 9.0,
+                    affordability: 5.5,
+                    qol: 8.0,
+                    family: 7.5,
+                    cost: 75000,
+                    demand: 'Very high - tech'
+                },
+                'default': {
+                    career: 6.5,
+                    affordability: 6.5,
+                    qol: 7.0,
+                    family: 7.0,
+                    cost: 40000,
+                    demand: 'Moderate'
+                }
+            };
+
+            const key = Object.keys(metrics).find(k => location.toLowerCase().includes(k)) || 'default';
+            return metrics[key];
+        }
+
+        function generateAnalysis(priority, stage, budget, location) {
+            const strengths = [];
+            const challenges = [];
+            const recs = [];
+
+            const metrics = getLocationMetrics(location);
+
+            if (metrics.career >= 8.5) {
+                strengths.push('🎯 Excellent career opportunities - major tech/business hub');
+            }
+
+            if (metrics.affordability >= 7) {
+                strengths.push('💰 Very affordable cost of living - strong purchasing power');
+            } else if (metrics.affordability <= 4) {
+                challenges.push('💸 High cost of living - requires $120K+ income for comfortable life');
+            }
+
+            if (metrics.qol >= 8) {
+                strengths.push('🌟 Outstanding quality of life - outdoor activities, culture, restaurants');
+            }
+
+            if (metrics.family >= 7.5) {
+                strengths.push('👨‍👩‍👧‍👦 Family-friendly - good schools, parks, safety');
+            }
+
+            if (priority === 'career' && metrics.career >= 8) {
+                recs.push('✅ Perfect for career growth: Strong job market, networking opportunities, talent concentration.');
+            }
+
+            if (priority === 'affordability' && metrics.affordability >= 6) {
+                recs.push('✅ Good affordability: Your income goes far here. Plan for 10-15 year stay to maximize real estate appreciation.');
+            }
+
+            if (budget > 150000 && metrics.affordability >= 6) {
+                recs.push('💡 Your income level is strong here: Could afford nice housing while building wealth.');
+            }
+
+            if (stage === 'family' && metrics.family < 6) {
+                recs.push('⚠️ Consider: This area is less family-focused. Evaluate schools, safety, parks carefully before committing.');
+            }
+
+            return { strengths, challenges, recs };
+        }
+
+        function runPrediction() {
+            const priority = document.getElementById('personalPriority').value;
+            const stage = document.getElementById('stage').value;
+            const budget = parseInt(document.getElementById('budget').value);
+            const remote = document.getElementById('remote').value;
+            const climate = document.getElementById('climate').value;
+            const urban = parseInt(document.getElementById('urbanPreference').value);
+            const location = document.getElementById('targetLocation').value;
+
+            const fit = calculateLocationFit(priority, stage, budget, remote, climate, urban, location);
+            const metrics = getLocationMetrics(location);
+            const analysis = generateAnalysis(priority, stage, budget, location);
+
+            // Update results
+            document.getElementById('happinessScore').textContent = Math.round(fit);
+            document.getElementById('gaugeOverlay').style.setProperty('--final-percentage', `${Math.round(fit)}%`);
+
+            if (fit >= 80) {
+                document.getElementById('recommendation').textContent = 'Excellent Fit';
+                document.getElementById('recommendationDetail').textContent = 'This location aligns strongly with your priorities';
+            } else if (fit >= 60) {
+                document.getElementById('recommendation').textContent = 'Good Fit';
+                document.getElementById('recommendationDetail').textContent = 'Solid match, consider pros and cons';
+            } else if (fit >= 40) {
+                document.getElementById('recommendation').textContent = 'Fair Fit';
+                document.getElementById('recommendationDetail').textContent = 'Some alignment, but notable trade-offs';
+            } else {
+                document.getElementById('recommendation').textContent = 'Poor Fit';
+                document.getElementById('recommendationDetail').textContent = 'Significant misalignment with priorities';
+            }
+
+            // Metrics
+            document.getElementById('careerScore').textContent = metrics.career.toFixed(1) + '/10';
+            document.getElementById('affordScore').textContent = metrics.affordability.toFixed(1) + '/10';
+            document.getElementById('qolScore').textContent = metrics.qol.toFixed(1) + '/10';
+            document.getElementById('familyScore').textContent = metrics.family.toFixed(1) + '/10';
+
+            const colRatio = Math.round((metrics.cost / budget) * 100);
+            document.getElementById('colRatio').textContent = colRatio + '%';
+            document.getElementById('costOfLiving').textContent = '$' + (metrics.cost / 1000).toFixed(0) + 'K';
+
+            // Strengths
+            const strengthsList = document.getElementById('strengthsList');
+            strengthsList.innerHTML = '';
+            analysis.strengths.forEach(s => {
+                const item = document.createElement('div');
+                item.className = 'recommendation-item';
+                item.textContent = s;
+                strengthsList.appendChild(item);
+            });
+
+            // Challenges
+            const challengesList = document.getElementById('challengesList');
+            challengesList.innerHTML = '';
+            analysis.challenges.forEach(c => {
+                const item = document.createElement('div');
+                item.className = 'recommendation-item';
+                item.style.borderLeftColor = '#ef4444';
+                item.style.background = 'rgba(239, 68, 68, 0.1)';
+                item.textContent = c;
+                challengesList.appendChild(item);
+            });
+
+            // Recommendations
+            const recsList = document.getElementById('recommendationsList');
+            recsList.innerHTML = '';
+            analysis.recs.forEach(rec => {
+                const item = document.createElement('div');
+                item.className = 'recommendation-item';
+                item.textContent = rec;
+                recsList.appendChild(item);
+            });
+
+            document.getElementById('results').classList.add('active');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    </script>
+</body>
+</html>

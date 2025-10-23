@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telescope Suite - Side Project Success Predictor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 0;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #fbbf24;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+
+        input[type="number"],
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 10px;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus,
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #f59e0b;
+            background: rgba(15, 23, 42, 0.8);
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: rgba(245, 158, 11, 0.2);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+        }
+
+        .slider-value {
+            display: inline-block;
+            background: rgba(245, 158, 11, 0.2);
+            color: #fbbf24;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-left: 10px;
+            font-weight: 600;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            color: #0f172a;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.4);
+        }
+
+        .results {
+            display: none;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .metric-box {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 15px;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fbbf24;
+        }
+
+        .metric-subtext {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .success-gauge {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 20px auto;
+        }
+
+        .gauge-circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 8px solid rgba(245, 158, 11, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gauge-fill {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(#f59e0b var(--percentage), rgba(245, 158, 11, 0.2) 0);
+            animation: fillGauge 1.5s ease-out forwards;
+        }
+
+        @keyframes fillGauge {
+            from { --percentage: 0; }
+            to { --percentage: var(--final-percentage); }
+        }
+
+        .gauge-label {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .gauge-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fbbf24;
+        }
+
+        .gauge-text {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        .milestone-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .milestone-box {
+            background: rgba(245, 158, 11, 0.05);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .milestone-name {
+            font-size: 0.8rem;
+            color: #cbd5e1;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .milestone-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fbbf24;
+        }
+
+        .recommendation-item {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid #f59e0b;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .section-divider {
+            border-top: 1px solid rgba(245, 158, 11, 0.2);
+            margin: 20px 0;
+            padding-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .milestone-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 Side Project Success Predictor</h1>
+            <p>Evaluate indie creator ideas: revenue potential, time investment, viability, and realistic timelines</p>
+        </header>
+
+        <div class="content">
+            <!-- Input Panel -->
+            <div class="card">
+                <h2>📋 Your Project Profile</h2>
+
+                <div class="form-group">
+                    <label for="projectType">Project type</label>
+                    <select id="projectType">
+                        <option value="saas">SaaS / Software (recurring revenue)</option>
+                        <option value="digital">Digital Product (course, ebook, template)</option>
+                        <option value="services">Services / Consulting</option>
+                        <option value="content">Content / Creator (blog, YouTube, Substack)</option>
+                        <option value="physical">Physical Product</option>
+                        <option value="marketplace">Marketplace / Community</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="experience">Your background / credibility</label>
+                    <select id="experience">
+                        <option value="none">New to this space</option>
+                        <option value="some">Some experience</option>
+                        <option value="expert">Deep expertise / recognized</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="targetAudience">Estimated addressable audience</label>
+                    <select id="targetAudience">
+                        <option value="niche">Niche (10K-100K people)</option>
+                        <option value="small">Small (100K-1M)</option>
+                        <option value="large">Large (1M-10M)</option>
+                        <option value="massive">Massive (10M+)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="commitment">Hours per week you can commit</label>
+                    <input type="number" id="commitment" min="0" max="40" value="15" placeholder="Hours/week">
+                </div>
+
+                <div class="form-group">
+                    <label for="months">Timeline (months to launch)</label>
+                    <input type="number" id="months" min="1" max="24" value="6" placeholder="Months to MVP">
+                </div>
+
+                <div class="form-group">
+                    <label for="monetization">Monetization approach</label>
+                    <select id="monetization">
+                        <option value="subscription">Subscription ($19-99/month)</option>
+                        <option value="oneTime">One-time purchase ($29-299)</option>
+                        <option value="affiliate">Affiliate / Commission</option>
+                        <option value="ads">Ads / Sponsorship</option>
+                        <option value="mixed">Mixed (multiple)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="demand">How much do people want this?</label>
+                    <input type="range" id="demand" min="1" max="10" value="6" step="1">
+                    <span class="slider-value"><span id="demandValue">6</span>/10</span>
+                </div>
+
+                <button onclick="runPrediction()">Predict Project Success</button>
+            </div>
+
+            <!-- Results Panel -->
+            <div class="card results" id="results">
+                <h2>📊 Success Analysis</h2>
+
+                <div class="success-gauge">
+                    <div class="gauge-fill" id="gaugeOverlay" style="--final-percentage: 0%"></div>
+                    <div class="gauge-circle">
+                        <div class="gauge-label">
+                            <div class="gauge-number" id="successProb">18%</div>
+                            <div class="gauge-text">Viability Rate</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-box">
+                    <div class="metric-label">$10K/Month Revenue Probability</div>
+                    <div class="metric-value" id="tenKProb">8-12%</div>
+                    <div class="metric-subtext">Within 2 years</div>
+                </div>
+
+                <div class="metric-box">
+                    <div class="metric-label">Realistic Time to Profitability</div>
+                    <div class="metric-value" id="profitTimeline">12-18 months</div>
+                    <div class="metric-subtext">If execution is strong</div>
+                </div>
+
+                <div class="metric-box">
+                    <div class="metric-label">Total Time Investment Needed</div>
+                    <div class="metric-value" id="totalHours">1500-2500 hours</div>
+                    <div class="metric-subtext">To build and launch</div>
+                </div>
+
+                <div class="section-divider"></div>
+
+                <h3 style="color: #fbbf24; margin-bottom: 12px; font-size: 1.2rem;">🎯 Revenue Milestones</h3>
+
+                <div class="milestone-grid">
+                    <div class="milestone-box">
+                        <div class="milestone-name">Month 3</div>
+                        <div class="milestone-value" id="month3">$100</div>
+                    </div>
+                    <div class="milestone-box">
+                        <div class="milestone-name">Month 6</div>
+                        <div class="milestone-value" id="month6">$500</div>
+                    </div>
+                    <div class="milestone-box">
+                        <div class="milestone-name">Month 12</div>
+                        <div class="milestone-value" id="month12">$3K</div>
+                    </div>
+                    <div class="milestone-box">
+                        <div class="milestone-name">Month 24</div>
+                        <div class="milestone-value" id="month24">$10K/mo</div>
+                    </div>
+                </div>
+
+                <div class="section-divider"></div>
+
+                <h3 style="color: #fbbf24; margin-bottom: 12px; font-size: 1.2rem;">✅ Success Factors</h3>
+                <div id="successFactors"></div>
+
+                <div class="section-divider"></div>
+
+                <h3 style="color: #fbbf24; margin-bottom: 12px; font-size: 1.2rem;">⚠️ Key Challenges</h3>
+                <div id="challengesList"></div>
+
+                <div class="section-divider"></div>
+
+                <h3 style="color: #fbbf24; margin-bottom: 12px; font-size: 1.2rem;">💡 Strategic Recommendations</h3>
+                <div id="recommendationsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('demand').addEventListener('input', (e) => {
+            document.getElementById('demandValue').textContent = e.target.value;
+        });
+
+        function calculateSuccessProbability(projectType, experience, audience, commitment, months, monetization, demand) {
+            let probability = 10;
+
+            // Project type factors
+            if (projectType === 'saas') probability += 5;
+            else if (projectType === 'digital') probability += 8;
+            else if (projectType === 'services') probability += 12;
+            else if (projectType === 'content') probability += 6;
+
+            // Experience
+            if (experience === 'expert') probability += 15;
+            else if (experience === 'some') probability += 5;
+
+            // Audience size
+            if (audience === 'large') probability += 8;
+            else if (audience === 'massive') probability += 12;
+
+            // Commitment
+            if (commitment >= 20) probability += 10;
+            else if (commitment >= 15) probability += 7;
+            else if (commitment >= 10) probability += 4;
+
+            // Time to launch
+            if (months <= 6) probability += 8;
+            else if (months <= 12) probability += 5;
+
+            // Demand
+            probability += (demand - 5) * 1.5;
+
+            return Math.max(3, Math.min(60, probability));
+        }
+
+        function generateRecommendations(projectType, experience, probability) {
+            const recs = [];
+
+            if (probability < 15) {
+                recs.push('⚠️ Low success probability. Before investing significant time: validate demand with 20+ target customers. Do they want this enough to pay?');
+            } else if (probability < 30) {
+                recs.push('💡 Moderate viability. This could work, but requires strong execution. Start with MVP, get feedback in weeks 1-4.');
+            } else {
+                recs.push('✅ Good viability. Strong case for building. Focus on customer acquisition and retention.');
+            }
+
+            if (experience === 'none') {
+                recs.push('📚 Credibility matters: Document your learning process publicly. Build audience as you build the product.');
+            } else if (experience === 'expert') {
+                recs.push('🏆 Your expertise is your competitive advantage. Leverage existing audience and network.');
+            }
+
+            if (projectType === 'saas') {
+                recs.push('⚠️ SaaS is harder: requires more development time, customer support, ongoing maintenance. Ensure you\'re ready for 1-2 year commitment.');
+            } else if (projectType === 'digital') {
+                recs.push('✅ Digital products are fastest path to revenue. Lower barrier to entry, faster to profitability.');
+            } else if (projectType === 'content') {
+                recs.push('📊 Content takes 6-12 months for traction. Consistency matters more than perfection. Post regularly.');
+            }
+
+            recs.push('🎯 Action: Launch MVP/beta in 3-4 months. Get 100 users/customers before optimizing. Focus on validation over perfection.');
+
+            return recs;
+        }
+
+        function runPrediction() {
+            const projectType = document.getElementById('projectType').value;
+            const experience = document.getElementById('experience').value;
+            const audience = document.getElementById('targetAudience').value;
+            const commitment = parseInt(document.getElementById('commitment').value);
+            const months = parseInt(document.getElementById('months').value);
+            const monetization = document.getElementById('monetization').value;
+            const demand = parseInt(document.getElementById('demand').value);
+
+            const probability = calculateSuccessProbability(projectType, experience, audience, commitment, months, monetization, demand);
+
+            // Update results
+            document.getElementById('successProb').textContent = Math.round(probability) + '%';
+            document.getElementById('gaugeOverlay').style.setProperty('--final-percentage', `${Math.round(probability)}%`);
+
+            // Revenue probability
+            const tenKProb = Math.max(2, Math.min(40, probability * 0.5));
+            document.getElementById('tenKProb').textContent = Math.round(tenKProb - 5) + '-' + Math.round(tenKProb + 5) + '%';
+
+            // Timeline
+            let profitTimeline = '18-24 months';
+            if (months <= 6) profitTimeline = '12-18 months';
+            else if (months <= 12) profitTimeline = '15-20 months';
+            document.getElementById('profitTimeline').textContent = profitTimeline;
+
+            // Hours
+            const baseHours = (commitment > 0) ? (24 * 12 * 100 / commitment) : 2000;
+            document.getElementById('totalHours').textContent = Math.round(baseHours * 0.75).toLocaleString() + '-' + Math.round(baseHours * 1.25).toLocaleString() + ' hours';
+
+            // Milestones
+            const month3 = Math.round(100 * (probability / 25));
+            const month6 = month3 * 5;
+            const month12 = month6 * 6;
+            const month24 = month12 * 3;
+
+            document.getElementById('month3').textContent = '$' + month3;
+            document.getElementById('month6').textContent = '$' + month6;
+            document.getElementById('month12').textContent = '$' + month12.toLocaleString();
+            document.getElementById('month24').textContent = '$' + month24.toLocaleString();
+
+            // Success factors
+            const factors = [];
+            if (experience === 'expert') {
+                factors.push('🏆 Deep expertise - credibility advantage');
+            }
+            if (audience === 'large' || audience === 'massive') {
+                factors.push('📈 Large addressable market - growth potential');
+            }
+            if (commitment >= 15) {
+                factors.push('⏰ Significant time commitment - can iterate and improve');
+            }
+            if (demand >= 7) {
+                factors.push('🎯 Strong market demand - people want this');
+            }
+            if (projectType === 'digital') {
+                factors.push('⚡ Digital product - low overhead, fast to revenue');
+            }
+
+            const factorsList = document.getElementById('successFactors');
+            factorsList.innerHTML = '';
+            factors.forEach(f => {
+                const item = document.createElement('div');
+                item.className = 'recommendation-item';
+                item.textContent = f;
+                factorsList.appendChild(item);
+            });
+
+            // Challenges
+            const challenges = [];
+            if (commitment < 10) {
+                challenges.push('⚠️ Low time commitment - difficult to make progress quickly');
+            }
+            if (months > 12) {
+                challenges.push('⏳ Long timeline to launch - momentum can be lost');
+            }
+            if (experience === 'none') {
+                challenges.push('❓ New to this space - credibility and learning curve challenges');
+            }
+            if (demand < 5) {
+                challenges.push('📊 Weak market demand - may struggle to get early users');
+            }
+
+            const challengeList = document.getElementById('challengesList');
+            challengeList.innerHTML = '';
+            challenges.forEach(c => {
+                const item = document.createElement('div');
+                item.className = 'recommendation-item';
+                item.style.borderLeftColor = '#ef4444';
+                item.style.background = 'rgba(239, 68, 68, 0.1)';
+                item.textContent = c;
+                challengeList.appendChild(item);
+            });
+
+            // Recommendations
+            const recs = generateRecommendations(projectType, experience, probability);
+            const recsList = document.getElementById('recommendationsList');
+            recsList.innerHTML = '';
+            recs.forEach(rec => {
+                const item = document.createElement('div');
+                item.className = 'recommendation-item';
+                item.textContent = rec;
+                recsList.appendChild(item);
+            });
+
+            document.getElementById('results').classList.add('active');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    </script>
+</body>
+</html>
