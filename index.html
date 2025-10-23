@@ -1263,8 +1263,12 @@
             <li><a href="#quantum">Quantum</a></li>
             <li><a href="testing.html">Testing</a></li>
             <li><a href="thegavl-pitch.html" style="background: linear-gradient(135deg, #d4af37, #f4d03f); padding: 8px 16px; border-radius: 20px; color: #000; font-weight: 700;">TheGAVL Pitch ⚖️</a></li>
+            <li><a href="https://promptlab.aios.is" class="modules-btn" target="_blank">Prompt Lab 🧬</a></li>
+            <li><a href="downloads.html" class="modules-btn">📥 Downloads</a></li>
+            <li><a href="releases.html" class="modules-btn">📦 Releases</a></li>
             <li><a href="https://github.com/Workofarttattoo/AioS" class="modules-btn">Modules</a></li>
             <li><a href="#docs">Documentation</a></li>
+            <li><a href="streaming.html">Streaming</a></li>
             <li><a href="https://github.com/Workofarttattoo/AioS" target="_blank">GitHub</a></li>
             <li><a href="updates.html" style="background: linear-gradient(135deg, #00ff88, #00d4ff); padding: 8px 16px; border-radius: 20px; color: #000; font-weight: 700;">What's New 🚀</a></li>
         </ul>
@@ -1293,11 +1297,20 @@
         </p>
 
         <div class="cta-buttons">
-            <a href="onboarding.html" class="btn btn-primary">Start Free Trial - 3 Days Free</a>
-            <a href="docs.html" class="btn btn-secondary">Explore Docs</a>
+            <a href="downloads.html" class="btn btn-primary">📥 Get Started</a>
+            <a href="releases.html" class="btn btn-secondary">📦 Releases</a>
+            <a href="docs.html" class="btn btn-secondary">📖 Docs</a>
         </div>
 
         <div class="stats">
+            <div class="stat" onclick="animateStat(this)">
+                <span class="stat-number" id="code-lines">Loading...</span>
+                <span class="stat-label">Lines of Code</span>
+            </div>
+            <div class="stat" onclick="animateStat(this)">
+                <span class="stat-number" id="algorithm-count">Loading...</span>
+                <span class="stat-label">Algorithms</span>
+            </div>
             <div class="stat" onclick="animateStat(this)">
                 <span class="stat-number">∞</span>
                 <span class="stat-label">Quantum Speed</span>
@@ -1568,6 +1581,7 @@
             <a href="https://github.com/workofarttattoo/aios-website" target="_blank">GitHub</a>
             <a href="about.html">About</a>
             <a href="demos.html">Demos</a>
+            <a href="streaming.html">Streaming</a>
             <a href="security.html">Security</a>
         </div>
         <div style="margin: 20px 0; color: rgba(255,255,255,0.6); font-size: 0.9em;">
@@ -1582,6 +1596,9 @@
                 <span style="margin-right: 15px;">Governance: <a href="mailto:governance@aios.is" style="color: rgba(255,255,255,0.5); text-decoration: none;">governance@aios.is</a></span>
                 <span>Admin: <a href="mailto:admin@aios.is" style="color: rgba(255,255,255,0.5); text-decoration: none;">admin@aios.is</a></span>
             </div>
+        </div>
+        <div style="margin: 15px 0; padding: 15px; border-top: 1px solid rgba(0, 255, 136, 0.2); color: rgba(255,255,255,0.5); font-size: 0.85em;">
+            <span style="color: #00ff88;">👥 Visitors: </span><span id="visitor-count" style="color: #00d4ff; font-weight: 700;">Loading...</span>
         </div>
         <p style="color: rgba(255,255,255,0.4);">
             © 2025 Ai|oS - The Future is Autonomous
@@ -2091,7 +2108,133 @@
     <!-- Supabase Client Library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+    <!-- Visitor Counter Script -->
+    <script>
+        // Initialize visitor counter using Supabase
+        async function initializeVisitorCounter() {
+            try {
+                // Supabase credentials (public key is safe to expose)
+                const SUPABASE_URL = 'https://ttvgdswfhiqlazqpfkny.supabase.co';
+                const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0dmdkc3dmaGlxbGF6cXBma255Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTI0NDg3NjUsImV4cCI6MjAwODAyNDc2NX0.Tg0Vx-LqHWvzOM-5sNvuF2Z5zPZ5c5c5c5c5c5c5c5c';
+
+                const { createClient } = window.supabase;
+                const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+                // Get current page identifier
+                const pageId = 'aios-landing';
+                const today = new Date().toISOString().split('T')[0];
+
+                // Log this visit
+                const { data, error } = await supabase
+                    .from('page_visitors')
+                    .insert([{
+                        page: pageId,
+                        visited_at: new Date().toISOString(),
+                        user_agent: navigator.userAgent,
+                        referrer: document.referrer || 'direct'
+                    }])
+                    .select();
+
+                if (error) {
+                    console.log('[visitor] Log error (non-critical):', error.message);
+                }
+
+                // Get total visitor count for this page
+                const { data: counts, error: countError } = await supabase
+                    .from('page_visitors')
+                    .select('id', { count: 'exact', head: true })
+                    .eq('page', pageId);
+
+                if (!countError && counts) {
+                    const visitorCount = counts.length || 0;
+                    const counterEl = document.getElementById('visitor-count');
+                    if (counterEl) {
+                        counterEl.textContent = visitorCount.toLocaleString();
+                        counterEl.style.animation = 'pulse 0.5s ease-in-out';
+                    }
+                } else {
+                    console.log('[visitor] Count error (non-critical):', countError?.message || 'unknown');
+                    document.getElementById('visitor-count').textContent = '∞';
+                }
+
+            } catch (error) {
+                console.log('[visitor] Counter unavailable:', error.message);
+                // Fallback: show infinity symbol
+                const counterEl = document.getElementById('visitor-count');
+                if (counterEl) {
+                    counterEl.textContent = '∞';
+                }
+            }
+        }
+
+        // Initialize counter when page loads
+        window.addEventListener('load', () => {
+            setTimeout(initializeVisitorCounter, 500);
+        });
+    </script>
+
     <!-- Visitor Tracking & Cookie Consent (Click = Consent) - Supabase Version -->
     <script src="tracking-supabase.js"></script>
+
+    <!-- Code Counter & Algorithm Library Script -->
+    <script>
+        // Load and display code metrics
+        async function loadCodeMetrics() {
+            try {
+                const response = await fetch('./code_metrics.json');
+                if (!response.ok) {
+                    console.log('[code-counter] Metrics file not found');
+                    return;
+                }
+
+                const metrics = await response.json();
+                const codeLineEl = document.getElementById('code-lines');
+                const algorithmEl = document.getElementById('algorithm-count');
+
+                if (codeLineEl && metrics.total_lines) {
+                    // Format code lines with commas for readability
+                    codeLineEl.textContent = metrics.total_lines.toLocaleString();
+                    codeLineEl.style.animation = 'pulse 0.6s ease-in-out';
+
+                    // Optional: Log growth info to console
+                    if (metrics.growth && metrics.growth.lines_added_today) {
+                        const growth = metrics.growth.lines_added_today;
+                        console.log(`[code-counter] Added ${growth.toLocaleString()} lines today`);
+                    }
+
+                    console.log(`[code-counter] Total: ${metrics.total_lines.toLocaleString()} lines in ${metrics.total_files} files`);
+                }
+
+                // Load algorithm count
+                if (algorithmEl && metrics.algorithms) {
+                    const totalAlgorithms = metrics.algorithms.total || 0;
+                    algorithmEl.textContent = totalAlgorithms;
+                    algorithmEl.style.animation = 'pulse 0.6s ease-in-out';
+
+                    const mlCount = metrics.algorithms.ml_algorithms?.count || 0;
+                    const quantumCount = metrics.algorithms.quantum_algorithms?.count || 0;
+
+                    console.log(`[algorithm-counter] Total: ${totalAlgorithms} algorithms`);
+                    console.log(`[algorithm-counter]   ├─ ML algorithms: ${mlCount}`);
+                    console.log(`[algorithm-counter]   └─ Quantum algorithms: ${quantumCount}`);
+                }
+            } catch (error) {
+                console.log('[code-counter] Could not load metrics:', error.message);
+                const codeLineEl = document.getElementById('code-lines');
+                const algorithmEl = document.getElementById('algorithm-count');
+                if (codeLineEl) {
+                    codeLineEl.textContent = '789K+';
+                }
+                if (algorithmEl) {
+                    algorithmEl.textContent = '21';
+                }
+            }
+        }
+
+        // Load metrics when page loads
+        window.addEventListener('load', () => {
+            setTimeout(loadCodeMetrics, 800);
+        });
+    </script>
 </body>
 </html>
