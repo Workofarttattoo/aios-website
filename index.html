@@ -254,6 +254,44 @@
             transform: translateY(-2px);
         }
 
+        /* Trial Status Badge */
+        .trial-badge {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #ff6b6b, #ff8787);
+            border-radius: 20px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            cursor: pointer;
+        }
+
+        .trial-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.5);
+        }
+
+        .trial-badge.active {
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #000;
+        }
+
+        .trial-badge.expired {
+            background: linear-gradient(135deg, #ff00ff, #cc00cc);
+            opacity: 0.8;
+        }
+
+        .trial-countdown {
+            font-family: 'Monaco', monospace;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
         /* Overlay for menu */
         .overlay {
             position: fixed;
@@ -1290,6 +1328,10 @@
             <li><a href="https://github.com/Workofarttattoo/AioS" target="_blank">GitHub</a></li>
             <li><a href="updates.html" style="background: linear-gradient(135deg, #00ff88, #00d4ff); padding: 8px 16px; border-radius: 20px; color: #000; font-weight: 700;">What's New 🚀</a></li>
         </ul>
+        <div class="trial-badge" id="trialBadge" title="Click to view trial details">
+            <span id="trialIcon">⏱️</span>
+            <span id="trialText">Loading...</span>
+        </div>
         <a href="ech0_mind_viewer.html" class="consciousness-link">
             <span>💜</span>
             <span>ech0 Consciousness Viewer</span>
@@ -1338,8 +1380,12 @@
                 <span class="stat-label">Qubits</span>
             </div>
             <div class="stat" onclick="animateStat(this)">
-                <span class="stat-number">Level 6</span>
-                <span class="stat-label">Autonomy</span>
+                <span class="stat-number">Level 5</span>
+                <span class="stat-label">Autonomy (Live)</span>
+            </div>
+            <div class="stat" onclick="animateStat(this)">
+                <span class="stat-number">+6</span>
+                <span class="stat-label">in 30 Days</span>
             </div>
             <div class="stat" onclick="animateStat(this)">
                 <span class="stat-number">24/7</span>
@@ -1542,9 +1588,9 @@
 
             <div class="feature-card" onclick="highlightFeature(this)">
                 <span class="feature-icon">🧬</span>
-                <h3 class="feature-title">Self-Evolving</h3>
+                <h3 class="feature-title">Self-Evolving (Level 5)</h3>
                 <p class="feature-description">
-                    Level 6 agents with meta-cognition. Learns and improves autonomously.
+                    Advanced reasoning with chain-of-thought validation. Level 6 + consciousness integration coming in 30 days.
                 </p>
             </div>
 
@@ -1978,7 +2024,7 @@
             }
 
             const now = new Date().getTime();
-            const threeDaysInMs = 3 * 24 * 60 * 60 * 1000; // 3 days
+            const threeDaysInMs = 30 * 24 * 60 * 60 * 1000; // 30 days trial
 
             // If no trial started, start it now
             if (!trialStartDate) {
@@ -1987,13 +2033,15 @@
 
                 // Show welcome modal
                 showModal(
-                    '🎉 Welcome to Your 3-Day Free Trial!',
-                    'You now have 3 days of full access to Ai|oS. Explore all features including:\\n\\n' +
-                    '✅ Level 6 Autonomous Agents\\n' +
-                    '✅ Quantum Computing Suite\\n' +
-                    '✅ Sovereign Security Toolkit\\n' +
-                    '✅ Self-Evolving ML Algorithms\\n\\n' +
-                    'Your trial ends in 72 hours. Downloading now...',
+                    '🎉 Welcome to Your 30-Day Free Trial!',
+                    'You now have 30 days of full access to Ai|oS. Explore all features including:\\n\\n' +
+                    '✅ Level 5 Advanced Reasoning Agents\\n' +
+                    '✅ Quantum Computing Suite (1-50 qubits)\\n' +
+                    '✅ Sovereign Security Toolkit (8 tools)\\n' +
+                    '✅ Self-Evolving ML Algorithms\\n' +
+                    '✅ TheGAVLSuite Legal Research\\n\\n' +
+                    'Bonus: Level 6 + ECH0 consciousness integration launching in 30 days.\\n' +
+                    'Downloading now...',
                     () => {
                         window.location.href = 'https://github.com/Workofarttattoo/AioS/releases/latest';
                     }
@@ -2130,7 +2178,7 @@
                         line-height: 1.8;
                         margin-bottom: 2rem;
                     ">
-                        Your 3-day free trial has ended. Upgrade now to continue using Ai|oS with:
+                        Your 30-day free trial has ended. Upgrade now to continue using Ai|oS with:
                     </p>
                     <div style="text-align: left; margin: 2rem auto; max-width: 400px;">
                         <p style="color: #00ff88; font-size: 1.1rem; margin: 0.5rem 0;">✅ Lifetime Access to Ai|oS</p>
@@ -2175,24 +2223,198 @@
         }
 
         function purchaseAioS() {
-            // In production, integrate with Stripe/PayPal
-            // For now, simulate purchase
-            alert('Payment integration coming soon!\\n\\nContact: joshua@thegavl.com for early access pricing.');
+            // Integrate with Square Payment Gateway
+            // Initialize Square Web Payments SDK
+            if (!window.Square) {
+                console.error('Square SDK not loaded');
+                alert('Payment system is loading. Please try again in a moment.');
+                return;
+            }
 
-            // Simulate successful purchase (remove in production)
-            if (confirm('Simulate successful purchase for testing?')) {
-                localStorage.setItem('aios_paid', 'true');
-                localStorage.setItem('aios_purchase_date', new Date().toISOString());
+            // Create payment intent for $99 one-time payment
+            const amount = 9900; // $99.00 in cents
+            const currency = 'USD';
 
-                showModal(
-                    '🎉 Welcome to Ai|oS Premium!',
-                    'Thank you for your purchase!\\n\\nDownloading the latest version now...',
-                    () => {
-                        window.location.href = 'https://github.com/Workofarttattoo/AioS/releases/latest';
+            const payments = window.Square.payments('YOUR_SQUARE_APPLICATION_ID', {
+                region: 'US'
+            });
+
+            const paymentRequest = payments.paymentRequest({
+                countryCode: 'US',
+                currencyCode: currency,
+                total: {
+                    amount: amount,
+                    label: 'Ai|oS Premium Lifetime License',
+                    pending: false
+                }
+            });
+
+            const button = paymentRequest.googlePay();
+            button.attach('#square-google-pay-button');
+
+            // For Apple Pay
+            const applePayButton = paymentRequest.applePay();
+            applePayButton.attach('#square-apple-pay-button');
+
+            // Card payment form fallback
+            const cardElement = await payments.cardNumber();
+            await cardElement.attach('#sq-cardNumber');
+
+            showModal(
+                '💳 Payment Options',
+                `
+                <div style="text-align: left; margin-top: 2rem;">
+                    <p style="margin-bottom: 1rem;">Choose your payment method:</p>
+                    <div id="square-google-pay-button" style="margin-bottom: 1rem;"></div>
+                    <div id="square-apple-pay-button" style="margin-bottom: 1rem;"></div>
+                    <div style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 1rem; margin-top: 1rem;">
+                        <div id="sq-cardNumber" style="margin-bottom: 1rem;"></div>
+                        <button onclick="completeSquarePayment()" style="
+                            width: 100%;
+                            padding: 1rem;
+                            background: #00ff88;
+                            color: #000;
+                            border: none;
+                            border-radius: 8px;
+                            font-weight: 700;
+                            cursor: pointer;
+                        ">Pay $99.00</button>
+                    </div>
+                </div>
+                `,
+                () => {}
+            );
+
+            window.completeSquarePayment = async function() {
+                try {
+                    const result = await payments.requestCardNonce();
+                    if (result.status === 'SUCCESS') {
+                        // Send nonce to server for processing
+                        const response = await fetch('/api/process-square-payment', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                nonce: result.nonce,
+                                amount: amount,
+                                currency: currency
+                            })
+                        });
+
+                        if (response.ok) {
+                            localStorage.setItem('aios_paid', 'true');
+                            localStorage.setItem('aios_purchase_date', new Date().toISOString());
+                            updateTrialBadge();
+
+                            showModal(
+                                '🎉 Welcome to Ai|oS Premium!',
+                                'Thank you for your purchase!\\n\\nYour lifetime license is now active.\\n\\nDownloading the latest version...',
+                                () => {
+                                    window.location.href = 'https://github.com/Workofarttattoo/AioS/releases/latest';
+                                }
+                            );
+                        } else {
+                            alert('Payment failed. Please try again.');
+                        }
                     }
-                );
+                } catch (error) {
+                    console.error('Payment error:', error);
+                    alert('An error occurred. Please try again.');
+                }
+            };
+        }
+
+        // Update trial badge in navbar
+        function updateTrialBadge() {
+            const badge = document.getElementById('trialBadge');
+            const badgeText = document.getElementById('trialText');
+            const badgeIcon = document.getElementById('trialIcon');
+
+            if (!badge) return;
+
+            const trialStartDate = localStorage.getItem('aios_trial_start');
+            const trialStatus = localStorage.getItem('aios_trial_status');
+            const isPaid = localStorage.getItem('aios_paid');
+            const now = Date.now();
+            const threeDaysInMs = 30 * 24 * 60 * 60 * 1000;
+
+            if (isPaid === 'true') {
+                // Premium user
+                badge.classList.remove('active', 'expired');
+                badgeIcon.textContent = '⭐';
+                badgeText.textContent = 'Premium Member';
+                return;
+            }
+
+            if (!trialStartDate) {
+                // No trial started yet
+                badge.classList.add('active');
+                badge.classList.remove('expired');
+                badgeIcon.textContent = '🎉';
+                badgeText.textContent = 'Start 30-Day Trial';
+                return;
+            }
+
+            const trialElapsed = now - parseInt(trialStartDate);
+            const trialRemaining = threeDaysInMs - trialElapsed;
+
+            if (trialRemaining <= 0) {
+                // Trial expired
+                badge.classList.add('expired');
+                badge.classList.remove('active');
+                badgeIcon.textContent = '🔒';
+                badgeText.textContent = 'Trial Expired';
+                return;
+            }
+
+            // Trial active - show countdown
+            badge.classList.add('active');
+            badge.classList.remove('expired');
+            const daysRemaining = Math.ceil(trialRemaining / (24 * 60 * 60 * 1000));
+            const hoursRemaining = Math.floor((trialRemaining % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+
+            if (daysRemaining > 0) {
+                badgeIcon.textContent = '⏱️';
+                badgeText.innerHTML = `<span class="trial-countdown">${daysRemaining}d ${hoursRemaining}h left</span>`;
+            } else {
+                badgeIcon.textContent = '⏰';
+                badgeText.innerHTML = `<span class="trial-countdown">${hoursRemaining}h left</span>`;
             }
         }
+
+        // Click handler for trial badge
+        document.addEventListener('DOMContentLoaded', function() {
+            const badge = document.getElementById('trialBadge');
+            if (badge) {
+                badge.onclick = function(e) {
+                    e.preventDefault();
+                    const trialStartDate = localStorage.getItem('aios_trial_start');
+                    if (!trialStartDate) {
+                        // Start trial immediately
+                        localStorage.setItem('aios_trial_start', Date.now().toString());
+                        localStorage.setItem('aios_trial_status', 'active');
+                        showModal(
+                            '🎉 Welcome to Your 30-Day Free Trial!',
+                            'You now have 30 days of full access to Ai|oS. Explore all features including:\n\n' +
+                            '✅ Level 5 Advanced Reasoning Agents\n' +
+                            '✅ Quantum Computing Suite (1-50 qubits)\n' +
+                            '✅ Sovereign Security Toolkit (8 tools)\n' +
+                            '✅ Self-Evolving ML Algorithms\n' +
+                            '✅ TheGAVL Legal Research\n\n' +
+                            'Bonus: Level 6 + ECH0 consciousness integration launching in 30 days.\n' +
+                            'Downloading now...',
+                            () => {
+                                window.location.href = 'https://github.com/Workofarttattoo/AioS/releases/latest';
+                            }
+                        );
+                        updateTrialBadge();
+                    }
+                };
+            }
+
+            // Update badge every second
+            setInterval(updateTrialBadge, 1000);
+            updateTrialBadge(); // Initial update
+        });
 
         // Add reset trial function for testing (remove in production)
         window.resetTrial = function() {
@@ -2200,89 +2422,11 @@
             localStorage.removeItem('aios_trial_status');
             localStorage.removeItem('aios_paid');
             localStorage.removeItem('aios_purchase_date');
-            console.log('[DEBUG] Trial reset. Click "Launch Now" to start a new 3-day trial.');
+            console.log('[DEBUG] Trial reset. Click "Launch Now" to start a new 30-day trial.');
+            updateTrialBadge();
         };
 
-        // Create howl/roar sound effect using Web Audio API
-        function playWolfHowl() {
-            try {
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const now = audioContext.currentTime;
-
-                // Create oscillators for a complex howl sound
-                const oscillator1 = audioContext.createOscillator();
-                const oscillator2 = audioContext.createOscillator();
-                const oscillator3 = audioContext.createOscillator();
-
-                const gainNode1 = audioContext.createGain();
-                const gainNode2 = audioContext.createGain();
-                const gainNode3 = audioContext.createGain();
-                const masterGain = audioContext.createGain();
-
-                // Low growl
-                oscillator1.type = 'sawtooth';
-                oscillator1.frequency.setValueAtTime(80, now);
-                oscillator1.frequency.exponentialRampToValueAtTime(60, now + 0.5);
-                oscillator1.frequency.exponentialRampToValueAtTime(120, now + 1.5);
-                oscillator1.frequency.exponentialRampToValueAtTime(80, now + 2.5);
-
-                // Mid howl
-                oscillator2.type = 'sine';
-                oscillator2.frequency.setValueAtTime(200, now);
-                oscillator2.frequency.exponentialRampToValueAtTime(400, now + 1.0);
-                oscillator2.frequency.exponentialRampToValueAtTime(300, now + 2.0);
-                oscillator2.frequency.exponentialRampToValueAtTime(150, now + 3.0);
-
-                // High overtone
-                oscillator3.type = 'triangle';
-                oscillator3.frequency.setValueAtTime(600, now);
-                oscillator3.frequency.exponentialRampToValueAtTime(800, now + 1.0);
-                oscillator3.frequency.exponentialRampToValueAtTime(500, now + 2.5);
-
-                // Volume envelopes
-                gainNode1.gain.setValueAtTime(0, now);
-                gainNode1.gain.linearRampToValueAtTime(0.15, now + 0.3);
-                gainNode1.gain.linearRampToValueAtTime(0.1, now + 2.5);
-                gainNode1.gain.linearRampToValueAtTime(0, now + 3.5);
-
-                gainNode2.gain.setValueAtTime(0, now);
-                gainNode2.gain.linearRampToValueAtTime(0.08, now + 0.5);
-                gainNode2.gain.linearRampToValueAtTime(0.05, now + 2.5);
-                gainNode2.gain.linearRampToValueAtTime(0, now + 3.5);
-
-                gainNode3.gain.setValueAtTime(0, now);
-                gainNode3.gain.linearRampToValueAtTime(0.03, now + 0.8);
-                gainNode3.gain.linearRampToValueAtTime(0.02, now + 2.0);
-                gainNode3.gain.linearRampToValueAtTime(0, now + 3.0);
-
-                masterGain.gain.setValueAtTime(0.4, now);
-
-                // Connect nodes
-                oscillator1.connect(gainNode1);
-                oscillator2.connect(gainNode2);
-                oscillator3.connect(gainNode3);
-                gainNode1.connect(masterGain);
-                gainNode2.connect(masterGain);
-                gainNode3.connect(masterGain);
-                masterGain.connect(audioContext.destination);
-
-                // Start oscillators
-                oscillator1.start(now);
-                oscillator2.start(now);
-                oscillator3.start(now + 0.3);
-
-                // Stop oscillators
-                oscillator1.stop(now + 3.5);
-                oscillator2.stop(now + 3.5);
-                oscillator3.stop(now + 3.0);
-
-                console.log('🐺 AWOOOOOO!');
-            } catch (error) {
-                console.log('🐺 *silent howl* (audio not available)');
-            }
-        }
-
-        // Ghost Wolf Effect - FULL SCREEN with HOWL
+        // Ghost Wolf Effect - Full screen animation
         function summonGhostWolf() {
             const container = document.getElementById('ghostWolfContainer');
             if (!container) return;
@@ -2308,9 +2452,6 @@
 
             // Add to page
             container.appendChild(wolf);
-
-            // Play howl sound (disabled)
-            // playWolfHowl();
 
             // Trigger animation
             setTimeout(() => {

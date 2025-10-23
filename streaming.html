@@ -570,7 +570,7 @@ sudo systemctl enable --now aios-streaming</code></pre>
                 <div class="card control-card">
                     <h3>Connect Your Stream</h3>
                     <label for="wsUrl">WebSocket Endpoint</label>
-                    <input type="text" id="wsUrl" value="ws://localhost:8080/ws" autocomplete="off">
+                    <input type="text" id="wsUrl" value="ws://localhost:8001/ws/metrics" autocomplete="off" placeholder="Production: ws://localhost:8001/ws/metrics">
                     <div class="button-row">
                         <button type="button" onclick="connectStream()">Connect</button>
                         <button type="button" class="secondary" onclick="disconnectStream()">Disconnect</button>
@@ -787,9 +787,20 @@ sudo systemctl enable --now aios-streaming</code></pre>
             };
             wsClient.onmessage = event => {
                 try {
-                    const payload = JSON.parse(event.data);
-                    const origin = payload.type ? `ws:${payload.type}` : "ws";
-                    renderMetrics(payload, { origin });
+                    const message = JSON.parse(event.data);
+                    // Handle production streaming service format
+                    if (message.type === "metrics" && message.data) {
+                        const metrics = message.data;
+                        renderMetrics(metrics, { origin: "ws:streaming" });
+                    }
+                    // Handle initial/legacy format
+                    else if (message.type === "initial") {
+                        renderMetrics(message.data, { origin: "ws:initial" });
+                    }
+                    // Handle raw metrics format
+                    else {
+                        renderMetrics(message, { origin: "ws" });
+                    }
                 } catch (error) {
                     appendLog(`Unable to parse message: ${error}`, "error");
                 }
