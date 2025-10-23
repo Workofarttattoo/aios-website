@@ -110,7 +110,7 @@
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 1.5rem 5%;
+            padding: 1rem 2%;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -119,6 +119,7 @@
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(0, 255, 136, 0.2);
             transition: all 0.3s;
+            overflow: hidden;
         }
 
         nav:hover {
@@ -236,14 +237,15 @@
 
         /* Modules Button */
         .modules-btn {
-            padding: 10px 25px;
+            padding: 6px 14px;
             background: rgba(0, 255, 136, 0.1);
-            border: 2px solid var(--primary);
-            border-radius: 25px;
+            border: 1px solid var(--primary);
+            border-radius: 20px;
             color: var(--primary);
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s;
+            font-size: 0.9rem;
         }
 
         .modules-btn:hover {
@@ -322,8 +324,11 @@
 
         .nav-links {
             display: flex;
-            gap: 2.5rem;
+            gap: 0.8rem;
             list-style: none;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            align-items: center;
         }
 
         .nav-links a {
@@ -332,7 +337,9 @@
             font-weight: 500;
             position: relative;
             transition: all 0.3s;
-            padding: 0.5rem 0;
+            padding: 0.5rem 0.7rem;
+            font-size: 0.95rem;
+            white-space: nowrap;
         }
 
         .nav-links a::after {
