@@ -308,12 +308,39 @@
                 <a href="index.html">Home</a>
                 <a href="quantum.html">Algorithms</a>
                 <a href="demos.html">Demos</a>
+                <a href="streaming.html">Streaming</a>
                 <a href="docs.html">Docs</a>
                 <a href="about.html">About</a>
             </div>
         </header>
 
         <div class="demo-grid">
+            <!-- Streaming Telemetry Demo -->
+            <div class="demo-card">
+                <h2>Ai|oS Telemetry Stream (Preview)</h2>
+                <p>
+                    Experience the streaming console inside the browser. These values animate in demo mode and switch to live telemetry
+                    when you connect the new <code>streaming_server.py</code>. Use the button below to launch the full dashboard.
+                </p>
+
+                <div class="result-box" id="telemetryPreviewBox">
+                    <div class="result-title">Simulated Metrics</div>
+                    <div class="result-text">
+                        <div style="margin-bottom: 10px;">CPU Load: <span id="previewCpu" style="color: #00ff88; font-weight: 700;">0%</span></div>
+                        <div style="margin-bottom: 10px;">Memory: <span id="previewMemory" style="color: #00d4ff; font-weight: 700;">0 MB</span></div>
+                        <div>Network IO: <span id="previewNetwork" style="color: #f093fb; font-weight: 700;">0 KB</span></div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <strong>Demo Tip:</strong> The simulator mirrors the streaming dashboard's behaviour. When ready, connect to
+                    <code>ws://localhost:8080/ws</code> or your production endpoint for live Ai|oS metrics.
+                </div>
+
+                <div class="experiment-controls" style="margin-top: 20px;">
+                    <button class="btn" onclick="window.location.href='streaming.html'">Open Streaming Console</button>
+                </div>
+            </div>
             <!-- Bell Test CHSH Calculator -->
             <div class="demo-card">
                 <h2>Bell Test (CHSH Inequality)</h2>
@@ -1099,6 +1126,26 @@
             }
             ctx.stroke();
         }
+
+        (function startTelemetryPreview() {
+            const cpuEl = document.getElementById('previewCpu');
+            const memoryEl = document.getElementById('previewMemory');
+            const networkEl = document.getElementById('previewNetwork');
+            if (!cpuEl || !memoryEl || !networkEl) {
+                return;
+            }
+            let cpu = 24;
+            let mem = 960;
+            let net = 120;
+            setInterval(() => {
+                cpu = Math.max(4, Math.min(92, cpu + (Math.random() * 10 - 5)));
+                mem = Math.max(256, Math.min(4096, mem + (Math.random() * 180 - 90)));
+                net = Math.max(12, Math.min(680, net + (Math.random() * 80 - 40)));
+                cpuEl.textContent = cpu.toFixed(1) + '%';
+                memoryEl.textContent = Math.round(mem) + ' MB';
+                networkEl.textContent = net.toFixed(0) + ' KB';
+            }, 1300);
+        })();
 
         // Initialize canvases
         window.addEventListener('load', () => {

@@ -1,0 +1,59 @@
+{
+  "last_updated": "2025-10-22T16:10:45.808788",
+  "total_lines": 789173,
+  "total_files": 2066,
+  "directory_stats": {
+    "aios": {
+      "lines": 203072,
+      "files": 447
+    },
+    "TheGAVLSuite": {
+      "lines": 145440,
+      "files": 440
+    },
+    "consciousness": {
+      "lines": 422254,
+      "files": 1150
+    },
+    "aios-website": {
+      "lines": 18407,
+      "files": 29
+    }
+  },
+  "growth": {},
+  "algorithms": {
+    "ml_algorithms": {
+      "count": 10,
+      "list": [
+        "AdaptiveStateSpace",
+        "OptimalTransportFlowMatcher",
+        "StructuredStateDuality",
+        "AmortizedPosteriorNetwork",
+        "NeuralGuidedMCTS",
+        "BayesianLayer",
+        "AdaptiveParticleFilter",
+        "NoUTurnSampler",
+        "SparseGaussianProcess",
+        "ArchitectureSearchController"
+      ]
+    },
+    "quantum_algorithms": {
+      "count": 11,
+      "list": [
+        "QuantumStateEngine",
+        "QuantumVQE",
+        "QuantumQAOA",
+        "QuantumKernelML",
+        "QuantumNeuralNetwork",
+        "QuantumGAN",
+        "QuantumBoltzmannMachine",
+        "QuantumReinforcementLearning",
+        "QuantumCircuitLearning",
+        "QuantumAmplitudeEstimation",
+        "QuantumBayesianInference"
+      ]
+    },
+    "total": 21
+  },
+  "timestamp_readable": "2025-10-22 16:10:45"
+}

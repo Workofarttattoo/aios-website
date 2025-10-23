@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ai|oS Streaming Dashboard</title>
+    <meta name="description" content="Interactive telemetry streaming demo for the Ai|oS operating system with live WebSocket integration and simulator mode.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: radial-gradient(circle at top, rgba(0, 212, 255, 0.1), transparent 50%), #050510;
+            color: #f3f7ff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(circle at 20% 20%, rgba(0, 255, 136, 0.18), transparent 45%),
+                radial-gradient(circle at 80% 30%, rgba(120, 30, 255, 0.18), transparent 45%),
+                linear-gradient(120deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 60px 60px;
+            opacity: 0.8;
+            z-index: -2;
+        }
+
+        nav {
+            position: sticky;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 6%;
+            backdrop-filter: blur(14px);
+            background: rgba(5, 5, 16, 0.85);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.25);
+            z-index: 10;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .brand img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            box-shadow: 0 0 18px rgba(0, 255, 136, 0.45);
+        }
+
+        .brand span {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            color: #00ff88;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 18px;
+        }
+
+        .nav-links a {
+            color: rgba(243, 247, 255, 0.78);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 14px;
+            border-radius: 999px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #050510;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+        }
+
+        .nav-links a.active {
+            color: #050510;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            box-shadow: 0 0 18px rgba(0, 255, 136, 0.35);
+        }
+
+        .hero {
+            max-width: 1100px;
+            margin: 80px auto 50px;
+            padding: 0 5%;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.8rem, 5vw, 3.6rem);
+            margin-bottom: 18px;
+            background: linear-gradient(90deg, #00ff88, #00d4ff 45%, #a855f7 90%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: rgba(243, 247, 255, 0.72);
+            max-width: 720px;
+            margin: 0 auto 24px;
+            line-height: 1.7;
+        }
+
+        .hero-cta {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            border-radius: 999px;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #050510;
+            box-shadow: 0 0 22px rgba(0, 255, 136, 0.35);
+        }
+
+        .btn-secondary {
+            background: rgba(168, 85, 247, 0.15);
+            color: #d6c8ff;
+            border: 1px solid rgba(168, 85, 247, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(0, 212, 255, 0.25);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 40px auto 80px;
+            padding: 0 5%;
+        }
+
+        section {
+            margin-bottom: 70px;
+        }
+
+        .section-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: rgba(0, 212, 255, 0.7);
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 2.6rem);
+            margin-bottom: 18px;
+            color: #f3f7ff;
+        }
+
+        .section-description {
+            color: rgba(243, 247, 255, 0.72);
+            max-width: 760px;
+            line-height: 1.7;
+            margin-bottom: 28px;
+        }
+
+        .card {
+            background: rgba(7, 12, 32, 0.85);
+            border: 1px solid rgba(0, 212, 255, 0.18);
+            box-shadow: 0 0 32px rgba(0, 0, 0, 0.45);
+            border-radius: 18px;
+            padding: 28px;
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            color: #00ffb0;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: rgba(243, 247, 255, 0.72);
+            line-height: 1.6;
+        }
+
+        .quickstart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        pre {
+            background: rgba(4, 8, 22, 0.9);
+            border: 1px solid rgba(0, 255, 136, 0.25);
+            border-radius: 14px;
+            padding: 18px;
+            overflow-x: auto;
+            color: #b8ffc9;
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        code {
+            font-family: 'Fira Code', 'SFMono-Regular', Menlo, Monaco, Consolas, 'Courier New', monospace;
+        }
+
+        .stream-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+
+        .metric-label {
+            color: rgba(243, 247, 255, 0.6);
+        }
+
+        .metric-value {
+            color: #00ff88;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .progress {
+            width: 100%;
+            height: 10px;
+            background: rgba(0, 212, 255, 0.12);
+            border-radius: 999px;
+            overflow: hidden;
+            margin-bottom: 18px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #00ff88, #00d4ff);
+            border-radius: 999px;
+            transition: width 0.6s ease;
+        }
+
+        .history-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            height: 90px;
+            margin-top: 12px;
+        }
+
+        .history-bar {
+            flex: 1;
+            min-width: 6px;
+            background: linear-gradient(180deg, rgba(0, 255, 136, 0.8), rgba(0, 255, 136, 0.2));
+            border-radius: 4px 4px 0 0;
+        }
+
+        .control-card label {
+            display: block;
+            font-size: 0.85rem;
+            color: rgba(243, 247, 255, 0.6);
+            margin-bottom: 8px;
+        }
+
+        .control-card input {
+            width: 100%;
+            background: rgba(4, 8, 22, 0.9);
+            border: 1px solid rgba(0, 212, 255, 0.35);
+            border-radius: 12px;
+            padding: 12px 14px;
+            color: #f3f7ff;
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .button-row button {
+            flex: 1;
+            min-width: 120px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #050510;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .button-row button.secondary {
+            background: rgba(168, 85, 247, 0.24);
+            color: #d6c8ff;
+            border: 1px solid rgba(168, 85, 247, 0.5);
+        }
+
+        .button-row button:hover {
+            transform: translateY(-2px);
+        }
+
+        .log-card {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .log-output {
+            background: rgba(4, 8, 22, 0.85);
+            border: 1px solid rgba(0, 212, 255, 0.25);
+            border-radius: 12px;
+            padding: 16px;
+            height: 260px;
+            overflow-y: auto;
+            font-family: 'Fira Code', 'SFMono-Regular', monospace;
+            font-size: 0.85rem;
+            color: #b8ffc9;
+        }
+
+        .log-line {
+            margin-bottom: 8px;
+        }
+
+        .log-line.error {
+            color: #ff6b9f;
+        }
+
+        .log-line.info {
+            color: #00d4ff;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: rgba(7, 12, 32, 0.8);
+            border: 1px solid rgba(0, 212, 255, 0.15);
+            border-radius: 14px;
+            padding: 22px;
+            transition: transform 0.2s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .feature-card h4 {
+            color: #00ffb0;
+            margin-bottom: 10px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(0, 255, 136, 0.12);
+            border: 1px solid rgba(0, 255, 136, 0.35);
+            font-size: 0.75rem;
+            color: #7efbc4;
+            margin-bottom: 12px;
+        }
+
+        footer {
+            border-top: 1px solid rgba(0, 212, 255, 0.18);
+            background: rgba(5, 5, 16, 0.85);
+            padding: 40px 5% 60px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: rgba(243, 247, 255, 0.7);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer-links a:hover {
+            color: #00ff88;
+        }
+
+        .footer-meta {
+            color: rgba(243, 247, 255, 0.45);
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 880px) {
+            nav {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero {
+                margin-top: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <nav>
+        <div class="brand" onclick="window.location.href='index.html'">
+            <img src="wolf_icon_head.png" alt="Ai|oS logo">
+            <span>Ai|oS</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="quantum.html">Quantum</a></li>
+            <li><a href="demos.html">Demos</a></li>
+            <li><a href="docs.html">Docs</a></li>
+            <li><a href="api.html">API</a></li>
+            <li><a href="security.html">Security</a></li>
+            <li><a href="streaming.html" class="active">Streaming</a></li>
+        </ul>
+        <a href="https://github.com/workofarttattoo/aios-website" target="_blank" class="btn btn-secondary" style="padding: 10px 20px;">GitHub</a>
+    </nav>
+
+    <header class="hero">
+        <h1>Streaming Telemetry for Autonomous Operations</h1>
+        <p>
+            Launch the Ai|oS streaming server, connect from any browser, and watch autonomous subsystems broadcast
+            real-time CPU, memory, and network telemetry. Use the live WebSocket console below or stay in simulator mode
+            to demo the experience without infrastructure.
+        </p>
+        <div class="hero-cta">
+            <a href="#quickstart" class="btn btn-primary">1. Start the Server</a>
+            <a href="#telemetry" class="btn btn-secondary">2. Open the Live Demo</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="quickstart">
+            <div class="section-label">Quick Start</div>
+            <h2 class="section-title">Deploy the Streaming Service in Two Commands</h2>
+            <p class="section-description">
+                The FastAPI + WebSocket server ships with Ai|oS under <code>aios/web/aios/web/</code>. Run it locally or
+                push to any VPS. The dashboard below automatically connects to <code>ws://localhost:8080/ws</code>, but you can
+                point it at any reachable endpoint.
+            </p>
+            <div class="quickstart-grid">
+                <div class="card">
+                    <h3>Local Launch (Dev)</h3>
+                    <pre><code>cd aios/web/aios/web
+python3 -m venv .venv
+source .venv/bin/activate
+pip install fastapi uvicorn psutil
+uvicorn streaming_server:app --host 0.0.0.0 --port 8080</code></pre>
+                    <p>
+                        Keep the terminal open to watch connection logs. Set <code>PORT</code> to override the default.
+                    </p>
+                </div>
+                <div class="card">
+                    <h3>Systemd Deployment (Prod)</h3>
+                    <pre><code># Copy files to /opt/aios-streaming
+sudo cp streaming_server.py /opt/aios-streaming/
+sudo cp streaming_dashboard.html /opt/aios-streaming/
+
+# Register service
+sudo tee /etc/systemd/system/aios-streaming.service &lt;&lt;'EOF'
+[Unit]
+Description=Ai|oS Streaming Dashboard
+After=network.target
+
+[Service]
+WorkingDirectory=/opt/aios-streaming
+ExecStart=/usr/bin/python3 streaming_server.py
+Restart=always
+Environment=PORT=8080
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl enable --now aios-streaming</code></pre>
+                    <p>
+                        Reverse-proxy through Nginx or Caddy to serve <code>wss://</code> in production.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="telemetry">
+            <div class="section-label">Interactive Demo</div>
+            <h2 class="section-title">Live Telemetry Console</h2>
+            <p class="section-description">
+                Enter a WebSocket URL to connect to your own instance or stay in demo mode to preview the streaming UX.
+                When a real stream is connected the simulator pauses automatically and the dashboard reflects true telemetry.
+            </p>
+            <div class="stream-grid">
+                <div class="card">
+                    <h3>Telemetry Snapshot</h3>
+                    <div class="metric-row">
+                        <span class="metric-label">CPU Utilisation</span>
+                        <span class="metric-value" id="cpuValue">0%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-fill" id="cpuBar"></div>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Memory Used</span>
+                        <span class="metric-value" id="memoryValue">0 MB</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-fill" id="memoryBar"></div>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Memory %</span>
+                        <span class="metric-value" id="memoryPercentValue">0%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-fill" id="memoryPercentBar"></div>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Network IO</span>
+                        <span class="metric-value" id="networkValue">0 KB</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-fill" id="networkBar"></div>
+                    </div>
+                    <div style="margin-top: 24px;">
+                        <div class="metric-row" style="margin-bottom: 14px;">
+                            <span class="metric-label">Recent CPU Trend</span>
+                            <span class="metric-value" id="trendValue">–</span>
+                        </div>
+                        <div class="history-bars" id="cpuHistory"></div>
+                    </div>
+                </div>
+                <div class="card control-card">
+                    <h3>Connect Your Stream</h3>
+                    <label for="wsUrl">WebSocket Endpoint</label>
+                    <input type="text" id="wsUrl" value="ws://localhost:8080/ws" autocomplete="off">
+                    <div class="button-row">
+                        <button type="button" onclick="connectStream()">Connect</button>
+                        <button type="button" class="secondary" onclick="disconnectStream()">Disconnect</button>
+                        <button type="button" class="secondary" id="simulationToggle" onclick="toggleSimulation()">Pause Demo</button>
+                    </div>
+                    <p style="margin-top: 16px; font-size: 0.9rem; color: rgba(243, 247, 255, 0.65);">
+                        The simulator produces realistic telemetry every second. Press <strong>Connect</strong> after your
+                        server is live to switch to production data instantly.
+                    </p>
+                </div>
+                <div class="card log-card">
+                    <h3>Event Log</h3>
+                    <div class="log-output" id="streamLog"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="highlights">
+            <div class="section-label">Highlights</div>
+            <h2 class="section-title">Why Operators Use the Ai|oS Streaming Interface</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="badge">Agent Telemetry</div>
+                    <h4>Unified Metrics Plane</h4>
+                    <p>
+                        Kernel, security, and application agents publish into the same socket so your dashboard mirrors
+                        the orchestration state machine in seconds.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="badge">Browser Native</div>
+                    <h4>Zero Install Operator Console</h4>
+                    <p>
+                        Serve the dashboard from any static host and connect over WebSockets. Perfect for remote trials,
+                        blue-team training, or audited customer walk-throughs.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="badge">Demo Ready</div>
+                    <h4>Toggleable Simulation Mode</h4>
+                    <p>
+                        The built-in simulator mimics real metrics while your SOC considers connecting production systems,
+                        allowing instant on-site demonstrations that match the live UX.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="badge">Extensible</div>
+                    <h4>Bring Your Own Events</h4>
+                    <p>
+                        Extend <code>broadcast_event</code> in <code>streaming_server.py</code> to push audit logs, trace
+                        spans, or escalation alerts alongside baseline telemetry without rewriting the dashboard.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="quantum.html">Quantum</a>
+            <a href="demos.html">Demos</a>
+            <a href="docs.html">Docs</a>
+            <a href="api.html">API</a>
+            <a href="security.html">Security</a>
+            <a href="streaming.html">Streaming</a>
+        </div>
+        <div class="footer-meta">
+            <p>Contact: <a href="mailto:inventor@aios.is" style="color: #00ff88; text-decoration: none;">inventor@aios.is</a> · <a href="mailto:support@aios.is" style="color: #00ff88; text-decoration: none;">support@aios.is</a></p>
+            <p>© 2025 Ai|oS — Sovereign-grade autonomous intelligence operations.</p>
+        </div>
+    </footer>
+
+    <script>
+        const cpuHistory = [];
+        const MAX_HISTORY = 26;
+        let simulationInterval = null;
+        let wsClient = null;
+        let simulationPaused = false;
+
+        function clamp(value, min, max) {
+            return Math.min(Math.max(value, min), max);
+        }
+
+        function formatNumber(value, decimals = 0) {
+            return Number.parseFloat(value).toFixed(decimals);
+        }
+
+        function renderMetrics(data, meta = {}) {
+            const cpu = clamp(Number.parseFloat(data.cpu ?? data.cpu_percent ?? 0), 0, 100);
+            const memoryMb = Math.max(0, Number.parseFloat(data.memory ?? data.memory_mb ?? 0));
+            const memoryPercent = clamp(Number.parseFloat(data.memory_percent ?? data.memoryUsage ?? 0), 0, 100);
+            const network = Math.max(0, Number.parseFloat(data.network_io ?? data.network_io_kb ?? data.network ?? 0));
+
+            document.getElementById("cpuValue").textContent = `${formatNumber(cpu, 1)}%`;
+            document.getElementById("memoryValue").textContent = `${formatNumber(memoryMb, 0)} MB`;
+            document.getElementById("memoryPercentValue").textContent = `${formatNumber(memoryPercent, 1)}%`;
+            document.getElementById("networkValue").textContent = `${formatNumber(network, 1)} KB`;
+
+            document.getElementById("cpuBar").style.width = `${cpu}%`;
+            document.getElementById("memoryBar").style.width = `${Math.min(memoryMb / 32, 1) * 100}%`;
+            document.getElementById("memoryPercentBar").style.width = `${memoryPercent}%`;
+            document.getElementById("networkBar").style.width = `${clamp(network / 512, 0, 1) * 100}%`;
+
+            cpuHistory.push(cpu);
+            if (cpuHistory.length > MAX_HISTORY) {
+                cpuHistory.shift();
+            }
+            updateHistory(cpuHistory);
+
+            const trend = cpuHistory.slice(-5);
+            if (trend.length >= 2) {
+                const delta = trend[trend.length - 1] - trend[0];
+                const direction = delta > 1 ? "▲" : delta < -1 ? "▼" : "→";
+                document.getElementById("trendValue").textContent = `${direction} ${formatNumber(trend[trend.length - 1], 1)}%`;
+            }
+
+            if (meta.origin) {
+                appendLog(`${meta.origin}: cpu=${formatNumber(cpu, 1)}%, mem=${formatNumber(memoryPercent, 1)}%, net=${formatNumber(network, 1)} KB`, "info");
+            }
+        }
+
+        function updateHistory(history) {
+            const container = document.getElementById("cpuHistory");
+            container.innerHTML = "";
+            if (!history.length) {
+                return;
+            }
+            history.forEach(value => {
+                const bar = document.createElement("div");
+                bar.className = "history-bar";
+                bar.style.height = `${clamp(value, 0, 100)}%`;
+                container.appendChild(bar);
+            });
+        }
+
+        function appendLog(message, level = "info") {
+            const log = document.getElementById("streamLog");
+            const entry = document.createElement("div");
+            entry.className = `log-line ${level}`;
+            const timestamp = new Date().toLocaleTimeString();
+            entry.textContent = `[${timestamp}] ${message}`;
+            log.appendChild(entry);
+            while (log.childElementCount > 120) {
+                log.removeChild(log.firstChild);
+            }
+            log.scrollTop = log.scrollHeight;
+        }
+
+        function startSimulation() {
+            if (simulationInterval) {
+                return;
+            }
+            simulationPaused = false;
+            document.getElementById("simulationToggle").textContent = "Pause Demo";
+            appendLog("Simulator started. Generating synthetic telemetry.", "info");
+            simulationInterval = window.setInterval(() => {
+                const lastCpu = cpuHistory.length ? cpuHistory[cpuHistory.length - 1] : 32;
+                const cpu = clamp(lastCpu + (Math.random() * 14 - 7), 3, 92);
+                const memPercent = clamp(38 + Math.sin(Date.now() / 24000) * 8 + Math.random() * 4, 28, 82);
+                const memMb = clamp(1024 + memPercent * 24 + Math.random() * 96, 512, 4096);
+                const network = clamp(80 + Math.random() * 420, 40, 640);
+                renderMetrics(
+                    {
+                        cpu: cpu,
+                        memory_percent: memPercent,
+                        memory: memMb,
+                        network_io: network
+                    },
+                    { origin: "sim" }
+                );
+            }, 1200);
+        }
+
+        function stopSimulation(notify = true) {
+            if (simulationInterval) {
+                window.clearInterval(simulationInterval);
+                simulationInterval = null;
+                if (notify) {
+                    appendLog("Simulator paused.", "info");
+                }
+            }
+        }
+
+        function toggleSimulation() {
+            if (simulationInterval) {
+                simulationPaused = true;
+                stopSimulation();
+                document.getElementById("simulationToggle").textContent = "Resume Demo";
+            } else {
+                startSimulation();
+            }
+        }
+
+        function connectStream() {
+            const url = document.getElementById("wsUrl").value.trim();
+            if (!url) {
+                appendLog("WebSocket URL cannot be empty.", "error");
+                return;
+            }
+            disconnectStream();
+            stopSimulation(false);
+            appendLog(`Connecting to ${url} ...`, "info");
+            try {
+                wsClient = new WebSocket(url);
+            } catch (error) {
+                appendLog(`Failed to open socket: ${error}`, "error");
+                startSimulation();
+                return;
+            }
+            wsClient.onopen = () => {
+                appendLog("WebSocket connection established.", "info");
+                document.getElementById("simulationToggle").textContent = "Resume Demo";
+            };
+            wsClient.onmessage = event => {
+                try {
+                    const payload = JSON.parse(event.data);
+                    const origin = payload.type ? `ws:${payload.type}` : "ws";
+                    renderMetrics(payload, { origin });
+                } catch (error) {
+                    appendLog(`Unable to parse message: ${error}`, "error");
+                }
+            };
+            wsClient.onerror = event => {
+                appendLog("WebSocket reported an error. Check server logs.", "error");
+            };
+            wsClient.onclose = () => {
+                appendLog("WebSocket connection closed.", "info");
+                wsClient = null;
+                if (!simulationPaused) {
+                    startSimulation();
+                }
+            };
+        }
+
+        function disconnectStream() {
+            if (wsClient) {
+                appendLog("Disconnecting WebSocket client.", "info");
+                wsClient.close();
+                wsClient = null;
+            }
+        }
+
+        window.addEventListener("beforeunload", () => {
+            if (wsClient) {
+                wsClient.close();
+            }
+        });
+
+        startSimulation();
+    </script>
+</body>
+</html>
