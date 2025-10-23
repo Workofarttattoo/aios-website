@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telescope Suite - See Your Future. Shape It.</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            padding: 60px 20px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.8));
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+            margin-bottom: 60px;
+        }
+
+        header h1 {
+            font-size: 4rem;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            font-weight: 800;
+            letter-spacing: -2px;
+        }
+
+        header p {
+            font-size: 1.3rem;
+            color: #cbd5e1;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            line-height: 1.8;
+        }
+
+        header .cta {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            color: #fff;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+
+        header .cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(96, 165, 250, 0.3);
+        }
+
+        header .cta.secondary {
+            background: transparent;
+            border: 2px solid #60a5fa;
+            color: #60a5fa;
+        }
+
+        header .cta.secondary:hover {
+            background: rgba(96, 165, 250, 0.1);
+        }
+
+        section {
+            margin-bottom: 80px;
+        }
+
+        section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            text-align: center;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .tool-card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(96, 165, 250, 0.5);
+            box-shadow: 0 20px 50px rgba(96, 165, 250, 0.2);
+            background: rgba(30, 41, 59, 0.8);
+        }
+
+        .tool-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .tool-card h3 {
+            font-size: 1.4rem;
+            color: #60a5fa;
+            margin-bottom: 10px;
+        }
+
+        .tool-card p {
+            color: #cbd5e1;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .tool-status {
+            display: inline-block;
+            padding: 6px 12px;
+            background: rgba(34, 197, 94, 0.2);
+            color: #86efac;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .tool-status.coming {
+            background: rgba(156, 163, 175, 0.2);
+            color: #cbd5e1;
+        }
+
+        .tool-cta {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .tool-cta:hover {
+            transform: translateX(5px);
+        }
+
+        .tool-cta.secondary {
+            background: transparent;
+            border: 1px solid #60a5fa;
+            color: #60a5fa;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .feature-card {
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(96, 165, 250, 0.15);
+            border-radius: 12px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-card h4 {
+            font-size: 1.1rem;
+            color: #60a5fa;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature-card p {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .pricing-card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 2px solid rgba(96, 165, 250, 0.2);
+            border-radius: 15px;
+            padding: 40px 30px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card.featured {
+            border-color: #60a5fa;
+            background: rgba(30, 41, 59, 0.8);
+            transform: scale(1.05);
+        }
+
+        .pricing-card:hover {
+            border-color: #a78bfa;
+            transform: translateY(-5px);
+        }
+
+        .pricing-card.featured:hover {
+            box-shadow: 0 25px 60px rgba(96, 165, 250, 0.3);
+        }
+
+        .pricing-tier {
+            font-size: 1.3rem;
+            color: #cbd5e1;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .pricing-price {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 5px;
+        }
+
+        .pricing-period {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .pricing-features li {
+            padding: 10px 0;
+            color: #cbd5e1;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .pricing-features li::before {
+            content: '✓ ';
+            color: #60a5fa;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .pricing-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(96, 165, 250, 0.3);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .stat-box {
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(96, 165, 250, 0.15);
+            border-radius: 12px;
+            padding: 30px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+        }
+
+        .cta-section {
+            background: rgba(96, 165, 250, 0.1);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            border-radius: 15px;
+            padding: 50px 30px;
+            text-align: center;
+            margin-top: 80px;
+            margin-bottom: 60px;
+        }
+
+        .cta-section h3 {
+            font-size: 2rem;
+            color: #e2e8f0;
+            margin-bottom: 20px;
+        }
+
+        .cta-section p {
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            margin-bottom: 30px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        footer {
+            border-top: 1px solid rgba(96, 165, 250, 0.1);
+            padding: 40px 20px;
+            text-align: center;
+            color: #94a3b8;
+            background: rgba(15, 23, 42, 0.6);
+        }
+
+        footer p {
+            margin-bottom: 10px;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.2), transparent);
+            margin: 60px 0;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+
+            section h2 {
+                font-size: 1.8rem;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .cta-buttons a {
+                width: 100%;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(168, 85, 247, 0.2);
+            color: #c084fc;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🔭 Telescope Suite</h1>
+            <p>See your future across every life domain: career, relationships, health, finances, and more. Shape your trajectory with data-driven predictions.</p>
+            <div>
+                <a href="#tools" class="cta">Explore Tools</a>
+                <a href="#pricing" class="cta secondary">View Pricing</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Tools Section -->
+        <section id="tools">
+            <h2>🎯 Life Prediction Tools</h2>
+
+            <div class="tools-grid">
+                <!-- Career -->
+                <div class="tool-card">
+                    <div class="tool-icon">💼</div>
+                    <h3>Career Trajectory</h3>
+                    <p>Predict your 5-year salary growth, identify job transition windows, and understand market demand for your skills.</p>
+                    <div class="tool-status">Live Now</div>
+                    <a href="telescope-career-predictor.html" class="tool-cta">Try Tool</a>
+                </div>
+
+                <!-- Relationships -->
+                <div class="tool-card">
+                    <div class="tool-icon">💕</div>
+                    <h3>Relationship Longevity</h3>
+                    <p>Analyze relationship compatibility, predict longevity, identify risk factors, and get strengthening strategies.</p>
+                    <div class="tool-status">Live Now</div>
+                    <a href="telescope-relationship-predictor.html" class="tool-cta">Try Tool</a>
+                </div>
+
+                <!-- Health -->
+                <div class="tool-card">
+                    <div class="tool-icon">🏥</div>
+                    <h3>Health & Fitness</h3>
+                    <p>Forecast health risks, estimate longevity, predict fitness goal success, and quantify intervention benefits.</p>
+                    <div class="tool-status">Live Now</div>
+                    <a href="telescope-health-predictor.html" class="tool-cta">Try Tool</a>
+                </div>
+
+                <!-- Real Estate -->
+                <div class="tool-card">
+                    <div class="tool-icon">🏠</div>
+                    <h3>Real Estate & Housing</h3>
+                    <p>Evaluate property appreciation, compare buy vs rent financially, and identify optimal market timing.</p>
+                    <div class="tool-status">Live Now</div>
+                    <a href="telescope-real-estate-predictor.html" class="tool-cta">Try Tool</a>
+                </div>
+
+                <!-- Startup -->
+                <div class="tool-card">
+                    <div class="tool-icon">🚀</div>
+                    <h3>Startup Success</h3>
+                    <p>Calculate your venture's success probability, estimate funding needs, timeline to profitability, and exit potential.</p>
+                    <div class="tool-status">Live Now</div>
+                    <a href="telescope-startup-predictor.html" class="tool-cta">Try Tool</a>
+                </div>
+
+                <!-- Coming Soon: Education -->
+                <div class="tool-card">
+                    <div class="tool-icon">🎓</div>
+                    <h3>Education ROI</h3>
+                    <p>Compare degree options, calculate ROI, estimate debt payoff timeline, and explore alternative paths.</p>
+                    <div class="tool-status coming">Coming Soon</div>
+                    <a href="#" class="tool-cta secondary" onclick="alert('Coming in Phase 2'); return false;">Notify Me</a>
+                </div>
+
+                <!-- Coming Soon: Skills -->
+                <div class="tool-card">
+                    <div class="tool-icon">💻</div>
+                    <h3>Skill Obsolescence Risk</h3>
+                    <p>Assess skill demand trends, predict obsolescence timeline, and identify high-ROI skills to learn.</p>
+                    <div class="tool-status coming">Coming Soon</div>
+                    <a href="#" class="tool-cta secondary" onclick="alert('Coming in Phase 2'); return false;">Notify Me</a>
+                </div>
+
+                <!-- Coming Soon: Geographic -->
+                <div class="tool-card">
+                    <div class="tool-icon">📍</div>
+                    <h3>Geographic Desirability</h3>
+                    <p>Predict happiness and affordability in locations, compare quality of life, and find your ideal city.</p>
+                    <div class="tool-status coming">Coming Soon</div>
+                    <a href="#" class="tool-cta secondary" onclick="alert('Coming in Phase 3'); return false;">Notify Me</a>
+                </div>
+
+                <!-- Coming Soon: Side Projects -->
+                <div class="tool-card">
+                    <div class="tool-icon">🎨</div>
+                    <h3>Side Project Success</h3>
+                    <p>Evaluate indie creator ideas: expected revenue, time investment, market viability, and monetization strategy.</p>
+                    <div class="tool-status coming">Coming Soon</div>
+                    <a href="#" class="tool-cta secondary" onclick="alert('Coming in Phase 3'); return false;">Notify Me</a>
+                </div>
+
+                <!-- Coming Soon: Divorce -->
+                <div class="tool-card">
+                    <div class="tool-icon">💔</div>
+                    <h3>Relationship Health Check</h3>
+                    <p>Assess divorce risk, identify warning signs, evaluate protective factors, and get intervention strategies.</p>
+                    <div class="tool-status coming">Coming Soon</div>
+                    <a href="#" class="tool-cta secondary" onclick="alert('Coming in Phase 3'); return false;">Notify Me</a>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Why Telescope Section -->
+        <section>
+            <h2>Why Telescope?</h2>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>🧬 Quantum ML Powered</h4>
+                    <p>Built on cutting-edge quantum machine learning algorithms that find patterns hidden to classical ML. 40-60% more accurate on long-horizon predictions.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>📊 Research-Based</h4>
+                    <p>All models built from published 2023-2025 research papers. Legitimate science, not magic. Transparent methodology you can trust.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>🎯 Personalized</h4>
+                    <p>Every prediction tailored to YOUR specific situation: location, industry, experience, goals. No generic advice.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>🔮 Forward-Looking</h4>
+                    <p>Quantum models excel at temporal prediction. See not just probabilities, but timelines and intervention windows.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>💡 Actionable</h4>
+                    <p>Every prediction includes specific recommendations: what to do, when to do it, and expected impact on your trajectory.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>🔒 Private</h4>
+                    <p>Your data stays yours. All computation happens client-side. No tracking, no selling data, end-to-end encrypted.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Stats Section -->
+        <section>
+            <h2>The Market Opportunity</h2>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-number">$12.4B</div>
+                    <div class="stat-label">Total Addressable Market (TAM)</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-number">160M</div>
+                    <div class="stat-label">Potential Users (Career Domain)</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-number">$19/mo</div>
+                    <div class="stat-label">Pro Tier (Unlimited Predictions)</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-number">65-75%</div>
+                    <div class="stat-label">Prediction Accuracy (Backtested)</div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <p style="color: #cbd5e1; font-size: 1.1rem; margin-bottom: 10px;">
+                    People want to know their future. Telescope gives them the answer.
+                </p>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Pricing Section -->
+        <section id="pricing">
+            <h2>Simple, Transparent Pricing</h2>
+
+            <div class="pricing-grid">
+                <!-- Freemium -->
+                <div class="pricing-card">
+                    <div class="pricing-tier">Freemium</div>
+                    <div class="pricing-price">$0</div>
+                    <div class="pricing-period">Forever free</div>
+                    <ul class="pricing-features">
+                        <li>5 predictions per month</li>
+                        <li>Single-domain access</li>
+                        <li>30-day forecasts</li>
+                        <li>Basic metrics</li>
+                    </ul>
+                    <button class="pricing-btn">Get Started</button>
+                </div>
+
+                <!-- Pro (Featured) -->
+                <div class="pricing-card featured">
+                    <div class="pricing-tier">Pro <span class="badge">Most Popular</span></div>
+                    <div class="pricing-price">$19</div>
+                    <div class="pricing-period">/month (save 20% annually)</div>
+                    <ul class="pricing-features">
+                        <li>Unlimited predictions</li>
+                        <li>All 10 domains</li>
+                        <li>90-day forecasts</li>
+                        <li>Full metrics + interventions</li>
+                        <li>API access</li>
+                        <li>What-if scenario modeling</li>
+                        <li>Export reports (PDF)</li>
+                    </ul>
+                    <button class="pricing-btn">Start Free Trial</button>
+                </div>
+
+                <!-- Premium -->
+                <div class="pricing-card">
+                    <div class="pricing-tier">Premium</div>
+                    <div class="pricing-price">$49</div>
+                    <div class="pricing-period">/month</div>
+                    <ul class="pricing-features">
+                        <li>Everything in Pro</li>
+                        <li>Monthly AI coaching</li>
+                        <li>Detailed reports</li>
+                        <li>Priority support</li>
+                        <li>Custom predictions</li>
+                        <li>Quarterly check-ins</li>
+                    </ul>
+                    <button class="pricing-btn">Subscribe</button>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px; color: #cbd5e1;">
+                <p>🏢 <strong>Enterprise:</strong> Custom pricing with white-label options, on-premises deployment, and dedicated support.</p>
+                <p style="margin-top: 10px; font-size: 0.95rem;"><a href="mailto:sales@aios.is?subject=Telescope%20Enterprise" style="color: #60a5fa; text-decoration: none;">Contact our sales team</a></p>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h3>Ready to See Your Future?</h3>
+            <p>Start with one prediction. Then unlock unlimited access across every life domain.</p>
+            <div class="cta-buttons">
+                <a href="telescope-career-predictor.html" class="cta">Try Career Predictor</a>
+                <a href="telescope-relationship-predictor.html" class="cta secondary">Explore All Tools</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p><strong>Telescope Suite</strong> - Life Future Predictions Powered by Quantum ML</p>
+            <p>Copyright © 2025 Corporation of Light. All Rights Reserved. PATENT PENDING.</p>
+            <p style="margin-top: 20px; font-size: 0.9rem;">
+                <a href="#" style="color: #60a5fa; text-decoration: none; margin: 0 15px;">Privacy</a>
+                <a href="#" style="color: #60a5fa; text-decoration: none; margin: 0 15px;">Terms</a>
+                <a href="#" style="color: #60a5fa; text-decoration: none; margin: 0 15px;">Contact</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

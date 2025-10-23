@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telescope Suite - Health & Fitness Outcome Predictor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 0;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #34d399;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+
+        input[type="number"],
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 10px;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus,
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #10b981;
+            background: rgba(15, 23, 42, 0.8);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: rgba(16, 185, 129, 0.2);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981, #34d399);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981, #34d399);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        }
+
+        .slider-value {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-left: 10px;
+            font-weight: 600;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            color: #0f172a;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .spinner {
+            border: 3px solid rgba(16, 185, 129, 0.2);
+            border-top: 3px solid #34d399;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .results {
+            display: none;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .metric-box {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 15px;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #34d399;
+        }
+
+        .metric-subtext {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .health-gauge {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+        }
+
+        .gauge-circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 8px solid rgba(16, 185, 129, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gauge-fill {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(#10b981 var(--percentage), rgba(16, 185, 129, 0.2) 0);
+            animation: fillGauge 1.5s ease-out forwards;
+        }
+
+        @keyframes fillGauge {
+            from { --percentage: 0; }
+            to { --percentage: var(--final-percentage); }
+        }
+
+        .gauge-label {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .gauge-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #34d399;
+        }
+
+        .gauge-text {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .health-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .disease-risk {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .disease-risk .metric-value {
+            color: #f87171;
+        }
+
+        .positive-factor {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .positive-factor .metric-value {
+            color: #34d399;
+        }
+
+        .recommendations {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .recommendations h3 {
+            font-size: 1.3rem;
+            color: #34d399;
+            margin-bottom: 15px;
+        }
+
+        .recommendation-item {
+            background: rgba(16, 185, 129, 0.05);
+            border-left: 4px solid #10b981;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .intervention-impact {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .intervention-card {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .intervention-name {
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            margin-bottom: 6px;
+        }
+
+        .intervention-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #34d399;
+        }
+
+        .chart-container {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(16, 185, 129, 0.05);
+            border-radius: 10px;
+        }
+
+        .chart-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .chart-label {
+            width: 140px;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+        }
+
+        .chart-bar-fill {
+            flex: 1;
+            height: 24px;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            border-radius: 4px;
+            margin: 0 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-bar-fill::after {
+            content: attr(data-value);
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .chart-value {
+            width: 50px;
+            text-align: right;
+            font-size: 0.9rem;
+            color: #34d399;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .health-metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .intervention-impact {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏥 Health & Fitness Predictor</h1>
+            <p>See your health trajectory: disease risk, fitness success, and longevity gains from lifestyle changes</p>
+        </header>
+
+        <div class="content">
+            <!-- Input Panel -->
+            <div class="card">
+                <h2>📋 Your Health Profile</h2>
+
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="number" id="age" min="18" max="100" value="45" placeholder="Your age">
+                </div>
+
+                <div class="form-group">
+                    <label for="height">Height (cm)</label>
+                    <input type="number" id="height" min="100" max="250" value="175" placeholder="Your height">
+                </div>
+
+                <div class="form-group">
+                    <label for="weight">Weight (kg)</label>
+                    <input type="number" id="weight" min="30" max="200" value="85" placeholder="Your weight">
+                </div>
+
+                <div class="form-group">
+                    <label for="systolic">Blood Pressure (Systolic)</label>
+                    <input type="number" id="systolic" min="80" max="200" value="130" placeholder="Systolic (e.g., 130)">
+                </div>
+
+                <div class="form-group">
+                    <label for="cholesterol">Total Cholesterol (mg/dL)</label>
+                    <input type="number" id="cholesterol" min="100" max="400" value="200" placeholder="Cholesterol level">
+                </div>
+
+                <div class="form-group">
+                    <label for="exercise">Exercise Frequency Per Week</label>
+                    <input type="range" id="exercise" min="0" max="7" value="2" step="0.5">
+                    <span class="slider-value"><span id="exerciseValue">2</span> days</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="sleep">Sleep Hours Per Night</label>
+                    <input type="range" id="sleep" min="4" max="12" value="6.5" step="0.5">
+                    <span class="slider-value"><span id="sleepValue">6.5</span> hrs</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="stress">Stress Level (1-10)</label>
+                    <input type="range" id="stress" min="1" max="10" value="6" step="1">
+                    <span class="slider-value"><span id="stressValue">6</span>/10</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="smoking">Smoking Status</label>
+                    <select id="smoking">
+                        <option value="never">Never smoked</option>
+                        <option value="former">Former smoker</option>
+                        <option value="occasional">Occasional smoker</option>
+                        <option value="daily">Daily smoker</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="family">Family History of Disease</label>
+                    <select id="family">
+                        <option value="none">No major disease history</option>
+                        <option value="minimal">One relative with disease</option>
+                        <option value="moderate">Multiple relatives with disease</option>
+                        <option value="significant">Strong family history</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="fitness">Fitness Goal (if any)</label>
+                    <select id="fitness">
+                        <option value="none">No specific goal</option>
+                        <option value="lose">Lose weight (5-10 kg)</option>
+                        <option value="improve">Improve fitness level</option>
+                        <option value="muscle">Build muscle</option>
+                    </select>
+                </div>
+
+                <button onclick="runPrediction()">Predict My Health Trajectory</button>
+            </div>
+
+            <!-- Results Panel -->
+            <div class="card results" id="results">
+                <h2>📊 Your Health Outlook</h2>
+
+                <div class="health-gauge">
+                    <div class="gauge-fill" id="gaugeOverlay" style="--final-percentage: 0%"></div>
+                    <div class="gauge-circle">
+                        <div class="gauge-label">
+                            <div class="gauge-number" id="healthScore">75</div>
+                            <div class="gauge-text">Health Score</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-box">
+                    <div class="metric-label">10-Year Health Outlook</div>
+                    <div class="metric-value" id="outlook">Excellent</div>
+                    <div class="metric-subtext">Based on your current health metrics</div>
+                </div>
+
+                <div class="health-metrics">
+                    <div class="metric-box disease-risk">
+                        <div class="metric-label">Heart Disease Risk (10y)</div>
+                        <div class="metric-value" id="heartRisk">12%</div>
+                    </div>
+                    <div class="metric-box disease-risk">
+                        <div class="metric-label">Diabetes Risk (10y)</div>
+                        <div class="metric-value" id="diabetesRisk">8%</div>
+                    </div>
+                    <div class="metric-box positive-factor">
+                        <div class="metric-label">Longevity Estimate</div>
+                        <div class="metric-value" id="longevity">84</div>
+                        <div class="metric-subtext">years old</div>
+                    </div>
+                    <div class="metric-box positive-factor">
+                        <div class="metric-label">Years Above Baseline</div>
+                        <div class="metric-value" id="yearsGain">+6</div>
+                    </div>
+                </div>
+
+                <div class="metric-box" id="fitnessGoal" style="display: none;">
+                    <div class="metric-label">Fitness Goal Success Rate</div>
+                    <div class="metric-value" id="fitnessSuccess">75%</div>
+                    <div class="metric-subtext" id="fitnessTimeline">With consistent effort: 8-12 months</div>
+                </div>
+
+                <div class="chart-container">
+                    <div style="font-size: 0.9rem; color: #cbd5e1; margin-bottom: 12px; font-weight: 600;">Disease Risk by Type</div>
+                    <div class="chart-bar">
+                        <div class="chart-label">Heart Disease</div>
+                        <div class="chart-bar-fill" id="heart" style="width: 30%;"></div>
+                        <div class="chart-value" id="heartVal">12%</div>
+                    </div>
+                    <div class="chart-bar">
+                        <div class="chart-label">Diabetes</div>
+                        <div class="chart-bar-fill" id="diabetes" style="width: 20%;"></div>
+                        <div class="chart-value" id="diabetesVal">8%</div>
+                    </div>
+                    <div class="chart-bar">
+                        <div class="chart-label">Stroke Risk</div>
+                        <div class="chart-bar-fill" id="stroke" style="width: 15%;"></div>
+                        <div class="chart-value" id="strokeVal">6%</div>
+                    </div>
+                </div>
+
+                <div class="intervention-impact">
+                    <div class="intervention-card">
+                        <div class="intervention-name">With Exercise</div>
+                        <div class="intervention-value" id="exerciseGain">+4y</div>
+                    </div>
+                    <div class="intervention-card">
+                        <div class="intervention-name">Better Sleep</div>
+                        <div class="intervention-value" id="sleepGain">+2y</div>
+                    </div>
+                    <div class="intervention-card">
+                        <div class="intervention-name">Stress Reduction</div>
+                        <div class="intervention-value" id="stressGain">+3y</div>
+                    </div>
+                </div>
+
+                <div class="recommendations">
+                    <h3>💡 Personalized Recommendations</h3>
+                    <div id="recommendationsList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update slider displays
+        document.getElementById('exercise').addEventListener('input', (e) => {
+            document.getElementById('exerciseValue').textContent = e.target.value;
+        });
+        document.getElementById('sleep').addEventListener('input', (e) => {
+            document.getElementById('sleepValue').textContent = e.target.value;
+        });
+        document.getElementById('stress').addEventListener('input', (e) => {
+            document.getElementById('stressValue').textContent = e.target.value;
+        });
+
+        function calculateBMI(height, weight) {
+            // height in cm, weight in kg
+            const heightM = height / 100;
+            return weight / (heightM * heightM);
+        }
+
+        function calculateHealthScore(age, height, weight, systolic, cholesterol, exercise, sleep, stress, smoking, family) {
+            let score = 100;
+
+            // BMI factor
+            const bmi = calculateBMI(height, weight);
+            if (bmi < 18.5 || bmi > 30) score -= 10;
+            else if (bmi < 20 || bmi > 25) score -= 5;
+
+            // Blood pressure
+            if (systolic > 140) score -= 15;
+            else if (systolic > 130) score -= 8;
+            else if (systolic < 90) score -= 3;
+
+            // Cholesterol
+            if (cholesterol > 240) score -= 15;
+            else if (cholesterol > 200) score -= 8;
+            else if (cholesterol < 140) score += 2;
+
+            // Exercise (days per week)
+            score += exercise * 2;
+
+            // Sleep
+            if (sleep >= 7 && sleep <= 9) score += 10;
+            else if (sleep >= 6 && sleep <= 10) score += 5;
+            else score -= 8;
+
+            // Stress
+            score -= stress * 0.8;
+
+            // Smoking
+            if (smoking === 'never') score += 5;
+            else if (smoking === 'former') score += 2;
+            else if (smoking === 'daily') score -= 20;
+            else score -= 10;
+
+            // Family history
+            if (family === 'significant') score -= 15;
+            else if (family === 'moderate') score -= 8;
+            else if (family === 'minimal') score -= 3;
+
+            return Math.max(20, Math.min(100, score));
+        }
+
+        function calculateDiseaseRisks(age, bmi, systolic, cholesterol, exercise, smoking, family) {
+            // Framingham risk factors
+            let heartDiseaseBase = 5 + (age - 40) * 0.3;
+            if (systolic > 140) heartDiseaseBase += 8;
+            if (cholesterol > 240) heartDiseaseBase += 10;
+            if (smoking !== 'never') heartDiseaseBase += 12;
+            if (family === 'significant') heartDiseaseBase += 15;
+            else if (family === 'moderate') heartDiseaseBase += 8;
+
+            // Exercise reduces risk
+            heartDiseaseBase -= exercise * 1.5;
+
+            let diabetesBase = 3 + (age - 40) * 0.15;
+            if (bmi > 30) diabetesBase += 20;
+            else if (bmi > 25) diabetesBase += 10;
+            if (exercise < 2) diabetesBase += 8;
+            if (family === 'significant') diabetesBase += 12;
+
+            let strokeBase = 2 + (age - 40) * 0.2;
+            if (systolic > 140) strokeBase += 10;
+            if (smoking !== 'never') strokeBase += 8;
+
+            return {
+                heart: Math.max(2, Math.min(45, heartDiseaseBase)),
+                diabetes: Math.max(1, Math.min(40, diabetesBase)),
+                stroke: Math.max(1, Math.min(30, strokeBase))
+            };
+        }
+
+        function calculateLongevity(age, healthScore, exercise, sleep, stress) {
+            let baseLife = 78 + (healthScore - 50) * 0.3;
+            baseLife += exercise * 1.2;
+            baseLife -= stress * 0.3;
+            if (sleep >= 7 && sleep <= 8) baseLife += 2;
+
+            return Math.round(baseLife);
+        }
+
+        function generateRecommendations(age, bmi, exercise, sleep, stress, smoking, family, healthScore, heartRisk, diabetesRisk) {
+            const recs = [];
+
+            if (exercise < 3) {
+                recs.push("🚴 Exercise 30 minutes daily (5-7 days/week). This single change can add 4+ years and reduce heart disease risk by 30%.");
+            }
+
+            if (sleep < 7 || sleep > 9) {
+                recs.push("😴 Aim for 7-9 hours of quality sleep. Better sleep reduces stress hormones and improves cardiovascular health.");
+            }
+
+            if (stress > 6) {
+                recs.push("🧘 Implement stress management: meditation (10-15 min daily), yoga, or counseling. High stress can shorten lifespan by 3+ years.");
+            }
+
+            if (bmi > 25) {
+                recs.push("🥗 Achieve healthy BMI through nutrition and exercise. Even 5-10 kg loss can reduce disease risk significantly.");
+            }
+
+            if (smoking !== 'never') {
+                recs.push("🚭 Quit smoking immediately. Benefits start within weeks: easier breathing, lower cancer/heart disease risk within 1 year.");
+            }
+
+            if (heartRisk > 15) {
+                recs.push("❤️ Schedule a cardiology checkup. Consider preventive medications (aspirin, statins) if recommended by doctor.");
+            }
+
+            if (diabetesRisk > 12) {
+                recs.push("🩺 Get regular glucose screening. Maintain healthy weight and exercise to prevent Type 2 diabetes.");
+            }
+
+            if (family === 'significant') {
+                recs.push("👨‍👩‍👧‍👦 Given your family history, be proactive: annual checkups, preventive screening, genetic counseling if needed.");
+            }
+
+            if (healthScore < 60) {
+                recs.push("⚕️ Consult your doctor about a comprehensive health plan. Your current metrics suggest multiple intervention points.");
+            }
+
+            return recs.length > 0 ? recs : ["✅ Maintain your current lifestyle - your health trajectory looks strong!"];
+        }
+
+        function runPrediction() {
+            const age = parseInt(document.getElementById('age').value);
+            const height = parseInt(document.getElementById('height').value);
+            const weight = parseInt(document.getElementById('weight').value);
+            const systolic = parseInt(document.getElementById('systolic').value);
+            const cholesterol = parseInt(document.getElementById('cholesterol').value);
+            const exercise = parseFloat(document.getElementById('exercise').value);
+            const sleep = parseFloat(document.getElementById('sleep').value);
+            const stress = parseInt(document.getElementById('stress').value);
+            const smoking = document.getElementById('smoking').value;
+            const family = document.getElementById('family').value;
+            const fitness = document.getElementById('fitness').value;
+
+            const bmi = calculateBMI(height, weight);
+            const healthScore = calculateHealthScore(age, height, weight, systolic, cholesterol, exercise, sleep, stress, smoking, family);
+            const risks = calculateDiseaseRisks(age, bmi, systolic, cholesterol, exercise, smoking, family);
+            const longevity = calculateLongevity(age, healthScore, exercise, sleep, stress);
+            const yearsGain = longevity - (78 - (age - 45) * 0.1);
+
+            // Update results
+            document.getElementById('healthScore').textContent = Math.round(healthScore);
+            document.getElementById('gaugeOverlay').style.setProperty('--final-percentage', `${healthScore}%`);
+
+            if (healthScore >= 80) {
+                document.getElementById('outlook').textContent = 'Excellent';
+            } else if (healthScore >= 60) {
+                document.getElementById('outlook').textContent = 'Good';
+            } else if (healthScore >= 40) {
+                document.getElementById('outlook').textContent = 'Fair';
+            } else {
+                document.getElementById('outlook').textContent = 'Needs Attention';
+            }
+
+            document.getElementById('heartRisk').textContent = Math.round(risks.heart) + '%';
+            document.getElementById('diabetesRisk').textContent = Math.round(risks.diabetes) + '%';
+            document.getElementById('longevity').textContent = longevity;
+            document.getElementById('yearsGain').textContent = '+' + Math.round(yearsGain);
+
+            document.getElementById('heartVal').textContent = Math.round(risks.heart) + '%';
+            document.getElementById('diabetesVal').textContent = Math.round(risks.diabetes) + '%';
+            document.getElementById('strokeVal').textContent = Math.round(risks.stroke) + '%';
+
+            // Interventions
+            const exerciseGain = Math.max(0, (7 - exercise) * 0.8);
+            const sleepGain = (sleep >= 7 && sleep <= 8) ? 0 : Math.abs(sleep - 7.5) * 0.6;
+            const stressGain = Math.max(0, (10 - stress) * 0.5);
+
+            document.getElementById('exerciseGain').textContent = '+' + exerciseGain.toFixed(1) + 'y';
+            document.getElementById('sleepGain').textContent = '+' + sleepGain.toFixed(1) + 'y';
+            document.getElementById('stressGain').textContent = '+' + stressGain.toFixed(1) + 'y';
+
+            // Fitness goal
+            if (fitness !== 'none') {
+                document.getElementById('fitnessGoal').style.display = 'block';
+                let successRate = 60;
+                if (exercise >= 2) successRate += 15;
+                if (sleep >= 7) successRate += 10;
+                if (stress <= 5) successRate += 10;
+                if (fitness === 'lose' && bmi > 25) successRate += 5;
+
+                document.getElementById('fitnessSuccess').textContent = Math.min(95, successRate) + '%';
+
+                let timeline = 'With consistent effort: 12+ months';
+                if (fitness === 'lose') timeline = 'With consistent effort: 3-6 months';
+                else if (fitness === 'muscle') timeline = 'With consistent effort: 12-18 months';
+
+                document.getElementById('fitnessTimeline').textContent = timeline;
+            }
+
+            // Recommendations
+            const recs = generateRecommendations(age, bmi, exercise, sleep, stress, smoking, family, healthScore, risks.heart, risks.diabetes);
+            const recsList = document.getElementById('recommendationsList');
+            recsList.innerHTML = '';
+            recs.forEach(rec => {
+                const item = document.createElement('div');
+                item.className = 'recommendation-item';
+                item.textContent = rec;
+                recsList.appendChild(item);
+            });
+
+            // Show results
+            document.getElementById('results').classList.add('active');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    </script>
+</body>
+</html>

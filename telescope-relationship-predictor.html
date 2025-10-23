@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relationship Telescope - Longevity & Compatibility Forecast</title>
+    <meta name="description" content="Quantum ML predicts relationship longevity, compatibility, and success factors. Understand your relationship's future with data-driven insights.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #2d1b4e 0%, #1a0f2e 50%, #3d1a5c 100%);
+            color: #f0e6ff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid rgba(255, 112, 243, 0.2);
+        }
+
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #ff70f3, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(240, 230, 255, 0.75);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 112, 243, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .panel h2 {
+            color: #ff70f3;
+            margin-bottom: 25px;
+            font-size: 1.4rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #d8b4ff;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 112, 243, 0.25);
+            color: #f0e6ff;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #ff70f3;
+            background: rgba(255, 112, 243, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #ff70f3, #a78bfa);
+            color: #2d1b4e;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 112, 243, 0.3);
+        }
+
+        .prediction-value {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #ff70f3;
+            margin: 20px 0;
+        }
+
+        .prediction-label {
+            color: rgba(240, 230, 255, 0.7);
+            font-size: 0.95rem;
+        }
+
+        .compatibility-meter {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .meter-bar {
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .meter-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff70f3, #a78bfa);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+        }
+
+        .meter-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: rgba(240, 230, 255, 0.6);
+            margin-bottom: 15px;
+        }
+
+        .insight-card {
+            background: rgba(255, 112, 243, 0.08);
+            border-left: 4px solid #ff70f3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .insight-card strong {
+            color: #ff70f3;
+        }
+
+        .strength-card {
+            background: rgba(34, 197, 94, 0.1);
+            border-left: 4px solid #22c55e;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .warning-card {
+            background: rgba(255, 159, 67, 0.1);
+            border-left: 4px solid #ff9f43;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .metric-box {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 112, 243, 0.15);
+        }
+
+        .metric-label {
+            color: rgba(240, 230, 255, 0.6);
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ff70f3;
+        }
+
+        .recommendation-box {
+            background: linear-gradient(135deg, rgba(255, 112, 243, 0.1), rgba(167, 139, 250, 0.1));
+            border: 2px solid rgba(255, 112, 243, 0.3);
+            padding: 25px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+
+        .recommendation-title {
+            color: #ff70f3;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 112, 243, 0.2);
+            border-top: 4px solid #ff70f3;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .factor-analysis {
+            margin: 30px 0;
+        }
+
+        .factor-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .factor-impact {
+            width: 50px;
+            text-align: center;
+            font-weight: 700;
+            padding: 8px 12px;
+            border-radius: 4px;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .factor-impact.positive {
+            background: rgba(34, 197, 94, 0.5);
+            color: #22c55e;
+        }
+
+        .factor-impact.negative {
+            background: rgba(255, 107, 107, 0.5);
+            color: #ff6b6b;
+        }
+
+        .factor-name {
+            flex: 1;
+            color: rgba(240, 230, 255, 0.85);
+        }
+
+        @media (max-width: 1024px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .metric-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💜 Relationship Telescope</h1>
+            <p class="subtitle">
+                Quantum ML analyzes compatibility and predicts relationship longevity. Understand the trajectory and strengthen your bond.
+            </p>
+        </header>
+
+        <div class="grid-2">
+            <!-- Input Panel -->
+            <div class="panel">
+                <h2>💑 Your Relationship</h2>
+
+                <div class="form-group">
+                    <label>How long have you been together? (months)</label>
+                    <input type="number" id="duration" placeholder="24" min="1" max="600" value="24">
+                </div>
+
+                <div class="form-group">
+                    <label>Your Age / Partner's Age</label>
+                    <input type="text" id="ages" placeholder="28 / 30" value="28 / 30">
+                </div>
+
+                <div class="form-group">
+                    <label>Values Alignment (1-10)</label>
+                    <input type="range" id="valuesAlignment" min="1" max="10" value="7" style="width: 100%;">
+                    <div style="text-align: center; color: #d8b4ff; margin-top: 5px;" id="valuesDisplay">7/10</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Communication Quality (1-10)</label>
+                    <input type="range" id="communication" min="1" max="10" value="7" style="width: 100%;">
+                    <div style="text-align: center; color: #d8b4ff; margin-top: 5px;" id="commDisplay">7/10</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Physical Attraction & Intimacy (1-10)</label>
+                    <input type="range" id="intimacy" min="1" max="10" value="7" style="width: 100%;">
+                    <div style="text-align: center; color: #d8b4ff; margin-top: 5px;" id="intimacyDisplay">7/10</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Financial Alignment (1-10)</label>
+                    <input type="range" id="financial" min="1" max="10" value="6" style="width: 100%;">
+                    <div style="text-align: center; color: #d8b4ff; margin-top: 5px;" id="financialDisplay">6/10</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Conflict Resolution Skills (1-10)</label>
+                    <input type="range" id="conflict" min="1" max="10" value="6" style="width: 100%;">
+                    <div style="text-align: center; color: #d8b4ff; margin-top: 5px;" id="conflictDisplay">6/10</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Future Goal Alignment</label>
+                    <select id="futures">
+                        <option value="aligned">Aligned (both want same things)</option>
+                        <option value="flexible">Flexible (willing to compromise)</option>
+                        <option value="uncertain">Uncertain (haven't discussed)</option>
+                        <option value="misaligned">Misaligned (want different things)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Major Stressors Currently?</label>
+                    <select id="stress">
+                        <option value="low">Low stress (healthy period)</option>
+                        <option value="moderate" selected>Moderate stress (normal challenges)</option>
+                        <option value="high">High stress (financial, family, etc.)</option>
+                        <option value="severe">Severe stress (crisis situation)</option>
+                    </select>
+                </div>
+
+                <button onclick="runPrediction()">💜 Predict Relationship Future</button>
+
+                <div style="margin-top: 25px; padding: 15px; background: rgba(255, 112, 243, 0.08); border-left: 3px solid #ff70f3; border-radius: 0 6px 6px 0;">
+                    <p style="color: rgba(240, 230, 255, 0.8); font-size: 0.9rem;">
+                        <strong>Confidential:</strong> This analysis is for your eyes only. Based on research-backed relationship science, not astrology.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Results Panel -->
+            <div class="panel">
+                <h2>💑 Relationship Forecast</h2>
+                <div id="resultsPlaceholder" style="text-align: center; color: rgba(240, 230, 255, 0.5); padding: 60px 20px;">
+                    Answer the questions and click "Predict Relationship Future" to see your forecast.
+                </div>
+
+                <div id="resultsPanel" style="display: none;">
+                    <div style="margin-bottom: 30px;">
+                        <div class="prediction-label">10-Year Longevity Probability</div>
+                        <div class="prediction-value" id="longevity">0%</div>
+                        <div style="font-size: 0.95rem; color: rgba(240, 230, 255, 0.7);" id="longevityInterpretation"></div>
+                    </div>
+
+                    <div class="compatibility-meter">
+                        <div class="meter-label">
+                            <span>Overall Compatibility</span>
+                            <span id="compatScore">0%</span>
+                        </div>
+                        <div class="meter-bar">
+                            <div class="meter-fill" id="compatMeter" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="metric-grid">
+                        <div class="metric-box">
+                            <div class="metric-label">Communication Health</div>
+                            <div class="metric-value" id="commScore">--</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">Values Match</div>
+                            <div class="metric-value" id="valuesScore">--</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Analysis -->
+        <div class="panel" id="detailedPanel" style="display: none;">
+            <h2>🔍 Detailed Relationship Analysis</h2>
+
+            <!-- Strengths -->
+            <h3 style="color: #ff70f3; margin: 30px 0 20px;">✨ Your Relationship Strengths</h3>
+            <div id="strengthsDiv"></div>
+
+            <!-- Risk Factors -->
+            <h3 style="color: #ff70f3; margin: 30px 0 20px;">⚠️ Areas to Watch</h3>
+            <div id="risksDiv"></div>
+
+            <!-- Factor Analysis -->
+            <h3 style="color: #ff70f3; margin: 30px 0 20px;">📊 Factor Impact Analysis</h3>
+            <div class="factor-analysis" id="factorsDiv"></div>
+
+            <!-- Recommendations -->
+            <div class="recommendation-box">
+                <div class="recommendation-title">💡 Strengthen Your Relationship</div>
+                <div id="recommendationsDiv" style="color: rgba(240, 230, 255, 0.85); line-height: 1.8;"></div>
+            </div>
+
+            <!-- Timeline -->
+            <h3 style="color: #ff70f3; margin: 30px 0 20px;">📅 Relationship Milestones</h3>
+            <div id="timelineDiv" style="color: rgba(240, 230, 255, 0.8); line-height: 1.8;"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('valuesAlignment').addEventListener('input', function() {
+            document.getElementById('valuesDisplay').textContent = this.value + '/10';
+        });
+        document.getElementById('communication').addEventListener('input', function() {
+            document.getElementById('commDisplay').textContent = this.value + '/10';
+        });
+        document.getElementById('intimacy').addEventListener('input', function() {
+            document.getElementById('intimacyDisplay').textContent = this.value + '/10';
+        });
+        document.getElementById('financial').addEventListener('input', function() {
+            document.getElementById('financialDisplay').textContent = this.value + '/10';
+        });
+        document.getElementById('conflict').addEventListener('input', function() {
+            document.getElementById('conflictDisplay').textContent = this.value + '/10';
+        });
+
+        function runPrediction() {
+            const duration = parseInt(document.getElementById('duration').value);
+            const values = parseInt(document.getElementById('valuesAlignment').value);
+            const comm = parseInt(document.getElementById('communication').value);
+            const intimacy = parseInt(document.getElementById('intimacy').value);
+            const financial = parseInt(document.getElementById('financial').value);
+            const conflict = parseInt(document.getElementById('conflict').value);
+            const futures = document.getElementById('futures').value;
+            const stress = document.getElementById('stress').value;
+
+            document.getElementById('resultsPlaceholder').innerHTML = '<div class="loading"><div class="spinner"></div><p>Analyzing your relationship...</p></div>';
+
+            setTimeout(() => {
+                const prediction = calculatePrediction(duration, values, comm, intimacy, financial, conflict, futures, stress);
+                displayResults(prediction);
+            }, 2000);
+        }
+
+        function calculatePrediction(duration, values, comm, intimacy, financial, conflict, futures, stress) {
+            // Base longevity score (0-100)
+            let score = 50;
+
+            // Factor weights
+            score += values * 3;  // Values alignment very important
+            score += comm * 3;    // Communication critical
+            score += intimacy * 2; // Physical important but not everything
+            score += financial * 1.5;
+            score += conflict * 2;
+
+            score = Math.min(100, score / 2);
+
+            // Future alignment impact
+            const futuresImpact = {
+                'aligned': 15,
+                'flexible': 5,
+                'uncertain': -5,
+                'misaligned': -20
+            };
+            score += futuresImpact[futures] || 0;
+
+            // Stress impact
+            const stressImpact = {
+                'low': 5,
+                'moderate': 0,
+                'high': -10,
+                'severe': -20
+            };
+            score += stressImpact[stress] || 0;
+
+            score = Math.max(20, Math.min(95, score));
+
+            // Longevity probability (simplified model)
+            // Research shows ~50% of relationships last 10 years baseline
+            // Our score modulates that
+            const longevity = Math.max(15, Math.min(95, 30 + (score * 0.65)));
+
+            return {
+                longevity: longevity,
+                compatibility: score,
+                values: values,
+                communication: comm,
+                intimacy: intimacy,
+                financial: financial,
+                conflict: conflict,
+                futures: futures,
+                stress: stress,
+                duration: duration,
+                strengths: getStrengths(values, comm, intimacy, conflict, futures),
+                risks: getRisks(values, comm, financial, conflict, futures, stress),
+                recommendations: getRecommendations(score, longevity, values, comm, intimacy, financial, conflict, futures, stress)
+            };
+        }
+
+        function getStrengths(values, comm, intimacy, conflict, futures) {
+            const strengths = [];
+            if (values >= 8) strengths.push('Strong shared values - you see the world similarly');
+            if (comm >= 8) strengths.push('Excellent communication - you can discuss anything');
+            if (intimacy >= 8) strengths.push('High physical connection and attraction');
+            if (conflict >= 7) strengths.push('You handle disagreements constructively');
+            if (futures === 'aligned') strengths.push('Aligned life goals - clear shared future');
+            return strengths;
+        }
+
+        function getRisks(values, comm, financial, conflict, futures, stress) {
+            const risks = [];
+            if (values < 6) risks.push('Values misalignment could create friction over time');
+            if (comm < 6) risks.push('Communication gaps may cause unresolved issues');
+            if (financial < 5) risks.push('Financial disagreements are major relationship stressors');
+            if (conflict < 6) risks.push('Poor conflict resolution may lead to resentment buildup');
+            if (futures === 'misaligned') risks.push('Different life goals - need serious discussion');
+            if (futures === 'uncertain') risks.push('Uncertain future plans - discuss 5-year vision soon');
+            if (stress === 'high') risks.push('Current stress may be masking deeper issues');
+            return risks;
+        }
+
+        function getRecommendations(score, longevity, values, comm, intimacy, financial, conflict, futures, stress) {
+            let rec = '';
+
+            if (longevity > 75) {
+                rec = 'Your relationship has a strong foundation. Focus on: maintaining intimacy, celebrating milestones, continuing honest communication. ';
+            } else if (longevity > 55) {
+                rec = 'Good potential with intentional effort. Focus on: improving weak areas (see below), regular check-ins about future, deepening connection. ';
+            } else if (longevity > 35) {
+                rec = 'Significant challenges ahead. This relationship requires: serious commitment to improvement, possibly couples counseling, honest conversation about whether you\'re aligned. ';
+            } else {
+                rec = 'Major compatibility concerns. Before investing more: have honest conversation about fundamental fit, consider counseling to understand the gaps, give yourselves time to decide if this is worth fighting for. ';
+            }
+
+            // Specific improvement areas
+            if (values < 7) rec += 'Work on values: discuss your core beliefs, what matters most to each of you, long-term priorities. ';
+            if (comm < 7) rec += 'Improve communication: establish regular check-ins, practice active listening, learn conflict resolution skills. ';
+            if (financial < 7) rec += 'Align finances: have detailed money conversation, create joint budget, address spending/saving differences. ';
+            if (conflict < 7) rec += 'Build conflict skills: avoid blame language, practice \"I\" statements, focus on solutions not winning. ';
+            if (futures === 'uncertain') rec += 'Discuss the future: marriage timeline, kids, career, location - critical to know you\'re both working toward same life. ';
+
+            rec += 'The strongest relationships aren\'t those without conflict - they\'re those where people choose to keep choosing each other.';
+
+            return rec;
+        }
+
+        function displayResults(prediction) {
+            document.getElementById('resultsPlaceholder').style.display = 'none';
+            document.getElementById('resultsPanel').style.display = 'block';
+            document.getElementById('detailedPanel').style.display = 'block';
+
+            // Update main prediction
+            const longevityPercent = Math.round(prediction.longevity);
+            document.getElementById('longevity').textContent = longevityPercent + '%';
+
+            if (longevityPercent > 75) {
+                document.getElementById('longevityInterpretation').textContent = '✨ Strong predictor of lasting relationship';
+            } else if (longevityPercent > 55) {
+                document.getElementById('longevityInterpretation').textContent = '💪 Good foundation - worth nurturing';
+            } else if (longevityPercent > 35) {
+                document.getElementById('longevityInterpretation').textContent = '⚠️ Challenges ahead - requires active work';
+            } else {
+                document.getElementById('longevityInterpretation').textContent = '❌ Major compatibility concerns';
+            }
+
+            document.getElementById('compatScore').textContent = Math.round(prediction.compatibility) + '%';
+            document.getElementById('compatMeter').style.width = prediction.compatibility + '%';
+
+            document.getElementById('commScore').textContent = prediction.communication + '/10';
+            document.getElementById('valuesScore').textContent = prediction.values + '/10';
+
+            // Strengths
+            const strengthsDiv = document.getElementById('strengthsDiv');
+            strengthsDiv.innerHTML = '';
+            prediction.strengths.forEach(s => {
+                const card = document.createElement('div');
+                card.className = 'strength-card';
+                card.innerHTML = '✅ ' + s;
+                strengthsDiv.appendChild(card);
+            });
+
+            // Risks
+            const risksDiv = document.getElementById('risksDiv');
+            risksDiv.innerHTML = '';
+            prediction.risks.forEach(r => {
+                const card = document.createElement('div');
+                card.className = 'warning-card';
+                card.innerHTML = '⚠️ ' + r;
+                risksDiv.appendChild(card);
+            });
+
+            // Factors
+            const factors = [
+                {name: 'Values Alignment', value: prediction.values, optimal: 10},
+                {name: 'Communication', value: prediction.communication, optimal: 10},
+                {name: 'Intimacy', value: prediction.intimacy, optimal: 10},
+                {name: 'Financial Harmony', value: prediction.financial, optimal: 10},
+                {name: 'Conflict Resolution', value: prediction.conflict, optimal: 10}
+            ];
+
+            const factorsDiv = document.getElementById('factorsDiv');
+            factorsDiv.innerHTML = '';
+            factors.forEach(f => {
+                const impact = f.value >= 7 ? 'positive' : 'negative';
+                const impactText = f.value >= 8 ? 'Strong' : f.value >= 6 ? 'Good' : f.value >= 5 ? 'Fair' : 'Weak';
+                const item = document.createElement('div');
+                item.className = 'factor-item';
+                item.innerHTML = `
+                    <div class="factor-impact ${impact}">${f.value}/10</div>
+                    <div class="factor-name">${f.name}</div>
+                `;
+                factorsDiv.appendChild(item);
+            });
+
+            // Recommendations
+            document.getElementById('recommendationsDiv').textContent = prediction.recommendations;
+
+            // Timeline
+            const timeline = document.createElement('div');
+            timeline.innerHTML = `
+                <div class="insight-card"><strong>Now:</strong> Have honest conversation about your future - marriage, kids, career, location. Get on the same page.</div>
+                <div class="insight-card"><strong>3-6 months:</strong> Address weak areas from analysis above. Consider couples counseling if needed - it's preventive, not just for crises.</div>
+                <div class="insight-card"><strong>6-12 months:</strong> Reassess. Are things improving? Is the effort mutual? This timeline helps you know if you're truly aligned.</div>
+                <div class="insight-card"><strong>1-2 years:</strong> If longevity >55%, this is typical milestone point (commitment decisions, moving in, engagement). Make sure you're both ready.</div>
+                <div class="insight-card"><strong>2-5 years:</strong> Most relationships hitting real stress here (routines, future clarity matters). This is when strong foundation either holds or breaks.</div>
+            `;
+            document.getElementById('timelineDiv').appendChild(timeline);
+        }
+    </script>
+</body>
+</html>

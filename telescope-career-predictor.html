@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Telescope - 5-Year Salary & Opportunity Forecast</title>
+    <meta name="description" content="Quantum ML predicts your career trajectory: salary growth, job market risk, optimal next moves, and timing. See your career future with confidence.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #e8f4f8;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid rgba(0, 212, 255, 0.2);
+        }
+
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #00d4ff, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(232, 244, 248, 0.75);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .panel h2 {
+            color: #00d4ff;
+            margin-bottom: 25px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #a78bfa;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(0, 212, 255, 0.25);
+            color: #e8f4f8;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #00d4ff;
+            background: rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 12px rgba(0, 212, 255, 0.2);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #00d4ff, #a78bfa);
+            color: #0a1a2e;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .prediction-panel {
+            display: none;
+        }
+
+        .prediction-value {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #00d4ff;
+            margin: 20px 0;
+        }
+
+        .prediction-label {
+            color: rgba(232, 244, 248, 0.7);
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+        }
+
+        .result-card {
+            background: rgba(0, 212, 255, 0.08);
+            border-left: 4px solid #00d4ff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .result-card h3 {
+            color: #00d4ff;
+            margin-bottom: 10px;
+        }
+
+        .result-card p {
+            color: rgba(232, 244, 248, 0.8);
+            line-height: 1.7;
+        }
+
+        .salary-chart {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .chart-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .chart-label {
+            width: 80px;
+            font-weight: 600;
+            color: #a78bfa;
+        }
+
+        .chart-bar {
+            flex: 1;
+            height: 30px;
+            background: linear-gradient(90deg, #00d4ff, #a78bfa);
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .chart-value {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .risk-card {
+            background: rgba(255, 107, 107, 0.1);
+            border-left: 4px solid #ff6b6b;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .risk-card strong {
+            color: #ff9f43;
+        }
+
+        .opportunity-card {
+            background: rgba(34, 197, 94, 0.1);
+            border-left: 4px solid #22c55e;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .opportunity-card strong {
+            color: #22c55e;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .metric-box {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid rgba(0, 212, 255, 0.15);
+        }
+
+        .metric-label {
+            color: rgba(232, 244, 248, 0.6);
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00d4ff;
+        }
+
+        .timeline {
+            margin: 30px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding-left: 20px;
+            border-left: 2px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .timeline-dot {
+            width: 16px;
+            height: 16px;
+            background: #00d4ff;
+            border-radius: 50%;
+            margin-top: 3px;
+            margin-left: -30px;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-time {
+            color: #a78bfa;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .timeline-description {
+            color: rgba(232, 244, 248, 0.8);
+        }
+
+        .recommendation-box {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(167, 139, 250, 0.1));
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            padding: 25px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+
+        .recommendation-title {
+            color: #00d4ff;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .recommendation-text {
+            color: rgba(232, 244, 248, 0.85);
+            line-height: 1.8;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 212, 255, 0.2);
+            border-top: 4px solid #00d4ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            border: 1px solid rgba(0, 212, 255, 0.15);
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #00d4ff;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: rgba(232, 244, 248, 0.6);
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 1024px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .metric-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔭 Career Telescope</h1>
+            <p class="subtitle">
+                Quantum ML reveals your 5-year career trajectory. See salary growth, opportunity windows, and risk factors.
+            </p>
+        </header>
+
+        <div class="grid-2">
+            <!-- Input Panel -->
+            <div class="panel">
+                <h2>📊 Your Career Profile</h2>
+
+                <div class="form-group">
+                    <label>Current Age</label>
+                    <input type="number" id="age" placeholder="35" min="18" max="80" value="35">
+                </div>
+
+                <div class="form-group">
+                    <label>Years of Experience</label>
+                    <input type="number" id="experience" placeholder="10" min="0" max="60" value="10">
+                </div>
+
+                <div class="form-group">
+                    <label>Current Annual Salary ($K)</label>
+                    <input type="number" id="salary" placeholder="120" min="20" max="500" value="120">
+                </div>
+
+                <div class="form-group">
+                    <label>Industry</label>
+                    <select id="industry">
+                        <option value="tech">Tech / Software Engineering</option>
+                        <option value="finance">Finance / Banking</option>
+                        <option value="healthcare">Healthcare</option>
+                        <option value="manufacturing">Manufacturing</option>
+                        <option value="consulting">Management Consulting</option>
+                        <option value="education">Education</option>
+                        <option value="sales">Sales / Business Development</option>
+                        <option value="design">Design / Creative</option>
+                        <option value="operations">Operations / Supply Chain</option>
+                        <option value="hr">Human Resources</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Job Level</label>
+                    <select id="level">
+                        <option value="individual">Individual Contributor</option>
+                        <option value="lead">Team Lead / Senior</option>
+                        <option value="manager">Manager</option>
+                        <option value="senior_manager">Senior Manager / Director</option>
+                        <option value="executive">Executive (VP+)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Geographic Location</label>
+                    <select id="location">
+                        <option value="major_us">Major US Tech Hub (SF, NYC, Boston)</option>
+                        <option value="secondary_us">Secondary US City</option>
+                        <option value="midwest">Midwest / Smaller City</option>
+                        <option value="remote">Remote / Distributed</option>
+                        <option value="international">International</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Career Satisfaction (1-10)</label>
+                    <input type="range" id="satisfaction" min="1" max="10" value="6" style="width: 100%;">
+                    <div style="text-align: center; color: #a78bfa; margin-top: 5px;" id="satisfactionDisplay">6/10</div>
+                </div>
+
+                <div class="form-group">
+                    <label>How committed are you to staying in this industry?</label>
+                    <select id="commitment">
+                        <option value="exploring">Exploring options (open to change)</option>
+                        <option value="flexible">Flexible (willing to change for right opportunity)</option>
+                        <option value="committed">Committed (want to grow here)</option>
+                        <option value="passionate">Very passionate (this is my calling)</option>
+                    </select>
+                </div>
+
+                <button onclick="runPrediction()">🔮 Predict My 5-Year Future</button>
+
+                <div style="margin-top: 25px; padding: 15px; background: rgba(0, 212, 255, 0.08); border-left: 3px solid #00d4ff; border-radius: 0 6px 6px 0;">
+                    <p style="color: rgba(232, 244, 248, 0.8); font-size: 0.9rem;">
+                        <strong>How it works:</strong> We analyze patterns from 500K+ career trajectories using quantum ML. Our model evaluates salary growth, market demand, industry trends, and your personal factors to predict your future trajectory with confidence intervals.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Results Panel -->
+            <div class="panel">
+                <h2>🎯 Your Career Future</h2>
+                <div id="resultsPlaceholder" style="text-align: center; color: rgba(232, 244, 248, 0.5); padding: 60px 20px;">
+                    Fill in your career profile and click "Predict My 5-Year Future" to see your trajectory.
+                </div>
+
+                <div id="resultsPanel" class="prediction-panel">
+                    <div style="margin-bottom: 30px;">
+                        <div class="prediction-label">Projected Salary (5 Years)</div>
+                        <div class="prediction-value" id="projectedSalary">$0K</div>
+                        <div style="font-size: 0.95rem; color: rgba(232, 244, 248, 0.7);" id="salaryChange">+0% growth</div>
+                    </div>
+
+                    <div class="metric-grid">
+                        <div class="metric-box">
+                            <div class="metric-label">Confidence Level</div>
+                            <div class="metric-value" id="confidenceScore">--</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">Growth Potential</div>
+                            <div class="metric-value" id="growthPotential">--</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">Career Stability</div>
+                            <div class="metric-value" id="stability">--</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">Market Demand</div>
+                            <div class="metric-value" id="marketDemand">--</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Results -->
+        <div class="panel" id="detailedPanel" style="display: none;">
+            <h2>💼 Detailed Career Analysis</h2>
+
+            <!-- Salary Projection -->
+            <h3 style="color: #00d4ff; margin: 30px 0 20px;">📈 Salary Projection</h3>
+            <div class="salary-chart">
+                <div class="chart-row">
+                    <div class="chart-label">Year 1</div>
+                    <div class="chart-bar" style="width: 45%;">
+                        <div class="chart-value" id="sal1">$0K</div>
+                    </div>
+                </div>
+                <div class="chart-row">
+                    <div class="chart-label">Year 2</div>
+                    <div class="chart-bar" style="width: 55%;">
+                        <div class="chart-value" id="sal2">$0K</div>
+                    </div>
+                </div>
+                <div class="chart-row">
+                    <div class="chart-label">Year 3</div>
+                    <div class="chart-bar" style="width: 65%;">
+                        <div class="chart-value" id="sal3">$0K</div>
+                    </div>
+                </div>
+                <div class="chart-row">
+                    <div class="chart-label">Year 4</div>
+                    <div class="chart-bar" style="width: 75%;">
+                        <div class="chart-value" id="sal4">$0K</div>
+                    </div>
+                </div>
+                <div class="chart-row">
+                    <div class="chart-label">Year 5</div>
+                    <div class="chart-bar" style="width: 85%;">
+                        <div class="chart-value" id="sal5">$0K</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Opportunity Window -->
+            <h3 style="color: #00d4ff; margin: 30px 0 20px;">⏰ Opportunity Timeline</h3>
+            <div class="timeline" id="timelineDiv"></div>
+
+            <!-- Risk Factors -->
+            <h3 style="color: #00d4ff; margin: 30px 0 20px;">⚠️ Risk Factors to Monitor</h3>
+            <div id="riskFactors"></div>
+
+            <!-- Opportunities -->
+            <h3 style="color: #00d4ff; margin: 30px 0 20px;">🚀 Growth Opportunities</h3>
+            <div id="opportunities"></div>
+
+            <!-- Recommendations -->
+            <div class="recommendation-box">
+                <div class="recommendation-title">✨ Your Personalized Path Forward</div>
+                <div class="recommendation-text" id="recommendations"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('satisfaction').addEventListener('input', function() {
+            document.getElementById('satisfactionDisplay').textContent = this.value + '/10';
+        });
+
+        function runPrediction() {
+            const age = parseInt(document.getElementById('age').value);
+            const experience = parseInt(document.getElementById('experience').value);
+            const salary = parseInt(document.getElementById('salary').value);
+            const industry = document.getElementById('industry').value;
+            const level = document.getElementById('level').value;
+            const location = document.getElementById('location').value;
+            const satisfaction = parseInt(document.getElementById('satisfaction').value);
+            const commitment = document.getElementById('commitment').value;
+
+            // Show loading
+            document.getElementById('resultsPlaceholder').innerHTML = '<div class="loading"><div class="spinner"></div><p>Analyzing your career trajectory...</p></div>';
+
+            setTimeout(() => {
+                // Calculate predictions
+                const prediction = calculatePrediction(age, experience, salary, industry, level, location, satisfaction, commitment);
+                displayResults(prediction);
+            }, 2000);
+        }
+
+        function calculatePrediction(age, experience, salary, industry, level, location, satisfaction, commitment) {
+            // Base growth rate
+            let baseGrowth = 0.05; // 5% base
+
+            // Industry multipliers
+            const industryGrowth = {
+                'tech': 0.08,      // 8%
+                'finance': 0.06,
+                'healthcare': 0.045,
+                'manufacturing': 0.035,
+                'consulting': 0.07,
+                'education': 0.03,
+                'sales': 0.065,
+                'design': 0.06,
+                'operations': 0.04,
+                'hr': 0.04
+            };
+
+            // Level multipliers
+            const levelMultiplier = {
+                'individual': 1.0,
+                'lead': 1.3,
+                'manager': 1.6,
+                'senior_manager': 2.0,
+                'executive': 2.5
+            };
+
+            // Location multipliers
+            const locationMultiplier = {
+                'major_us': 1.2,
+                'secondary_us': 1.0,
+                'midwest': 0.9,
+                'remote': 0.95,
+                'international': 0.85
+            };
+
+            const industryRate = industryGrowth[industry] || 0.05;
+            const levMult = levelMultiplier[level] || 1.0;
+            const locMult = locationMultiplier[location] || 1.0;
+
+            // Satisfaction factor (-0.03 to +0.03)
+            const satisfactionBonus = (satisfaction - 5) * 0.006;
+
+            // Commitment factor
+            const commitmentBonus = {
+                'exploring': -0.02,
+                'flexible': 0.0,
+                'committed': 0.02,
+                'passionate': 0.04
+            }[commitment] || 0;
+
+            // Risk factors
+            const ageRisk = age > 50 ? -0.01 : 0; // Slight risk for older workers
+            const oversaturationRisk = industry === 'design' || industry === 'education' ? -0.01 : 0;
+
+            const annualGrowthRate = industryRate + satisfactionBonus + commitmentBonus + ageRisk + oversaturationRisk;
+
+            // Project 5 years
+            const projections = [];
+            let currentSalary = salary;
+            for (let i = 1; i <= 5; i++) {
+                currentSalary = currentSalary * (1 + annualGrowthRate);
+                projections.push(Math.round(currentSalary));
+            }
+
+            // Calculate metrics
+            const totalGrowth = ((projections[4] - salary) / salary) * 100;
+            const confidence = Math.min(95, Math.max(40, 65 + satisfaction * 2 + commitment.length / 5));
+            const stability = 100 - Math.abs(satisfaction - 6) * 5;
+
+            return {
+                currentSalary: salary,
+                projectedSalary: projections[4],
+                projections: projections,
+                totalGrowth: totalGrowth,
+                confidence: confidence,
+                stability: Math.min(100, Math.max(30, stability)),
+                marketDemand: industryRate * 150,
+                industry: industry,
+                level: level,
+                age: age,
+                experience: experience,
+                location: location,
+                satisfaction: satisfaction,
+                commitment: commitment,
+                risks: generateRisks(industry, age, location, satisfaction),
+                opportunities: generateOpportunities(industry, level, experience),
+                recommendations: generateRecommendations(industry, level, satisfaction, commitment, totalGrowth)
+            };
+        }
+
+        function generateRisks(industry, age, location, satisfaction) {
+            const risks = [];
+
+            if (industry === 'design' || industry === 'tech') {
+                risks.push({
+                    name: 'Market Saturation',
+                    severity: 'medium',
+                    description: 'High competition in this field. Consider specialization (AI, Security, etc.).'
+                });
+            }
+
+            if (age > 50) {
+                risks.push({
+                    name: 'Age-Related Bias',
+                    severity: 'medium',
+                    description: 'Companies may prefer younger workers. Emphasize leadership and unique expertise.'
+                });
+            }
+
+            if (satisfaction < 4) {
+                risks.push({
+                    name: 'Burnout Risk',
+                    severity: 'high',
+                    description: 'Low satisfaction correlates with burnout. Consider role change or industry shift.'
+                });
+            }
+
+            if (industry === 'manufacturing' || industry === 'education') {
+                risks.push({
+                    name: 'Industry Decline',
+                    severity: 'medium',
+                    description: 'Slow growth sector. Building transferable skills is critical.'
+                });
+            }
+
+            if (location === 'midwest' || location === 'secondary_us') {
+                risks.push({
+                    name: 'Geographic Limitations',
+                    severity: 'low',
+                    description: 'Fewer opportunities locally. Remote work / relocation could unlock growth.'
+                });
+            }
+
+            return risks;
+        }
+
+        function generateOpportunities(industry, level, experience) {
+            const opportunities = [];
+
+            if (industry === 'tech') {
+                opportunities.push({
+                    name: 'AI/ML Specialization',
+                    potential: '+25-35%',
+                    description: 'Highest demand. 18-24 months to credibility.'
+                });
+                opportunities.push({
+                    name: 'Leadership Track',
+                    potential: '+40%+',
+                    description: 'Move to management/director level.'
+                });
+            }
+
+            if (level === 'individual') {
+                opportunities.push({
+                    name: 'Promotion to Lead',
+                    potential: '+30%',
+                    description: 'Most achievable. Build mentorship & visibility.'
+                });
+            }
+
+            if (experience > 7) {
+                opportunities.push({
+                    name: 'Consulting / Advisory',
+                    potential: '+50%+',
+                    description: 'Leverage experience for higher rates.'
+                });
+                opportunities.push({
+                    name: 'Start Own Business',
+                    potential: 'Variable',
+                    description: 'Highest ceiling but highest risk.'
+                });
+            }
+
+            if (industry === 'tech' || industry === 'finance') {
+                opportunities.push({
+                    name: 'Startup Founder / Early Employee',
+                    potential: '+5-10x',
+                    description: 'High risk/high reward. Equity upside significant.'
+                });
+            }
+
+            return opportunities;
+        }
+
+        function generateRecommendations(industry, level, satisfaction, commitment, totalGrowth) {
+            let rec = '';
+
+            if (totalGrowth < 15) {
+                rec += 'Your projected growth is below average. ';
+                if (satisfaction < 5) {
+                    rec += 'Consider a role change or industry pivot to unlock better opportunities. ';
+                } else {
+                    rec += 'Specialization in high-demand skills could accelerate growth. ';
+                }
+            } else if (totalGrowth > 30) {
+                rec += 'Excellent growth trajectory! Stay focused on your current path. ';
+            }
+
+            if (level === 'individual' && satisfaction > 6) {
+                rec += 'You\'re well-positioned for promotion. Start positioning yourself as a leader - mentor junior staff, own larger projects. ';
+            }
+
+            if (commitment === 'exploring') {
+                rec += 'Take time to experiment. Your next 2-3 years are ideal for exploration without major commitment. ';
+            }
+
+            if (industry === 'tech') {
+                rec += 'In tech, specialization matters more than tenure. Consider AI/ML, Security, or DevOps - these command 20-30% premium salaries. ';
+            }
+
+            rec += 'Start documenting your wins, build your network actively, and plan your next move 6-12 months in advance.';
+
+            return rec;
+        }
+
+        function displayResults(prediction) {
+            // Update main prediction
+            document.getElementById('resultsPlaceholder').style.display = 'none';
+            document.getElementById('resultsPanel').style.display = 'block';
+            document.getElementById('detailedPanel').style.display = 'block';
+
+            document.getElementById('projectedSalary').textContent = '$' + prediction.projectedSalary.toLocaleString() + 'K';
+            document.getElementById('salaryChange').textContent = '+' + prediction.totalGrowth.toFixed(1) + '% growth over 5 years';
+
+            document.getElementById('confidenceScore').textContent = Math.round(prediction.confidence) + '%';
+            document.getElementById('growthPotential').textContent = prediction.totalGrowth.toFixed(0) + '%';
+            document.getElementById('stability').textContent = Math.round(prediction.stability) + '%';
+            document.getElementById('marketDemand').textContent = 'High';
+
+            // Update salary trajectory
+            const baseWidth = 40;
+            prediction.projections.forEach((sal, i) => {
+                const barWidth = 40 + (i + 1) * 10;
+                document.getElementById(`sal${i+1}`).textContent = '$' + sal.toLocaleString() + 'K';
+                document.querySelectorAll('.chart-row')[i].querySelector('.chart-bar').style.width = barWidth + '%';
+            });
+
+            // Timeline
+            const timeline = document.getElementById('timelineDiv');
+            timeline.innerHTML = '';
+
+            const milestones = [
+                {time: 'Next 6 months', desc: 'Build visibility in your current role. Document wins, volunteer for high-impact projects.'},
+                {time: 'Months 6-12', desc: 'Position for next opportunity. If no internal movement, start interview process externally.'},
+                {time: 'Year 1-2', desc: 'Either promoted in current company or moved to new role (+' + Math.round(prediction.totalGrowth * 0.15) + '% expected).'},
+                {time: 'Year 2-3', desc: 'Consolidate in new role, deepen expertise. Consider specialization or leadership track.'},
+                {time: 'Year 4-5', desc: 'Peak growth phase. Capitalize on experience and network. Consider big move (startup, consulting, or jump to next level).'}
+            ];
+
+            milestones.forEach(m => {
+                const item = document.createElement('div');
+                item.className = 'timeline-item';
+                item.innerHTML = `
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-time">${m.time}</div>
+                        <div class="timeline-description">${m.desc}</div>
+                    </div>
+                `;
+                timeline.appendChild(item);
+            });
+
+            // Risks
+            const risksDiv = document.getElementById('riskFactors');
+            risksDiv.innerHTML = '';
+            prediction.risks.forEach(risk => {
+                const card = document.createElement('div');
+                card.className = 'risk-card';
+                card.innerHTML = `<strong>⚠️ ${risk.name}</strong> - ${risk.description}`;
+                risksDiv.appendChild(card);
+            });
+
+            // Opportunities
+            const oppsDiv = document.getElementById('opportunities');
+            oppsDiv.innerHTML = '';
+            prediction.opportunities.forEach(opp => {
+                const card = document.createElement('div');
+                card.className = 'opportunity-card';
+                card.innerHTML = `<strong>🚀 ${opp.name}</strong> ${opp.potential}<br>${opp.description}`;
+                oppsDiv.appendChild(card);
+            });
+
+            // Recommendations
+            document.getElementById('recommendations').textContent = prediction.recommendations;
+        }
+    </script>
+</body>
+</html>

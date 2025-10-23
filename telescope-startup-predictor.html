@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telescope Suite - Startup/Business Success Predictor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 0;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(236, 72, 153, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #f472b6;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+
+        input[type="number"],
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(236, 72, 153, 0.3);
+            border-radius: 10px;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus,
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #ec4899;
+            background: rgba(15, 23, 42, 0.8);
+            box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: rgba(236, 72, 153, 0.2);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ec4899, #f472b6);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(236, 72, 153, 0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ec4899, #f472b6);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 10px rgba(236, 72, 153, 0.5);
+        }
+
+        .slider-value {
+            display: inline-block;
+            background: rgba(236, 72, 153, 0.2);
+            color: #f472b6;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-left: 10px;
+            font-weight: 600;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(236, 72, 153, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            display: none;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .metric-box {
+            background: rgba(236, 72, 153, 0.1);
+            border: 1px solid rgba(236, 72, 153, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 15px;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #f472b6;
+        }
+
+        .metric-subtext {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .success-gauge {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 20px auto;
+        }
+
+        .gauge-circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 8px solid rgba(236, 72, 153, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gauge-fill {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(#ec4899 var(--percentage), rgba(236, 72, 153, 0.2) 0);
+            animation: fillGauge 1.5s ease-out forwards;
+        }
+
+        @keyframes fillGauge {
+            from { --percentage: 0; }
+            to { --percentage: var(--final-percentage); }
+        }
+
+        .gauge-label {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .gauge-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #f472b6;
+        }
+
+        .gauge-text {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        .outcome-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 15px 0;
+        }
+
+        .outcome-box {
+            background: rgba(236, 72, 153, 0.05);
+            border: 1px solid rgba(236, 72, 153, 0.2);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .outcome-probability {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #f472b6;
+            margin-bottom: 4px;
+        }
+
+        .outcome-label {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+        }
+
+        .factor-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .factor-box {
+            background: rgba(236, 72, 153, 0.05);
+            border: 1px solid rgba(236, 72, 153, 0.2);
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .factor-name {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .factor-impact {
+            font-size: 0.9rem;
+            color: #f472b6;
+            font-weight: 700;
+        }
+
+        .recommendation-card {
+            background: rgba(236, 72, 153, 0.1);
+            border-left: 4px solid #ec4899;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .success-factors {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .success-factor-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 8px;
+            background: rgba(236, 72, 153, 0.05);
+            border-radius: 6px;
+        }
+
+        .factor-icon {
+            margin-top: 2px;
+            font-size: 1.1rem;
+        }
+
+        .factor-text {
+            font-size: 0.9rem;
+            color: #cbd5e1;
+        }
+
+        .timeline {
+            margin: 15px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding: 8px;
+            background: rgba(236, 72, 153, 0.05);
+            border-radius: 6px;
+        }
+
+        .timeline-marker {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ec4899, #f472b6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            color: white;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-period {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #cbd5e1;
+        }
+
+        .timeline-desc {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+
+        .chart-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .chart-label {
+            width: 120px;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+        }
+
+        .chart-fill {
+            flex: 1;
+            height: 20px;
+            background: linear-gradient(90deg, #ec4899, #f472b6);
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .chart-percent {
+            width: 50px;
+            text-align: right;
+            font-size: 0.9rem;
+            color: #f472b6;
+            font-weight: 600;
+        }
+
+        .section-divider {
+            border-top: 1px solid rgba(236, 72, 153, 0.2);
+            margin: 20px 0;
+            padding-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .outcome-grid,
+            .factor-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Startup/Business Success Predictor</h1>
+            <p>Quantify your venture's success probability: funding needs, timeline to profitability, and exit potential</p>
+        </header>
+
+        <div class="content">
+            <!-- Input Panel -->
+            <div class="card">
+                <h2>📋 Your Business Profile</h2>
+
+                <div class="form-group">
+                    <label for="founderAge">Founder Age</label>
+                    <input type="number" id="founderAge" min="18" max="80" value="32" placeholder="Your age">
+                </div>
+
+                <div class="form-group">
+                    <label for="experience">Years in Industry</label>
+                    <input type="number" id="experience" min="0" max="40" value="8" placeholder="Professional experience">
+                </div>
+
+                <div class="form-group">
+                    <label for="priorExits">Prior Successful Exits</label>
+                    <select id="priorExits">
+                        <option value="0">Never founded before</option>
+                        <option value="1">One successful exit</option>
+                        <option value="2">Two or more exits</option>
+                        <option value="failed">Previous startup failed</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="businessType">Business Type</label>
+                    <select id="businessType">
+                        <option value="saas">SaaS (Software as Service)</option>
+                        <option value="service">Professional Services</option>
+                        <option value="product">Physical Product</option>
+                        <option value="marketplace">Marketplace</option>
+                        <option value="content">Content / Media</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="marketSize">Total Addressable Market (TAM)</label>
+                    <select id="marketSize">
+                        <option value="small">Small ($10M-100M)</option>
+                        <option value="medium">Medium ($100M-1B)</option>
+                        <option value="large">Large ($1B-10B)</option>
+                        <option value="massive">Massive ($10B+)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="teamSize">Current Team Size</label>
+                    <input type="number" id="teamSize" min="1" max="100" value="3" placeholder="Number of people">
+                </div>
+
+                <div class="form-group">
+                    <label for="pmf">Product-Market Fit Progress</label>
+                    <select id="pmf">
+                        <option value="exploring">Exploring (early idea validation)</option>
+                        <option value="gaining">Gaining Traction (early customers)</option>
+                        <option value="strong">Strong PMF (repeatable growth)</option>
+                        <option value="proven">Proven (rapid growth)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="funding">Available Funding ($)</label>
+                    <input type="number" id="funding" min="0" max="10000000" value="200000" step="50000" placeholder="Capital available">
+                </div>
+
+                <div class="form-group">
+                    <label for="competition">Competitive Intensity</label>
+                    <input type="range" id="competition" min="1" max="10" value="5" step="1">
+                    <span class="slider-value"><span id="competitionValue">5</span>/10</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="urgency">Market Urgency (how much do customers need this?)</label>
+                    <input type="range" id="urgency" min="1" max="10" value="7" step="1">
+                    <span class="slider-value"><span id="urgencyValue">7</span>/10</span>
+                </div>
+
+                <button onclick="runPrediction()">Predict Startup Success</button>
+            </div>
+
+            <!-- Results Panel -->
+            <div class="card results" id="results">
+                <h2>📊 Success Analysis</h2>
+
+                <div class="success-gauge">
+                    <div class="gauge-fill" id="gaugeOverlay" style="--final-percentage: 0%"></div>
+                    <div class="gauge-circle">
+                        <div class="gauge-label">
+                            <div class="gauge-number" id="successProb">24%</div>
+                            <div class="gauge-text">Success Rate</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="outcome-grid">
+                    <div class="outcome-box">
+                        <div class="outcome-probability" id="fundingProb">35%</div>
+                        <div class="outcome-label">Funding Success</div>
+                    </div>
+                    <div class="outcome-box">
+                        <div class="outcome-probability" id="exitProb">8%</div>
+                        <div class="outcome-label">$10M+ Exit</div>
+                    </div>
+                </div>
+
+                <div class="metric-box">
+                    <div class="metric-label">Time to Profitability</div>
+                    <div class="metric-value" id="profitability">18-24 months</div>
+                    <div class="metric-subtext">If execution is strong</div>
+                </div>
+
+                <div class="metric-box">
+                    <div class="metric-label">Estimated Funding Needed</div>
+                    <div class="metric-value" id="fundingNeeded">$400K-$800K</div>
+                    <div class="metric-subtext">Pre-revenue to Series A</div>
+                </div>
+
+                <div class="section-divider"></div>
+
+                <h3 style="color: #f472b6; margin-bottom: 12px; font-size: 1.2rem;">💪 Strengths</h3>
+                <div id="strengthsList" class="success-factors"></div>
+
+                <div class="section-divider"></div>
+
+                <h3 style="color: #f472b6; margin-bottom: 12px; font-size: 1.2rem;">⚠️ Key Risk Factors</h3>
+                <div id="riskList" class="factor-grid"></div>
+
+                <div class="section-divider"></div>
+
+                <h3 style="color: #f472b6; margin-bottom: 12px; font-size: 1.2rem;">🗓️ Expected Timeline</h3>
+                <div id="timelineList" class="timeline"></div>
+
+                <div class="section-divider"></div>
+
+                <h3 style="color: #f472b6; margin-bottom: 12px; font-size: 1.2rem;">💡 Strategic Recommendations</h3>
+                <div id="recommendationsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('competition').addEventListener('input', (e) => {
+            document.getElementById('competitionValue').textContent = e.target.value;
+        });
+
+        document.getElementById('urgency').addEventListener('input', (e) => {
+            document.getElementById('urgencyValue').textContent = e.target.value;
+        });
+
+        function calculateSuccessProbability(founderAge, experience, priorExits, businessType, marketSize, teamSize, pmf, competition, urgency) {
+            let probability = 10; // Base 10%
+
+            // Founder factors
+            if (experience >= 5) probability += 8;
+            else if (experience >= 3) probability += 5;
+            else if (experience >= 1) probability += 2;
+
+            if (priorExits === '1') probability += 15;
+            else if (priorExits === '2') probability += 25;
+            else if (priorExits === 'failed') probability -= 5; // Learning helps but not as much
+
+            if (founderAge >= 30 && founderAge <= 45) probability += 5;
+
+            // Market factors
+            if (marketSize === 'massive') probability += 10;
+            else if (marketSize === 'large') probability += 8;
+            else if (marketSize === 'medium') probability += 5;
+
+            // Business type
+            if (businessType === 'saas') probability += 8;
+            else if (businessType === 'marketplace') probability += 5;
+            else if (businessType === 'product') probability -= 3;
+
+            // Product-market fit
+            if (pmf === 'proven') probability += 20;
+            else if (pmf === 'strong') probability += 12;
+            else if (pmf === 'gaining') probability += 5;
+
+            // Team
+            if (teamSize >= 3) probability += 5;
+
+            // Market conditions
+            probability -= (competition - 5) * 1.5; // Competition hurts
+            probability += (urgency - 5) * 1.5; // Urgency helps
+
+            return Math.max(5, Math.min(80, probability));
+        }
+
+        function generateTimeline(pmf, businessType) {
+            const timelines = [];
+
+            if (pmf === 'exploring') {
+                timelines.push({ period: 'Month 1-3', milestone: 'MVP Launch & Customer Validation', description: 'Build minimum viable product, launch to early adopters' });
+                timelines.push({ period: 'Month 4-6', milestone: 'Product-Market Fit Signals', description: 'Target 10-20 paying customers, gather feedback' });
+                timelines.push({ period: 'Month 7-12', milestone: 'Revenue & Hiring', description: 'Achieve $5K-10K MRR, hire first team members' });
+                timelines.push({ period: 'Month 13-18', milestone: 'Seed Funding', description: 'Raise $250K-500K seed round' });
+            } else if (pmf === 'gaining') {
+                timelines.push({ period: 'Month 1-2', milestone: 'Growth Mode', description: 'Scale customer acquisition, hit $20K+ MRR' });
+                timelines.push({ period: 'Month 3-6', milestone: 'Series A Prep', description: 'Build team, strengthen unit economics' });
+                timelines.push({ period: 'Month 7-9', milestone: 'Series A Fundraising', description: 'Raise $1M-3M Series A' });
+                timelines.push({ period: 'Month 10-18', milestone: 'Market Expansion', description: 'Enter new markets, hit $100K+ MRR' });
+            } else if (pmf === 'strong') {
+                timelines.push({ period: 'Month 1-3', milestone: 'Aggressive Growth', description: 'Expand sales team, target $500K+ MRR' });
+                timelines.push({ period: 'Month 4-6', milestone: 'Series A/B Fundraising', description: 'Raise $2M-5M for scaling' });
+                timelines.push({ period: 'Month 7-12', milestone: 'Profitability Path', description: 'Achieve $1M+ MRR, path to profitability clear' });
+                timelines.push({ period: 'Year 2+', milestone: 'Exit Preparation', description: 'Target acquisition by larger player or IPO' });
+            } else {
+                timelines.push({ period: 'Quarter 1', milestone: 'Maintain Momentum', description: 'Focus on retention, hit $2M+ MRR' });
+                timelines.push({ period: 'Quarter 2-3', milestone: 'Series B/C Preparation', description: 'Build international presence, enterprise sales' });
+                timelines.push({ period: 'Quarter 4+', milestone: 'Exit Positioning', description: 'Prepare for acquisition or IPO' });
+            }
+
+            return timelines;
+        }
+
+        function generateRecommendations(probability, pmf, competition, teamSize, funding) {
+            const recs = [];
+
+            if (probability < 20) {
+                recs.push('🚨 Success probability is below 20%. Before proceeding: validate market demand with 20+ potential customers, validate willingness to pay.');
+            }
+
+            if (pmf === 'exploring' || pmf === 'gaining') {
+                recs.push('🎯 Focus ruthlessly on product-market fit. Get to "strong PMF" signals (high retention, word-of-mouth growth, premium pricing power).');
+            }
+
+            if (competition > 7) {
+                recs.push('⚔️ Highly competitive market. Differentiation is critical: superior product, lower cost, or unique market segment. Consider differentiation strategy before capital raise.');
+            } else if (competition < 3) {
+                recs.push('🌟 Low competition is opportunity. Move quickly to establish market presence before well-funded competitors enter.');
+            }
+
+            if (teamSize === 1) {
+                recs.push('👥 Solo founder significantly increases risk. Hire co-founder or key team members ASAP. Investors rarely fund solo founders in crowded markets.');
+            } else if (teamSize === 2) {
+                recs.push('👥 Strong two-founder combination is good. Add a technical or business co-founder to round out skills.');
+            }
+
+            if (funding < 100000 && pmf === 'exploring') {
+                recs.push('💰 Bootstrapping early stage is smart, but plan funding raise for month 12-18 when you have product-market fit signals.');
+            }
+
+            if (probability >= 35) {
+                recs.push('✅ Decent success odds. Build board/advisors, develop 3-year financial model, prepare investor pitch deck.');
+            }
+
+            return recs;
+        }
+
+        function runPrediction() {
+            const founderAge = parseInt(document.getElementById('founderAge').value);
+            const experience = parseInt(document.getElementById('experience').value);
+            const priorExits = document.getElementById('priorExits').value;
+            const businessType = document.getElementById('businessType').value;
+            const marketSize = document.getElementById('marketSize').value;
+            const teamSize = parseInt(document.getElementById('teamSize').value);
+            const pmf = document.getElementById('pmf').value;
+            const funding = parseInt(document.getElementById('funding').value);
+            const competition = parseInt(document.getElementById('competition').value);
+            const urgency = parseInt(document.getElementById('urgency').value);
+
+            // Calculate probabilities
+            const successProb = calculateSuccessProbability(founderAge, experience, priorExits, businessType, marketSize, teamSize, pmf, competition, urgency);
+            const fundingProb = Math.min(95, successProb * 1.3 + (experience > 5 ? 10 : 0));
+            const exitProb = Math.max(2, successProb * 0.35 - (competition > 7 ? 5 : 0));
+
+            // Calculate timeline to profitability
+            let profitTimeline = '18-24 months';
+            if (pmf === 'proven') profitTimeline = '6-12 months';
+            else if (pmf === 'strong') profitTimeline = '12-18 months';
+            else if (pmf === 'exploring') profitTimeline = '24-36 months';
+
+            // Funding needed
+            let fundingNeeded = '$400K-$800K';
+            if (marketSize === 'massive') fundingNeeded = '$800K-$2M';
+            else if (marketSize === 'small') fundingNeeded = '$100K-$300K';
+
+            // Update results
+            document.getElementById('successProb').textContent = Math.round(successProb) + '%';
+            document.getElementById('gaugeOverlay').style.setProperty('--final-percentage', `${Math.round(successProb)}%`);
+            document.getElementById('fundingProb').textContent = Math.round(fundingProb) + '%';
+            document.getElementById('exitProb').textContent = Math.round(exitProb) + '%';
+            document.getElementById('profitability').textContent = profitTimeline;
+            document.getElementById('fundingNeeded').textContent = fundingNeeded;
+
+            // Strengths
+            const strengths = [];
+            if (priorExits === '1' || priorExits === '2') {
+                strengths.push({ icon: '🏆', text: 'Proven founder with successful exit - strong investor appeal' });
+            }
+            if (experience >= 5) {
+                strengths.push({ icon: '📊', text: 'Deep industry experience - understand market dynamics' });
+            }
+            if (teamSize >= 3) {
+                strengths.push({ icon: '👥', text: 'Strong team composition - can execute on vision' });
+            }
+            if (pmf === 'strong' || pmf === 'proven') {
+                strengths.push({ icon: '🎯', text: 'Clear product-market fit - repeatable growth' });
+            }
+            if (urgency >= 7) {
+                strengths.push({ icon: '⚡', text: 'High market urgency - customers actively seeking solution' });
+            }
+            if (marketSize === 'massive' || marketSize === 'large') {
+                strengths.push({ icon: '📈', text: 'Huge market opportunity - massive growth potential' });
+            }
+
+            const strengthsList = document.getElementById('strengthsList');
+            strengthsList.innerHTML = '';
+            strengths.forEach(s => {
+                const item = document.createElement('div');
+                item.className = 'success-factor-item';
+                item.innerHTML = `<div class="factor-icon">${s.icon}</div><div class="factor-text">${s.text}</div>`;
+                strengthsList.appendChild(item);
+            });
+
+            // Risks
+            const risks = [];
+            if (competition >= 8) {
+                risks.push({ name: 'High Competition', impact: '-8%' });
+            }
+            if (teamSize === 1) {
+                risks.push({ name: 'Solo Founder', impact: '-12%' });
+            }
+            if (pmf === 'exploring') {
+                risks.push({ name: 'Early Stage PMF', impact: '-15%' });
+            }
+            if (funding < 100000 && pmf === 'exploring') {
+                risks.push({ name: 'Limited Capital', impact: '-8%' });
+            }
+
+            const riskList = document.getElementById('riskList');
+            riskList.innerHTML = '';
+            risks.forEach(r => {
+                const item = document.createElement('div');
+                item.className = 'factor-box';
+                item.innerHTML = `<div class="factor-name">${r.name}</div><div class="factor-impact">${r.impact}</div>`;
+                riskList.appendChild(item);
+            });
+
+            // Timeline
+            const timeline = generateTimeline(pmf, businessType);
+            const timelineList = document.getElementById('timelineList');
+            timelineList.innerHTML = '';
+            timeline.forEach((item, idx) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'timeline-item';
+                itemDiv.innerHTML = `
+                    <div class="timeline-marker">${idx + 1}</div>
+                    <div class="timeline-content">
+                        <div class="timeline-period">${item.period}</div>
+                        <div class="timeline-desc"><strong>${item.milestone}</strong> - ${item.description}</div>
+                    </div>
+                `;
+                timelineList.appendChild(itemDiv);
+            });
+
+            // Recommendations
+            const recs = generateRecommendations(successProb, pmf, competition, teamSize, funding);
+            const recsList = document.getElementById('recommendationsList');
+            recsList.innerHTML = '';
+            recs.forEach(rec => {
+                const item = document.createElement('div');
+                item.className = 'recommendation-card';
+                item.textContent = rec;
+                recsList.appendChild(item);
+            });
+
+            // Show results
+            document.getElementById('results').classList.add('active');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    </script>
+</body>
+</html>
