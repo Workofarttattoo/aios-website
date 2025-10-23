@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telescope Suite - Skill Demand & Career Obsolescence Predictor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 0;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #a78bfa;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+
+        input[type="number"],
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 10px;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus,
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            background: rgba(15, 23, 42, 0.8);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: rgba(139, 92, 246, 0.2);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+        }
+
+        .slider-value {
+            display: inline-block;
+            background: rgba(139, 92, 246, 0.2);
+            color: #a78bfa;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-left: 10px;
+            font-weight: 600;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            display: none;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .metric-box {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 15px;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #a78bfa;
+        }
+
+        .metric-subtext {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .timeline-gauge {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 10px;
+        }
+
+        .gauge-bar {
+            flex: 1;
+            height: 30px;
+            background: rgba(139, 92, 246, 0.2);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gauge-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8b5cf6, #a78bfa);
+            border-radius: 15px;
+            animation: fillGauge 1.5s ease-out forwards;
+        }
+
+        @keyframes fillGauge {
+            from { width: 0%; }
+            to { width: var(--percentage); }
+        }
+
+        .gauge-label {
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            font-weight: 600;
+            width: 80px;
+        }
+
+        .skill-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 15px 0;
+        }
+
+        .skill-box {
+            background: rgba(139, 92, 246, 0.05);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .skill-name {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .skill-metrics {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+
+        .recommendation-item {
+            background: rgba(139, 92, 246, 0.1);
+            border-left: 4px solid #8b5cf6;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .risk-high {
+            background: rgba(239, 68, 68, 0.1);
+            border-left-color: #ef4444;
+        }
+
+        .risk-medium {
+            background: rgba(245, 158, 11, 0.1);
+            border-left-color: #f59e0b;
+        }
+
+        .risk-low {
+            background: rgba(34, 197, 94, 0.1);
+            border-left-color: #22c55e;
+        }
+
+        .chart-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .chart-label {
+            width: 120px;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+        }
+
+        .chart-fill {
+            flex: 1;
+            height: 20px;
+            background: linear-gradient(90deg, #8b5cf6, #a78bfa);
+            border-radius: 4px;
+        }
+
+        .chart-percent {
+            width: 50px;
+            text-align: right;
+            font-size: 0.9rem;
+            color: #a78bfa;
+            font-weight: 600;
+        }
+
+        .section-divider {
+            border-top: 1px solid rgba(139, 92, 246, 0.2);
+            margin: 20px 0;
+            padding-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .skill-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Skill Demand & Obsolescence Predictor</h1>
+            <p>Assess your skills' market demand, predict obsolescence risk, and identify high-ROI reskilling opportunities</p>
+        </header>
+
+        <div class="content">
+            <!-- Input Panel -->
+            <div class="card">
+                <h2>📋 Your Skills Profile</h2>
+
+                <div class="form-group">
+                    <label for="primarySkill">Primary Skill / Role</label>
+                    <select id="primarySkill">
+                        <option value="backend">.NET / Traditional Backend Developer</option>
+                        <option value="frontend">React / Frontend Developer</option>
+                        <option value="data">Data Analyst / SQL Developer</option>
+                        <option value="devops">DevOps / Cloud Engineer</option>
+                        <option value="qa">QA / Test Engineer</option>
+                        <option value="mobile">Mobile Developer (iOS/Android)</option>
+                        <option value="ml">Machine Learning Engineer</option>
+                        <option value="product">Product Manager</option>
+                        <option value="business">Business Analyst</option>
+                        <option value="other">Other (specify below)</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="otherSkillGroup" style="display: none;">
+                    <label for="otherSkill">Specify Your Role</label>
+                    <input type="text" id="otherSkill" placeholder="e.g., JavaScript Developer, System Admin">
+                </div>
+
+                <div class="form-group">
+                    <label for="experience">Years of Experience</label>
+                    <input type="number" id="experience" min="0" max="50" value="8" placeholder="Years in this field">
+                </div>
+
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="number" id="age" min="18" max="80" value="35" placeholder="Your age">
+                </div>
+
+                <div class="form-group">
+                    <label for="trendAwareness">How Much Do You Follow Tech Trends?</label>
+                    <input type="range" id="trendAwareness" min="1" max="10" value="6" step="1">
+                    <span class="slider-value"><span id="trendValue">6</span>/10</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="automationRisk">How Automatable Is Your Work?</label>
+                    <select id="automationRisk">
+                        <option value="low">Low - Creative/Strategic work</option>
+                        <option value="medium">Medium - Mix of routine and strategic</option>
+                        <option value="high">High - Mostly routine tasks</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="geography">Geographic Market</label>
+                    <select id="geography">
+                        <option value="sf">San Francisco / Tech Hub</option>
+                        <option value="major">Major City (NYC, Boston, Austin)</option>
+                        <option value="regional">Regional (mid-size city)</option>
+                        <option value="remote">Remote / Global</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="flexibility">Career Flexibility (willing to switch industries?)</label>
+                    <input type="range" id="flexibility" min="1" max="10" value="5" step="1">
+                    <span class="slider-value"><span id="flexValue">5</span>/10</span>
+                </div>
+
+                <button onclick="runPrediction()">Assess Obsolescence Risk</button>
+            </div>
+
+            <!-- Results Panel -->
+            <div class="card results" id="results">
+                <h2>📈 Skill Market Analysis</h2>
+
+                <div class="metric-box">
+                    <div class="metric-label">Current Skill Demand Trend</div>
+                    <div class="metric-value" id="demandTrend">Declining -8%/year</div>
+                    <div class="metric-subtext">Annual change in job postings</div>
+                </div>
+
+                <div class="metric-box">
+                    <div class="metric-label">Obsolescence Timeline (Critical Decision Point)</div>
+                    <div class="metric-value" id="obsolescenceTimeline">4-6 years</div>
+                    <div class="metric-subtext">Before skill becomes high-risk</div>
+                </div>
+
+                <div class="timeline-gauge">
+                    <div class="gauge-label">Risk Growth</div>
+                    <div class="gauge-bar">
+                        <div class="gauge-fill" id="riskGauge" style="--percentage: 45%;"></div>
+                    </div>
+                    <div style="font-size: 0.9rem; color: #a78bfa; font-weight: 600; width: 50px;">45%</div>
+                </div>
+
+                <div class="metric-box">
+                    <div class="metric-label">Estimated Time to Full Obsolescence</div>
+                    <div class="metric-value" id="fullObsolescence">8-10 years</div>
+                    <div class="metric-subtext">If no reskilling occurs</div>
+                </div>
+
+                <div class="section-divider"></div>
+
+                <h3 style="color: #a78bfa; margin-bottom: 12px; font-size: 1.2rem;">💡 High-ROI Skills to Learn</h3>
+
+                <div id="recommendedSkills" class="skill-grid"></div>
+
+                <div class="section-divider"></div>
+
+                <h3 style="color: #a78bfa; margin-bottom: 12px; font-size: 1.2rem;">🎯 Reskilling Timeline</h3>
+
+                <div id="reskillTimeline"></div>
+
+                <div class="section-divider"></div>
+
+                <h3 style="color: #a78bfa; margin-bottom: 12px; font-size: 1.2rem;">⚠️ Risk Assessment</h3>
+
+                <div id="riskFactors" class="skill-grid"></div>
+
+                <div class="section-divider"></div>
+
+                <h3 style="color: #a78bfa; margin-bottom: 12px; font-size: 1.2rem;">💼 Strategic Recommendations</h3>
+
+                <div id="recommendationsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('primarySkill').addEventListener('change', (e) => {
+            document.getElementById('otherSkillGroup').style.display =
+                e.target.value === 'other' ? 'block' : 'none';
+        });
+
+        document.getElementById('trendAwareness').addEventListener('input', (e) => {
+            document.getElementById('trendValue').textContent = e.target.value;
+        });
+
+        document.getElementById('flexibility').addEventListener('input', (e) => {
+            document.getElementById('flexValue').textContent = e.target.value;
+        });
+
+        function getDemandMetrics(primarySkill) {
+            const metrics = {
+                'backend': { trend: -8, demand: 2.5, automationRisk: 0.7 },
+                'frontend': { trend: 2, demand: 8.5, automationRisk: 0.4 },
+                'data': { trend: 15, demand: 9.5, automationRisk: 0.3 },
+                'devops': { trend: 18, demand: 9.8, automationRisk: 0.2 },
+                'qa': { trend: -5, demand: 5.5, automationRisk: 0.8 },
+                'mobile': { trend: -3, demand: 6.0, automationRisk: 0.5 },
+                'ml': { trend: 25, demand: 9.9, automationRisk: 0.1 },
+                'product': { trend: 8, demand: 8.0, automationRisk: 0.3 },
+                'business': { trend: 3, demand: 6.5, automationRisk: 0.4 },
+                'other': { trend: 0, demand: 5.0, automationRisk: 0.5 }
+            };
+            return metrics[primarySkill] || metrics['other'];
+        }
+
+        function getRecommendedSkills(primarySkill, experience) {
+            const recommendations = {
+                'backend': [
+                    { skill: 'Kubernetes / Cloud', months: '12-18', salary: '+15-25K' },
+                    { skill: 'Python / AI Integration', months: '18-24', salary: '+20-30K' },
+                    { skill: 'Product Thinking', months: '6-12', salary: '+10K' }
+                ],
+                'frontend': [
+                    { skill: 'AI/ML Integration (TensorFlow.js)', months: '12-18', salary: '+15-20K' },
+                    { skill: 'Full Stack / Backend Skills', months: '12-24', salary: '+20-25K' },
+                    { skill: 'Product Design', months: '6-12', salary: '+10-15K' }
+                ],
+                'data': [
+                    { skill: 'ML Engineering', months: '18-24', salary: '+20-35K' },
+                    { skill: 'AI/LLM Fine-tuning', months: '12-18', salary: '+25-40K' },
+                    { skill: 'Data Product Management', months: '12-18', salary: '+15-25K' }
+                ],
+                'devops': [
+                    { skill: 'ML Ops / LLM Deployment', months: '12-18', salary: '+20-30K' },
+                    { skill: 'Kubernetes Advanced', months: '6-12', salary: '+15-20K' },
+                    { skill: 'Security / Zero Trust', months: '12-18', salary: '+20-25K' }
+                ],
+                'other': [
+                    { skill: 'AI / LLM Prompt Engineering', months: '2-4', salary: '+10-15K' },
+                    { skill: 'Cloud Fundamentals', months: '6-12', salary: '+15-20K' },
+                    { skill: 'Data Analysis', months: '8-12', salary: '+10-20K' }
+                ]
+            };
+
+            return recommendations[primarySkill] || recommendations['other'];
+        }
+
+        function generateRiskFactors(primarySkill, automationRisk, trendAwareness) {
+            const factors = [];
+
+            if (automationRisk === 'high') {
+                factors.push({ name: 'Automation Risk', level: 'high', impact: '-12%' });
+            } else if (automationRisk === 'medium') {
+                factors.push({ name: 'Automation Risk', level: 'medium', impact: '-5%' });
+            } else {
+                factors.push({ name: 'Automation Risk', level: 'low', impact: '-1%' });
+            }
+
+            if (trendAwareness < 4) {
+                factors.push({ name: 'Trend Awareness', level: 'high', impact: '-10%' });
+            }
+
+            if (primarySkill === 'qa' || primarySkill === 'mobile') {
+                factors.push({ name: 'Market Saturation', level: 'high', impact: '-8%' });
+            }
+
+            return factors;
+        }
+
+        function generateStrategyRecommendations(primarySkill, trend, obsolescenceYears, automationRisk, flexibility) {
+            const recs = [];
+
+            if (trend < -3) {
+                recs.push('🚨 Your current skill is in declining demand. Start reskilling within 6-12 months.');
+            } else if (trend < 3) {
+                recs.push('⚠️ Stable but not growing market. Begin learning adjacent high-demand skills to increase income potential.');
+            } else if (trend > 15) {
+                recs.push('✅ Strong demand growth. Your skill is future-proof for 5-10+ years.');
+            }
+
+            if (automationRisk === 'high') {
+                recs.push('🤖 Your work is highly automatable. Pivot to: strategy, product, management, or AI integration.');
+            }
+
+            if (obsolescenceYears <= 5) {
+                recs.push('⏰ CRITICAL: You have 4-6 years before obsolescence risk becomes acute. Reskilling should start NOW.');
+                recs.push('📚 Recommended approach: 20-30 hours/week learning new skills for 12-18 months. Accelerate career pivot.');
+            } else if (obsolescenceYears <= 8) {
+                recs.push('📊 Plan your reskilling over next 2-3 years. You have time to upskill systematically.');
+            }
+
+            if (flexibility >= 7) {
+                recs.push('✅ High flexibility: Consider full career pivots (from .NET → Kubernetes, from QA → ML).');
+            } else {
+                recs.push('🔄 Low flexibility: Focus on skills adjacent to your current role for easier transition.');
+            }
+
+            recs.push('💰 ROI: A 12-18 month investment in high-demand skills typically yields +$15-40K annual salary increase.');
+
+            return recs;
+        }
+
+        function runPrediction() {
+            const primarySkill = document.getElementById('primarySkill').value;
+            const experience = parseInt(document.getElementById('experience').value);
+            const age = parseInt(document.getElementById('age').value);
+            const trendAwareness = parseInt(document.getElementById('trendAwareness').value);
+            const automationRisk = document.getElementById('automationRisk').value;
+            const flexibility = parseInt(document.getElementById('flexibility').value);
+            const geography = document.getElementById('geography').value;
+
+            // Get demand metrics
+            const metrics = getDemandMetrics(primarySkill);
+
+            // Calculate obsolescence timeline
+            let obsolescenceYears = 10;
+            if (metrics.trend < -5) obsolescenceYears = 4;
+            else if (metrics.trend < 0) obsolescenceYears = 6;
+            else if (metrics.trend < 5) obsolescenceYears = 8;
+            else obsolescenceYears = 12;
+
+            // Adjust for age and trend awareness
+            if (age > 45) obsolescenceYears -= 2;
+            if (trendAwareness >= 8) obsolescenceYears += 2;
+
+            const fullObsolescence = Math.max(obsolescenceYears + 4, obsolescenceYears * 1.5);
+            const riskPercentage = Math.min(95, (10 - Math.max(0, obsolescenceYears - 2)) * 10);
+
+            // Update results
+            document.getElementById('demandTrend').textContent =
+                (metrics.trend > 0 ? '+' : '') + metrics.trend + '%/year';
+
+            const years = Math.round(obsolescenceYears);
+            const months = Math.round((obsolescenceYears % 1) * 12);
+            document.getElementById('obsolescenceTimeline').textContent =
+                years + (months > 0 ? `-${years + 1}` : '') + ' years';
+            document.getElementById('fullObsolescence').textContent =
+                Math.round(fullObsolescence) + '-' + Math.round(fullObsolescence + 2) + ' years';
+
+            document.getElementById('riskGauge').style.setProperty('--percentage', riskPercentage + '%');
+
+            // Recommended skills
+            const recommended = getRecommendedSkills(primarySkill, experience);
+            const skillsDiv = document.getElementById('recommendedSkills');
+            skillsDiv.innerHTML = '';
+            recommended.forEach(skill => {
+                const box = document.createElement('div');
+                box.className = 'skill-box';
+                box.innerHTML = `
+                    <div class="skill-name">${skill.skill}</div>
+                    <div class="skill-metrics">
+                        <div>🕐 ${skill.months}</div>
+                        <div>💰 ${skill.salary}</div>
+                    </div>
+                `;
+                skillsDiv.appendChild(box);
+            });
+
+            // Timeline
+            const timelineDiv = document.getElementById('reskillTimeline');
+            timelineDiv.innerHTML = `
+                <div class="recommendation-item" style="margin-bottom: 10px;">
+                    <strong>Months 1-3:</strong> Assess market, choose 1-2 skills, enroll in courses
+                </div>
+                <div class="recommendation-item" style="margin-bottom: 10px;">
+                    <strong>Months 4-12:</strong> Active learning (20-30 hours/week), build portfolio projects
+                </div>
+                <div class="recommendation-item" style="margin-bottom: 10px;">
+                    <strong>Months 13-18:</strong> Apply for roles, interview, negotiate with 2-3x leverage
+                </div>
+                <div class="recommendation-item">
+                    <strong>Months 18+:</strong> New role, accelerated growth trajectory
+                </div>
+            `;
+
+            // Risk factors
+            const risks = generateRiskFactors(primarySkill, automationRisk, trendAwareness);
+            const riskDiv = document.getElementById('riskFactors');
+            riskDiv.innerHTML = '';
+            risks.forEach(r => {
+                const box = document.createElement('div');
+                box.className = 'skill-box';
+                box.innerHTML = `
+                    <div class="skill-name">${r.name}</div>
+                    <div class="skill-metrics" style="color: ${r.level === 'high' ? '#ef4444' : r.level === 'medium' ? '#f59e0b' : '#22c55e'};">
+                        Risk: ${r.level} ${r.impact}
+                    </div>
+                `;
+                riskDiv.appendChild(box);
+            });
+
+            // Recommendations
+            const strategy = generateStrategyRecommendations(primarySkill, metrics.trend, obsolescenceYears, automationRisk, flexibility);
+            const recsDiv = document.getElementById('recommendationsList');
+            recsDiv.innerHTML = '';
+            strategy.forEach(rec => {
+                const item = document.createElement('div');
+                item.className = 'recommendation-item';
+                item.textContent = rec;
+                recsDiv.appendChild(item);
+            });
+
+            document.getElementById('results').classList.add('active');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    </script>
+</body>
+</html>

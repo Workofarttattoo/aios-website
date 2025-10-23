@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telescope Suite - Education ROI & College Major Success Predictor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 0;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, #06b6d4 0%, #22d3ee 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #22d3ee;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+
+        input[type="number"],
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 10px;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus,
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #06b6d4;
+            background: rgba(15, 23, 42, 0.8);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #06b6d4 0%, #22d3ee 100%);
+            color: #0f172a;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            display: none;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .metric-box {
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 15px;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #22d3ee;
+        }
+
+        .metric-subtext {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin: 15px 0;
+        }
+
+        .option-box {
+            background: rgba(6, 182, 212, 0.05);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 10px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .option-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+        }
+
+        .option-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #22d3ee;
+            margin-bottom: 4px;
+        }
+
+        .option-desc {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        .best-value {
+            border-color: #06b6d4;
+            background: rgba(6, 182, 212, 0.15);
+        }
+
+        .chart-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .chart-label {
+            width: 140px;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+        }
+
+        .chart-fill {
+            flex: 1;
+            height: 20px;
+            background: linear-gradient(90deg, #06b6d4, #22d3ee);
+            border-radius: 4px;
+        }
+
+        .chart-value {
+            width: 60px;
+            text-align: right;
+            font-size: 0.9rem;
+            color: #22d3ee;
+            font-weight: 600;
+        }
+
+        .recommendation-box {
+            background: rgba(6, 182, 212, 0.1);
+            border-left: 4px solid #06b6d4;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .outcome-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 15px 0;
+        }
+
+        .outcome-card {
+            background: rgba(6, 182, 212, 0.05);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .outcome-label {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .outcome-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #22d3ee;
+        }
+
+        .section-divider {
+            border-top: 1px solid rgba(6, 182, 212, 0.2);
+            margin: 20px 0;
+            padding-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .outcome-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 Education ROI & College Major Success Predictor</h1>
+            <p>Evaluate college options: calculate lifetime ROI, compare majors, estimate debt payoff, and explore alternatives</p>
+        </header>
+
+        <div class="content">
+            <!-- Input Panel -->
+            <div class="card">
+                <h2>📋 Your Education Profile</h2>
+
+                <div class="form-group">
+                    <label for="pathway">Considering Which Pathway?</label>
+                    <select id="pathway">
+                        <option value="4year">4-Year University Degree</option>
+                        <option value="public">Public vs Private University</option>
+                        <option value="bootcamp">Coding Bootcamp</option>
+                        <option value="selfTaught">Self-Taught + Portfolio</option>
+                        <option value="masters">Master's Degree</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="major">College Major / Focus Area</label>
+                    <select id="major">
+                        <option value="cs">Computer Science</option>
+                        <option value="engineering">Engineering</option>
+                        <option value="business">Business</option>
+                        <option value="nursing">Nursing / Healthcare</option>
+                        <option value="liberal">Liberal Arts</option>
+                        <option value="education">Education</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="tuition">Total Cost of Program ($)</label>
+                    <input type="number" id="tuition" min="5000" max="500000" value="60000" step="1000" placeholder="Total 4-year cost">
+                </div>
+
+                <div class="form-group">
+                    <label for="borrowing">Will You Need to Borrow?</label>
+                    <select id="borrowing">
+                        <option value="none">No, parents/scholarship covering</option>
+                        <option value="partial">Partial (20-50%)</option>
+                        <option value="full">Full cost (student loans)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="interestRate">Student Loan Interest Rate (%)</label>
+                    <input type="number" id="interestRate" min="2" max="10" value="6.5" step="0.1" placeholder="Interest rate">
+                </div>
+
+                <div class="form-group">
+                    <label for="alternatives">Have You Explored Alternatives?</label>
+                    <select id="alternatives">
+                        <option value="no">No, college is assumed</option>
+                        <option value="somewhat">Somewhat (aware of bootcamps)</option>
+                        <option value="seriously">Yes, seriously considering alternatives</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="jobMarket">Target Job Market</label>
+                    <select id="jobMarket">
+                        <option value="tech">Tech (high salary)</option>
+                        <option value="professional">Professional (accounting, law)</option>
+                        <option value="skilled">Skilled Trade</option>
+                        <option value="public">Public Service</option>
+                        <option value="unsure">Unsure</option>
+                    </select>
+                </div>
+
+                <button onclick="runPrediction()">Calculate Education ROI</button>
+            </div>
+
+            <!-- Results Panel -->
+            <div class="card results" id="results">
+                <h2>💰 Education ROI Analysis</h2>
+
+                <div class="metric-box">
+                    <div class="metric-label">Lifetime Earnings Gain (vs High School)</div>
+                    <div class="metric-value" id="lifetimeGain">$800K+</div>
+                    <div class="metric-subtext">After accounting for cost and time</div>
+                </div>
+
+                <div class="metric-box">
+                    <div class="metric-label">ROI Break-Even Point</div>
+                    <div class="metric-value" id="breakEven">Year 8</div>
+                    <div class="metric-subtext">When degree pays for itself</div>
+                </div>
+
+                <div class="metric-box">
+                    <div class="metric-label">Expected Starting Salary</div>
+                    <div class="metric-value" id="startingSalary">$65K</div>
+                    <div class="metric-subtext">After graduation</div>
+                </div>
+
+                <div class="section-divider"></div>
+
+                <h3 style="color: #22d3ee; margin-bottom: 12px; font-size: 1.2rem;">🎯 Pathway Comparison</h3>
+
+                <div class="comparison-grid">
+                    <div class="option-box" id="universityBox">
+                        <div class="option-name">4-Year University</div>
+                        <div class="option-value" id="uniCost">$240K</div>
+                        <div class="option-desc">Total cost</div>
+                    </div>
+                    <div class="option-box" id="bootcampBox">
+                        <div class="option-name">Bootcamp</div>
+                        <div class="option-value" id="bootCost">$15K</div>
+                        <div class="option-desc">Total cost</div>
+                    </div>
+                    <div class="option-box" id="selfBox">
+                        <div class="option-name">Self-Taught</div>
+                        <div class="option-value" id="selfCost">$2K</div>
+                        <div class="option-desc">Courses + books</div>
+                    </div>
+                </div>
+
+                <div class="section-divider"></div>
+
+                <h3 style="color: #22d3ee; margin-bottom: 12px; font-size: 1.2rem;">📊 Debt Payoff Timeline</h3>
+
+                <div class="outcome-grid">
+                    <div class="outcome-card">
+                        <div class="outcome-label">Monthly Loan Payment</div>
+                        <div class="outcome-value" id="monthlyPayment">$450</div>
+                    </div>
+                    <div class="outcome-card">
+                        <div class="outcome-label">Payoff Timeline</div>
+                        <div class="outcome-value" id="payoffTimeline">10 years</div>
+                    </div>
+                    <div class="outcome-card">
+                        <div class="outcome-label">Total Interest Paid</div>
+                        <div class="outcome-value" id="totalInterest">$15K</div>
+                    </div>
+                    <div class="outcome-card">
+                        <div class="outcome-label">Impact on Life</div>
+                        <div class="outcome-value" id="lifeImpact">Moderate</div>
+                    </div>
+                </div>
+
+                <div class="section-divider"></div>
+
+                <h3 style="color: #22d3ee; margin-bottom: 12px; font-size: 1.2rem;">🏆 Success Factors</h3>
+
+                <div id="successFactors" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;"></div>
+
+                <div class="section-divider"></div>
+
+                <h3 style="color: #22d3ee; margin-bottom: 12px; font-size: 1.2rem;">💡 Strategic Recommendations</h3>
+
+                <div id="recommendationsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateEducationROI(pathway, major, tuition, borrowing, interestRate, jobMarket) {
+            const majorEarnings = {
+                'cs': { entry: 75000, midcareer: 130000, lifetime: 2800000 },
+                'engineering': { entry: 70000, midcareer: 120000, lifetime: 2600000 },
+                'business': { entry: 55000, midcareer: 95000, lifetime: 2000000 },
+                'nursing': { entry: 65000, midcareer: 85000, lifetime: 2200000 },
+                'liberal': { entry: 42000, midcareer: 65000, lifetime: 1500000 },
+                'education': { entry: 40000, midcareer: 55000, lifetime: 1400000 },
+                'other': { entry: 45000, midcareer: 70000, lifetime: 1600000 }
+            };
+
+            const earnings = majorEarnings[major] || majorEarnings['other'];
+            const baselineLifetime = 1200000; // High school graduate lifetime earnings
+
+            const gainFromDegree = earnings.lifetime - baselineLifetime;
+
+            // Calculate debt
+            let debtAmount = 0;
+            if (borrowing === 'full') debtAmount = tuition;
+            else if (borrowing === 'partial') debtAmount = tuition * 0.35;
+
+            // Calculate break-even
+            let breakEvenYear = 4;
+            if (debtAmount > 0) {
+                breakEvenYear = Math.ceil((tuition / earnings.entry) * 10);
+            }
+
+            return {
+                startingSalary: earnings.entry,
+                lifetimeGain: gainFromDegree,
+                totalDebt: debtAmount,
+                breakEvenYear: Math.max(4, Math.min(12, breakEvenYear)),
+                monthlyPayment: debtAmount > 0 ? (debtAmount * ((interestRate / 100 / 12) * Math.pow(1 + (interestRate / 100 / 12), 120))) / (Math.pow(1 + (interestRate / 100 / 12), 120) - 1) : 0,
+                totalInterest: debtAmount > 0 ? ((debtAmount * ((interestRate / 100 / 12) * Math.pow(1 + (interestRate / 100 / 12), 120))) / (Math.pow(1 + (interestRate / 100 / 12), 120) - 1) * 120) - debtAmount : 0
+            };
+        }
+
+        function generateRecommendations(pathway, major, roi, jobMarket) {
+            const recs = [];
+
+            if (roi.lifetimeGain > 600000 && roi.breakEvenYear <= 8) {
+                recs.push('✅ Strong ROI: Degree pays for itself within reasonable timeframe. Pursue if interested in the field.');
+            } else if (roi.lifetimeGain > 300000) {
+                recs.push('⚠️ Moderate ROI: Degree is worthwhile, but explore alternatives (bootcamp, self-taught) first.');
+            } else {
+                recs.push('❌ Weak ROI: Consider alternatives. Coding bootcamp or self-taught may offer better economics.');
+            }
+
+            if (pathway === '4year' && jobMarket === 'tech') {
+                recs.push('💡 For tech jobs: Bootcamp ($15K, 3mo) or self-taught + portfolio may be more efficient path than 4-year degree.');
+            }
+
+            if (roi.totalDebt > 150000) {
+                recs.push('💰 High debt load: Consider reducing tuition (public school vs private, in-state vs out), or hybrid approach.');
+            } else if (roi.totalDebt > 0) {
+                recs.push('💳 Manageable debt: Monthly payments will be sustainable. Focus on job quality at graduation.');
+            } else {
+                recs.push('✅ No debt: Excellent position. Maximize the investment by networking and securing strong internships.');
+            }
+
+            if (major === 'liberal' || major === 'education') {
+                recs.push('📚 Lower-earning major: Strong degree from top school significantly improves outcomes. Prestige matters more.');
+            } else if (major === 'cs' || major === 'engineering') {
+                recs.push('💻 High-demand major: School prestige less important than portfolio projects. Self-taught + projects can compete.');
+            }
+
+            recs.push('🎯 Action steps: (1) Visit target schools, talk to graduates. (2) Compare total cost-of-attendance. (3) Explore bootcamp options. (4) Make decision by spring for fall start.');
+
+            return recs;
+        }
+
+        function runPrediction() {
+            const pathway = document.getElementById('pathway').value;
+            const major = document.getElementById('major').value;
+            const tuition = parseInt(document.getElementById('tuition').value);
+            const borrowing = document.getElementById('borrowing').value;
+            const interestRate = parseFloat(document.getElementById('interestRate').value);
+            const alternatives = document.getElementById('alternatives').value;
+            const jobMarket = document.getElementById('jobMarket').value;
+
+            const roi = calculateEducationROI(pathway, major, tuition, borrowing, interestRate, jobMarket);
+
+            // Update results
+            document.getElementById('lifetimeGain').textContent = '$' + (roi.lifetimeGain / 1000).toFixed(0) + 'K+';
+            document.getElementById('breakEven').textContent = 'Year ' + roi.breakEvenYear;
+            document.getElementById('startingSalary').textContent = '$' + (roi.startingSalary / 1000).toFixed(0) + 'K';
+
+            // Pathway costs
+            const bootcampCost = 15000;
+            const selfCost = 2000;
+
+            document.getElementById('uniCost').textContent = '$' + (tuition / 1000).toFixed(0) + 'K';
+            document.getElementById('bootCost').textContent = '$' + (bootcampCost / 1000).toFixed(0) + 'K';
+            document.getElementById('selfCost').textContent = '$' + (selfCost / 1000).toFixed(0) + 'K';
+
+            // Mark best value
+            if (bootcampCost < tuition) {
+                document.getElementById('bootcampBox').classList.add('best-value');
+            }
+
+            // Debt
+            if (roi.totalDebt > 0) {
+                document.getElementById('monthlyPayment').textContent = '$' + Math.round(roi.monthlyPayment);
+                document.getElementById('totalInterest').textContent = '$' + (roi.totalInterest / 1000).toFixed(0) + 'K';
+                const payoffYears = Math.round(roi.monthlyPayment > 0 ? (roi.totalDebt + roi.totalInterest) / (roi.monthlyPayment * 12) : 0);
+                document.getElementById('payoffTimeline').textContent = payoffYears + ' years';
+
+                let lifeImpact = 'Low';
+                if (roi.monthlyPayment > 800) lifeImpact = 'High';
+                else if (roi.monthlyPayment > 400) lifeImpact = 'Moderate';
+
+                document.getElementById('lifeImpact').textContent = lifeImpact;
+            } else {
+                document.getElementById('monthlyPayment').textContent = '$0';
+                document.getElementById('totalInterest').textContent = '$0';
+                document.getElementById('payoffTimeline').textContent = 'None';
+                document.getElementById('lifeImpact').textContent = 'None';
+            }
+
+            // Success factors
+            const factors = [];
+            if (major === 'cs' || major === 'engineering') {
+                factors.push({ icon: '⚡', text: 'High-demand field - strong job market' });
+            }
+            if (roi.startingSalary > 65000) {
+                factors.push({ icon: '💰', text: 'Strong starting salary - rapid debt payoff' });
+            }
+            if (roi.lifetimeGain > 600000) {
+                factors.push({ icon: '📈', text: 'Excellent lifetime ROI - worthwhile investment' });
+            }
+            if (roi.totalDebt < 50000) {
+                factors.push({ icon: '✅', text: 'Manageable debt - no financial stress' });
+            }
+
+            const factorsDiv = document.getElementById('successFactors');
+            factorsDiv.innerHTML = '';
+            factors.forEach(f => {
+                const item = document.createElement('div');
+                item.style.background = 'rgba(6, 182, 212, 0.05)';
+                item.style.border = '1px solid rgba(6, 182, 212, 0.2)';
+                item.style.borderRadius = '8px';
+                item.style.padding = '10px';
+                item.innerHTML = `<div style="font-size: 1.2rem; margin-bottom: 4px;">${f.icon}</div><div style="font-size: 0.85rem; color: #cbd5e1;">${f.text}</div>`;
+                factorsDiv.appendChild(item);
+            });
+
+            // Recommendations
+            const recs = generateRecommendations(pathway, major, roi, jobMarket);
+            const recsDiv = document.getElementById('recommendationsList');
+            recsDiv.innerHTML = '';
+            recs.forEach(rec => {
+                const item = document.createElement('div');
+                item.className = 'recommendation-box';
+                item.textContent = rec;
+                recsDiv.appendChild(item);
+            });
+
+            document.getElementById('results').classList.add('active');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    </script>
+</body>
+</html>
