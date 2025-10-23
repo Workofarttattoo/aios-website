@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ai:oS Releases - Download Latest Versions</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a1e 0%, #1a0a2e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(0, 150, 255, 0.2) 0%, rgba(0, 255, 136, 0.1) 100%);
+            border-radius: 15px;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #00ff88 0%, #0099ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #b0b0b0;
+            font-size: 1.1em;
+        }
+
+        .release-section {
+            margin-bottom: 50px;
+        }
+
+        .section-header {
+            color: #00ff88;
+            font-size: 1.8em;
+            margin: 30px 0 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .release-card {
+            background: rgba(20, 20, 40, 0.8);
+            border: 2px solid rgba(0, 150, 255, 0.3);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .release-card:hover {
+            border-color: rgba(0, 255, 136, 0.6);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .release-version {
+            color: #0099ff;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .release-date {
+            color: #888;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+
+        .release-description {
+            color: #b0b0b0;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+            color: #000;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .changelog {
+            background: rgba(10, 10, 20, 0.8);
+            border-left: 4px solid #0099ff;
+            padding: 15px 20px;
+            margin-top: 15px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .changelog h4 {
+            color: #00ff88;
+            margin-bottom: 10px;
+        }
+
+        .changelog ul {
+            margin-left: 20px;
+            color: #b0b0b0;
+        }
+
+        .changelog li {
+            margin: 5px 0;
+        }
+
+        .release-tag {
+            display: inline-block;
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin-right: 10px;
+        }
+
+        .release-tag.stable {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+        }
+
+        .release-tag.beta {
+            background: rgba(255, 200, 0, 0.2);
+            color: #ffc800;
+        }
+
+        .release-tag.latest {
+            background: rgba(0, 150, 255, 0.2);
+            color: #0099ff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            border-top: 1px solid rgba(0, 150, 255, 0.2);
+        }
+
+        footer a {
+            color: #0099ff;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📦 Ai:oS Releases</h1>
+            <p class="subtitle">Download stable versions, release notes, and installation guides</p>
+        </header>
+
+        <!-- Stable Releases -->
+        <section class="release-section">
+            <h2 class="section-header">🟢 Stable Releases</h2>
+
+            <div class="release-card">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                    <div class="release-version">v1.0.0</div>
+                    <span class="release-tag stable">✓ Stable</span>
+                    <span class="release-tag latest">⭐ Latest</span>
+                </div>
+                <div class="release-date">Released October 22, 2025</div>
+                <div class="release-description">
+                    Production-ready release with all 8 meta-agents, ML algorithms suite, and quantum-enhanced ML capabilities.
+                    100% backwards compatible with previous versions.
+                </div>
+                <div class="download-buttons">
+                    <a href="https://github.com/Workofarttattoo/AioS/releases/tag/v1.0.0" class="download-btn">📥 Download Source</a>
+                    <a href="#" class="download-btn">🐳 Docker Image</a>
+                    <a href="#" class="download-btn">📄 Release Notes</a>
+                </div>
+                <div class="changelog">
+                    <h4>🎉 What's New</h4>
+                    <ul>
+                        <li>Complete meta-agent architecture with 8 autonomous agents</li>
+                        <li>ML Algorithms Suite: Mamba, flow matching, MCTS, Bayesian inference</li>
+                        <li>Quantum-Enhanced ML: 1-50 qubit simulator with automatic backend selection</li>
+                        <li>Autonomous Discovery System: Level 4 autonomous agents with self-directed learning</li>
+                        <li>PromptLab: Interactive prompt composition with 14 advanced templates</li>
+                        <li>Sovereign Security Toolkit: 8 reimagined security assessment utilities</li>
+                        <li>Red Team Tools: Complete penetration testing automation suite</li>
+                        <li>Comprehensive documentation and examples</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="release-card">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                    <div class="release-version">v0.9.5</div>
+                    <span class="release-tag stable">✓ Stable</span>
+                </div>
+                <div class="release-date">Released October 15, 2025</div>
+                <div class="release-description">
+                    Pre-release version with core runtime, basic meta-agents, and initial security toolkit integration.
+                </div>
+                <div class="download-buttons">
+                    <a href="#" class="download-btn">📥 Download Source</a>
+                    <a href="#" class="download-btn">📄 Release Notes</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Beta Releases -->
+        <section class="release-section">
+            <h2 class="section-header">🟡 Beta Releases</h2>
+
+            <div class="release-card">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                    <div class="release-version">v1.1.0-beta.1</div>
+                    <span class="release-tag beta">⚡ Beta</span>
+                </div>
+                <div class="release-date">Available now - Testing Phase</div>
+                <div class="release-description">
+                    Next generation with quantum VQE enhancements, PACER integration for legal domain,
+                    and improved autonomous discovery capabilities.
+                </div>
+                <div class="download-buttons">
+                    <a href="#" class="download-btn">🧪 Try Beta</a>
+                    <a href="#" class="download-btn">📋 Feedback Form</a>
+                </div>
+                <div class="changelog">
+                    <h4>🔬 Experimental Features</h4>
+                    <ul>
+                        <li>Quantum VQE: Molecular energy calculations (20-50 qubits)</li>
+                        <li>PACER Integration: Federal court case data (limited beta)</li>
+                        <li>Improved Autonomous Discovery: Multi-GPU distributed inference</li>
+                        <li>Enhanced PromptLab: Custom prompt builder with templates</li>
+                        <li>Predictive diagnostics and system health monitoring</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Development Releases -->
+        <section class="release-section">
+            <h2 class="section-header">🔴 Development (Nightly)</h2>
+
+            <div class="release-card">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                    <div class="release-version">main (Nightly)</div>
+                    <span class="release-tag" style="background: rgba(255, 100, 100, 0.2); color: #ff6464;">⚠️ Unstable</span>
+                </div>
+                <div class="release-date">Updated automatically</div>
+                <div class="release-description">
+                    Latest development version from GitHub main branch. Includes latest features but may be unstable.
+                    For development and testing only.
+                </div>
+                <div class="download-buttons">
+                    <a href="https://github.com/Workofarttattoo/AioS/archive/refs/heads/main.zip" class="download-btn">📥 Clone from GitHub</a>
+                    <a href="https://github.com/Workofarttattoo/AioS" class="download-btn">🔗 View Repository</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Installation Options -->
+        <section class="release-section">
+            <h2 class="section-header">⚙️ Installation Methods</h2>
+
+            <div class="release-card">
+                <h3 style="color: #00ff88; margin-bottom: 15px;">Option 1: Docker (Recommended)</h3>
+                <div style="background: #0a0a0a; padding: 15px; border-radius: 6px; margin-bottom: 15px; font-family: monospace; color: #00ff88;">
+                    docker pull aios:latest<br>
+                    docker run -it aios:latest aios -v boot
+                </div>
+                <p style="color: #b0b0b0;">One-line deployment. Works on any system with Docker installed.</p>
+            </div>
+
+            <div class="release-card">
+                <h3 style="color: #00ff88; margin-bottom: 15px;">Option 2: Python Package</h3>
+                <div style="background: #0a0a0a; padding: 15px; border-radius: 6px; margin-bottom: 15px; font-family: monospace; color: #00ff88;">
+                    pip install aios-os
+                </div>
+                <p style="color: #b0b0b0;">Requires Python 3.9+. Install dependencies automatically.</p>
+            </div>
+
+            <div class="release-card">
+                <h3 style="color: #00ff88; margin-bottom: 15px;">Option 3: Manual Installation</h3>
+                <div style="background: #0a0a0a; padding: 15px; border-radius: 6px; margin-bottom: 15px; font-family: monospace; color: #00ff88;">
+                    git clone https://github.com/Workofarttattoo/AioS.git<br>
+                    cd AioS<br>
+                    python aios/aios -v boot
+                </div>
+                <p style="color: #b0b0b0;">Full source control. Fastest for development.</p>
+            </div>
+        </section>
+
+        <!-- Archive -->
+        <section class="release-section">
+            <h2 class="section-header">📚 Release Archive</h2>
+            <p style="color: #b0b0b0; margin-bottom: 20px;">
+                All releases are available on <a href="https://github.com/Workofarttattoo/AioS/releases" style="color: #0099ff;">GitHub Releases</a>
+            </p>
+        </section>
+
+        <footer>
+            <p>&copy; 2025 Ai:oS Project. <a href="https://github.com/Workofarttattoo/AioS">View on GitHub</a></p>
+            <p style="color: #666; margin-top: 15px; font-size: 0.9em;">
+                Licensed under MIT. <a href="#">Report Issues</a> | <a href="#">Feature Requests</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
