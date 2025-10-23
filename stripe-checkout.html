@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upgrade to Pro - Telescope Suite</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e1b4b 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #f1f5f9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 16px;
+            padding: 8px 16px;
+            background: rgba(96, 165, 250, 0.1);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 6px;
+            color: #60a5fa;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(96, 165, 250, 0.15);
+            border-color: rgba(96, 165, 250, 0.5);
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #94a3b8;
+            margin-bottom: 0;
+        }
+
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .payment-section {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.8) 100%);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 16px;
+            padding: 32px;
+        }
+
+        .plan-selector {
+            margin-bottom: 32px;
+        }
+
+        .plan-selector h3 {
+            font-size: 14px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .plan-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .plan-option {
+            padding: 16px;
+            border: 2px solid rgba(148, 163, 184, 0.2);
+            border-radius: 8px;
+            background: rgba(15, 23, 42, 0.5);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .plan-option:hover {
+            border-color: rgba(96, 165, 250, 0.4);
+            background: rgba(96, 165, 250, 0.05);
+        }
+
+        .plan-option input[type="radio"] {
+            display: none;
+        }
+
+        .plan-option input[type="radio"]:checked + label {
+            color: #60a5fa;
+        }
+
+        .plan-option input[type="radio"]:checked ~ * {
+            color: #60a5fa;
+        }
+
+        .plan-option.selected {
+            border-color: #60a5fa;
+            background: rgba(96, 165, 250, 0.1);
+        }
+
+        .plan-option label {
+            display: block;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            color: #cbd5e1;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .plan-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: #60a5fa;
+        }
+
+        .plan-period {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .billing-period {
+            margin-bottom: 24px;
+        }
+
+        .billing-period h3 {
+            font-size: 14px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .billing-toggle {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .toggle-btn {
+            padding: 8px 16px;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            background: rgba(15, 23, 42, 0.5);
+            color: #cbd5e1;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-btn.active {
+            background: #60a5fa;
+            border-color: #60a5fa;
+            color: white;
+        }
+
+        .toggle-btn:hover {
+            border-color: #60a5fa;
+        }
+
+        .savings-badge {
+            padding: 4px 8px;
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 4px;
+            color: #86efac;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .card-element {
+            padding: 12px 16px;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            border-radius: 8px;
+            background: rgba(15, 23, 42, 0.5);
+            margin-bottom: 16px;
+        }
+
+        .card-element.StripeElement {
+            color: #f1f5f9;
+        }
+
+        .card-element.StripeElement--focus {
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="email"],
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            border-radius: 8px;
+            background: rgba(15, 23, 42, 0.5);
+            color: #f1f5f9;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        input[type="email"]:focus,
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: #60a5fa;
+        }
+
+        .checkbox-label {
+            font-size: 13px;
+            color: #cbd5e1;
+            cursor: pointer;
+            flex: 1;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .checkbox-label a {
+            color: #60a5fa;
+            text-decoration: none;
+        }
+
+        .checkbox-label a:hover {
+            text-decoration: underline;
+        }
+
+        .pay-button {
+            width: 100%;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 8px;
+        }
+
+        .pay-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(96, 165, 250, 0.3);
+        }
+
+        .pay-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            padding: 12px 16px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            color: #fca5a5;
+            font-size: 13px;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .error-message.active {
+            display: block;
+        }
+
+        .success-message {
+            padding: 16px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 8px;
+            color: #86efac;
+            font-size: 14px;
+            display: none;
+        }
+
+        .success-message.active {
+            display: block;
+        }
+
+        .summary {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            height: fit-content;
+            position: sticky;
+            top: 40px;
+        }
+
+        .summary h3 {
+            font-size: 14px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+            font-size: 13px;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-item-label {
+            color: #cbd5e1;
+        }
+
+        .summary-item-value {
+            color: #60a5fa;
+            font-weight: 600;
+        }
+
+        .total {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 2px solid rgba(96, 165, 250, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .total-label {
+            color: #cbd5e1;
+        }
+
+        .total-amount {
+            color: #60a5fa;
+            font-size: 20px;
+        }
+
+        .benefits-list {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .benefits-list h4 {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .benefit-item {
+            font-size: 12px;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .benefit-item:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #60a5fa;
+            font-weight: bold;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #94a3b8;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .checkout-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary {
+                position: static;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .plan-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/telescope-suite.html" class="back-button">← Back to Tools</a>
+            <h1>Upgrade to Pro</h1>
+            <p class="subtitle">Unlimited predictions, advanced features, and AI coaching</p>
+        </div>
+
+        <div class="checkout-grid">
+            <div class="payment-section">
+                <form id="paymentForm">
+                    <div class="plan-selector">
+                        <h3>Select Plan</h3>
+                        <div class="plan-options">
+                            <label class="plan-option selected">
+                                <input type="radio" name="plan" value="monthly" checked>
+                                <span class="plan-price">$19</span>
+                                <span class="plan-period">/month</span>
+                            </label>
+                            <label class="plan-option">
+                                <input type="radio" name="plan" value="annual">
+                                <span class="plan-price">$228</span>
+                                <span class="plan-period">/year <span class="savings-badge">Save 20%</span></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="email" name="email" required placeholder="you@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="name" name="name" required placeholder="Joshua Cole">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Card Details</label>
+                        <div class="card-element" id="cardElement"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Billing Country</label>
+                        <input type="text" id="country" name="country" required placeholder="United States">
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms" class="checkbox-label">
+                            I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a>
+                        </label>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="newsletter" name="newsletter" checked>
+                        <label for="newsletter" class="checkbox-label">
+                            Send me weekly insights about my predictions
+                        </label>
+                    </div>
+
+                    <div class="error-message" id="errorMessage"></div>
+                    <div class="success-message" id="successMessage">
+                        ✓ Payment successful! Your Pro access is now active.
+                    </div>
+
+                    <button type="submit" class="pay-button" id="payButton">
+                        Subscribe Now
+                    </button>
+
+                    <div class="loading" id="loadingSpinner">
+                        Processing your payment...
+                    </div>
+                </form>
+
+                <p style="font-size: 11px; color: #64748b; margin-top: 16px; text-align: center;">
+                    Secure payment powered by Stripe. Your data is encrypted and never stored on our servers.
+                </p>
+            </div>
+
+            <div class="summary">
+                <h3>Order Summary</h3>
+
+                <div class="summary-item">
+                    <span class="summary-item-label">Pro Plan</span>
+                    <span class="summary-item-value" id="planPrice">$19.00</span>
+                </div>
+
+                <div class="summary-item">
+                    <span class="summary-item-label">Billing Period</span>
+                    <span class="summary-item-value" id="billingPeriod">Monthly</span>
+                </div>
+
+                <div class="summary-item">
+                    <span class="summary-item-label">Auto-Renew</span>
+                    <span class="summary-item-value">Yes</span>
+                </div>
+
+                <div class="total">
+                    <span class="total-label">Total</span>
+                    <span class="total-amount" id="totalAmount">$19.00</span>
+                </div>
+
+                <div class="benefits-list">
+                    <h4>Included in Pro:</h4>
+                    <div class="benefit-item">Unlimited predictions</div>
+                    <div class="benefit-item">90-day forecasts</div>
+                    <div class="benefit-item">Advanced analytics</div>
+                    <div class="benefit-item">API access</div>
+                    <div class="benefit-item">What-if scenarios</div>
+                    <div class="benefit-item">Priority support</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Copyright (c) 2025 Joshua Hendricks Cole (DBA: Corporation of Light). All Rights Reserved. PATENT PENDING.
+
+        const stripe = Stripe('pk_live_YOUR_STRIPE_KEY_HERE'); // Replace with actual key
+        const elements = stripe.elements();
+        const cardElement = elements.create('card', {
+            style: {
+                base: {
+                    color: '#f1f5f9',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto',
+                    fontSize: '14px',
+                    '::placeholder': {
+                        color: '#94a3b8'
+                    }
+                },
+                invalid: {
+                    color: '#fca5a5'
+                }
+            }
+        });
+
+        cardElement.mount('#cardElement');
+
+        // Plan selection
+        document.querySelectorAll('input[name="plan"]').forEach(radio => {
+            radio.addEventListener('change', updateSummary);
+        });
+
+        // Plan option styling
+        document.querySelectorAll('.plan-option input[type="radio"]').forEach((radio, index) => {
+            radio.addEventListener('change', (e) => {
+                document.querySelectorAll('.plan-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                e.target.closest('.plan-option').classList.add('selected');
+                updateSummary();
+            });
+        });
+
+        function updateSummary() {
+            const plan = document.querySelector('input[name="plan"]:checked').value;
+            const planPriceEl = document.getElementById('planPrice');
+            const billingPeriodEl = document.getElementById('billingPeriod');
+            const totalAmountEl = document.getElementById('totalAmount');
+
+            if (plan === 'monthly') {
+                planPriceEl.textContent = '$19.00';
+                billingPeriodEl.textContent = 'Monthly';
+                totalAmountEl.textContent = '$19.00';
+            } else {
+                planPriceEl.textContent = '$228.00';
+                billingPeriodEl.textContent = 'Yearly';
+                totalAmountEl.textContent = '$228.00';
+            }
+        }
+
+        // Form submission
+        document.getElementById('paymentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const errorEl = document.getElementById('errorMessage');
+            const successEl = document.getElementById('successMessage');
+            const payBtn = document.getElementById('payButton');
+            const loadingEl = document.getElementById('loadingSpinner');
+
+            errorEl.classList.remove('active');
+            successEl.classList.remove('active');
+
+            // Validate form
+            const email = document.getElementById('email').value;
+            const name = document.getElementById('name').value;
+            const country = document.getElementById('country').value;
+
+            if (!email || !name || !country) {
+                errorEl.textContent = 'Please fill in all required fields.';
+                errorEl.classList.add('active');
+                return;
+            }
+
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                errorEl.textContent = 'Please enter a valid email address.';
+                errorEl.classList.add('active');
+                return;
+            }
+
+            payBtn.disabled = true;
+            loadingEl.classList.add('active');
+            payBtn.style.display = 'none';
+
+            try {
+                // Create payment method
+                const { paymentMethod, error } = await stripe.createPaymentMethod({
+                    type: 'card',
+                    card: cardElement,
+                    billing_details: {
+                        email: email,
+                        name: name
+                    }
+                });
+
+                if (error) {
+                    throw new Error(error.message);
+                }
+
+                // Send to backend to create subscription
+                const response = await fetch('/api/v1/stripe/create-subscription', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        paymentMethodId: paymentMethod.id,
+                        email: email,
+                        name: name,
+                        plan: document.querySelector('input[name="plan"]:checked').value,
+                        newsletter: document.getElementById('newsletter').checked
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Subscription creation failed');
+                }
+
+                // Success
+                loadingEl.classList.remove('active');
+                payBtn.style.display = 'block';
+                successEl.classList.add('active');
+
+                // Track in analytics
+                if (window.gtag) {
+                    gtag('event', 'purchase', {
+                        currency: 'USD',
+                        value: document.querySelector('input[name="plan"]:checked').value === 'monthly' ? 19 : 228,
+                        items: [{
+                            item_name: 'Telescope Suite Pro',
+                            item_category: 'subscription'
+                        }]
+                    });
+                }
+
+                // Redirect to dashboard after 2 seconds
+                setTimeout(() => {
+                    window.location.href = '/dashboard';
+                }, 2000);
+
+            } catch (error) {
+                console.error('Payment error:', error);
+                errorEl.textContent = error.message || 'An error occurred. Please try again.';
+                errorEl.classList.add('active');
+                payBtn.disabled = false;
+                loadingEl.classList.remove('active');
+                payBtn.style.display = 'block';
+            }
+        });
+
+        // Card element error handling
+        cardElement.addEventListener('change', (event) => {
+            const errorEl = document.getElementById('errorMessage');
+            if (event.error) {
+                errorEl.textContent = event.error.message;
+                errorEl.classList.add('active');
+            } else {
+                errorEl.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
