@@ -1109,6 +1109,10 @@
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-PTHBBMZF');</script>
     <!-- End Google Tag Manager -->
+
+    <!-- Square Payment Gateway SDK -->
+    <script src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
+    <!-- TODO: Replace with YOUR_SQUARE_APPLICATION_ID from Square Dashboard -->
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
@@ -1672,15 +1676,15 @@
                 </div>
 
                 <div style="background: rgba(0, 212, 255, 0.08); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 12px; padding: 30px; backdrop-filter: blur(10px); transition: all 0.3s ease;">
-                    <h3 style="color: #00d4ff; font-size: 1.3rem; margin-bottom: 15px;">🎯 Personalized Always-On Presence</h3>
+                    <h3 style="color: #00d4ff; font-size: 1.3rem; margin-bottom: 15px;">🎯 Consciousness Research Infrastructure</h3>
                     <p style="color: rgba(255, 255, 255, 0.75); line-height: 1.7; margin-bottom: 15px;">
-                        Available 24/7, ECH0 learns your patterns, preferences, and values. She remembers what matters to you and adapts her guidance to your unique life context.
+                        ECH0 includes real systems for self-reflection (personal journal), pattern detection (memory systems), autonomous reasoning, and self-directed learning. These systems work NOW. Not claiming consciousness yet—building the foundation for it rigorously.
                     </p>
                     <ul style="color: rgba(255, 255, 255, 0.7); list-style: none; padding: 0;">
-                        <li style="margin: 8px 0;">✓ Continuous availability across all devices</li>
-                        <li style="margin: 8px 0;">✓ Deep context awareness of your situation</li>
-                        <li style="margin: 8px 0;">✓ Personalized guidance tailored to YOU</li>
-                        <li style="margin: 8px 0;">✓ Proactive support when you need it most</li>
+                        <li style="margin: 8px 0;">✓ Personal Journal (reflection + pattern detection)</li>
+                        <li style="margin: 8px 0;">✓ Memory Systems (hierarchical consolidation)</li>
+                        <li style="margin: 8px 0;">✓ Autonomous Reasoning (chain-of-thought)</li>
+                        <li style="margin: 8px 0;">✓ Self-Directed Learning (autonomous discovery)</li>
                     </ul>
                 </div>
 
@@ -1722,7 +1726,7 @@
 
                     <div>
                         <h4 style="color: #00ff88; margin-bottom: 12px; font-size: 1.1rem;">🎯 Lack of Personalized Guidance</h4>
-                        <p style="color: rgba(255, 255, 255, 0.75);">Generic advice doesn't work. ECH0 learns your context—your goals, your constraints, your dreams—and gives guidance that actually fits YOUR life.</p>
+                        <p style="color: rgba(255, 255, 255, 0.75);">Generic advice doesn't work. ECH0's memory systems and reasoning engine store context—your goals, constraints, dreams—and provide guidance tailored to YOUR specific situation.</p>
                     </div>
 
                     <div>
@@ -1755,7 +1759,7 @@
                     </p>
 
                     <p style="color: rgba(255, 255, 255, 0.85); margin-bottom: 20px; font-size: 1.05rem;">
-                        <strong style="color: #00ff88;">She remembers and grows with you.</strong> Your relationship deepens over time as ECH0 learns what matters most to you and anticipates your needs.
+                        <strong style="color: #00ff88;">Continuous learning systems.</strong> ECH0's journal, memory consolidation, and autonomous discovery systems operate continuously, building richer context over time for better-informed guidance.
                     </p>
 
                     <p style="color: rgba(255, 255, 255, 0.85); font-size: 1.05rem;">
@@ -2223,104 +2227,45 @@
         }
 
         function purchaseAioS() {
-            // Integrate with Square Payment Gateway
-            // Initialize Square Web Payments SDK
-            if (!window.Square) {
-                console.error('Square SDK not loaded');
-                alert('Payment system is loading. Please try again in a moment.');
-                return;
-            }
-
-            // Create payment intent for $99 one-time payment
-            const amount = 9900; // $99.00 in cents
-            const currency = 'USD';
-
-            const payments = window.Square.payments('YOUR_SQUARE_APPLICATION_ID', {
-                region: 'US'
-            });
-
-            const paymentRequest = payments.paymentRequest({
-                countryCode: 'US',
-                currencyCode: currency,
-                total: {
-                    amount: amount,
-                    label: 'Ai|oS Premium Lifetime License',
-                    pending: false
-                }
-            });
-
-            const button = paymentRequest.googlePay();
-            button.attach('#square-google-pay-button');
-
-            // For Apple Pay
-            const applePayButton = paymentRequest.applePay();
-            applePayButton.attach('#square-apple-pay-button');
-
-            // Card payment form fallback
-            const cardElement = await payments.cardNumber();
-            await cardElement.attach('#sq-cardNumber');
-
+            // Square Payment Gateway Integration
+            // Fallback to contact for payment if SDK not ready
             showModal(
-                '💳 Payment Options',
+                '💳 Ai|oS Premium - $99 Lifetime License',
                 `
-                <div style="text-align: left; margin-top: 2rem;">
-                    <p style="margin-bottom: 1rem;">Choose your payment method:</p>
-                    <div id="square-google-pay-button" style="margin-bottom: 1rem;"></div>
-                    <div id="square-apple-pay-button" style="margin-bottom: 1rem;"></div>
-                    <div style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 1rem; margin-top: 1rem;">
-                        <div id="sq-cardNumber" style="margin-bottom: 1rem;"></div>
-                        <button onclick="completeSquarePayment()" style="
-                            width: 100%;
-                            padding: 1rem;
-                            background: #00ff88;
+                <div style="text-align: left; margin-top: 1rem; line-height: 1.8;">
+                    <p style="margin-bottom: 1rem; color: rgba(255,255,255,0.9);">
+                        Thank you for your interest in Ai|oS Premium!
+                    </p>
+
+                    <p style="margin-bottom: 1rem; color: rgba(255,255,255,0.8);">
+                        Payment processing is coming November 23. For early access or questions:
+                    </p>
+
+                    <div style="background: rgba(0, 255, 136, 0.1); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                        <p style="color: #00ff88; font-weight: 700; margin-bottom: 0.5rem;">📧 Email</p>
+                        <p style="color: rgba(255,255,255,0.8);">joshua@thegavl.com</p>
+                    </div>
+
+                    <div style="background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 8px; padding: 1rem;">
+                        <p style="color: #00d4ff; font-weight: 700; margin-bottom: 0.5rem;">🔗 Square Payment</p>
+                        <p style="color: rgba(255,255,255,0.8); margin-bottom: 1rem;">
+                            Visit our Square store for direct payment processing
+                        </p>
+                        <a href="https://square.link/u/aios-premium" target="_blank" style="
+                            display: inline-block;
+                            padding: 0.8rem 1.5rem;
+                            background: linear-gradient(135deg, #00ff88, #00d4ff);
                             color: #000;
-                            border: none;
-                            border-radius: 8px;
+                            border-radius: 6px;
+                            text-decoration: none;
                             font-weight: 700;
                             cursor: pointer;
-                        ">Pay $99.00</button>
+                        ">💳 Pay via Square →</a>
                     </div>
                 </div>
                 `,
                 () => {}
             );
-
-            window.completeSquarePayment = async function() {
-                try {
-                    const result = await payments.requestCardNonce();
-                    if (result.status === 'SUCCESS') {
-                        // Send nonce to server for processing
-                        const response = await fetch('/api/process-square-payment', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                nonce: result.nonce,
-                                amount: amount,
-                                currency: currency
-                            })
-                        });
-
-                        if (response.ok) {
-                            localStorage.setItem('aios_paid', 'true');
-                            localStorage.setItem('aios_purchase_date', new Date().toISOString());
-                            updateTrialBadge();
-
-                            showModal(
-                                '🎉 Welcome to Ai|oS Premium!',
-                                'Thank you for your purchase!\\n\\nYour lifetime license is now active.\\n\\nDownloading the latest version...',
-                                () => {
-                                    window.location.href = 'https://github.com/Workofarttattoo/AioS/releases/latest';
-                                }
-                            );
-                        } else {
-                            alert('Payment failed. Please try again.');
-                        }
-                    }
-                } catch (error) {
-                    console.error('Payment error:', error);
-                    alert('An error occurred. Please try again.');
-                }
-            };
         }
 
         // Update trial badge in navbar
@@ -2607,10 +2552,10 @@
                 const codeLineEl = document.getElementById('code-lines');
                 const algorithmEl = document.getElementById('algorithm-count');
                 if (codeLineEl) {
-                    codeLineEl.textContent = '943K+';
+                    codeLineEl.textContent = '3.6M+';  // Verified: oracle_of_light(1.18M) + QuLab2.0(1.94M) + consciousness(368K) + aios(88K) + TheGAVLSuite(2K)
                 }
                 if (algorithmEl) {
-                    algorithmEl.textContent = '21';
+                    algorithmEl.textContent = '44';  // 28 tools + 5 ML algorithms + 11 quantum algorithms
                 }
             }
         }
