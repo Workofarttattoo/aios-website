@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ai:oS Downloads - Open-Source Autonomous Intelligence Operating System</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a1e 0%, #1a0a2e 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            background: rgba(0, 255, 136, 0.05);
+            border-bottom: 2px solid rgba(0, 255, 136, 0.2);
+            margin-bottom: 50px;
+            border-radius: 15px;
+        }
+
+        h1 {
+            font-size: 3em;
+            background: linear-gradient(135deg, #00ff88 0%, #0099ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #b0b0b0;
+            font-size: 1.3em;
+            margin-bottom: 20px;
+        }
+
+        .tier-section {
+            margin-bottom: 60px;
+        }
+
+        .tier-header {
+            background: linear-gradient(135deg, rgba(0, 150, 255, 0.2) 0%, rgba(0, 255, 136, 0.1) 100%);
+            border: 2px solid rgba(0, 150, 255, 0.3);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .tier-header h2 {
+            color: #00ff88;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        .tier-description {
+            color: #b0b0b0;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+
+        .downloads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .download-card {
+            background: rgba(20, 20, 40, 0.8);
+            border: 2px solid rgba(0, 150, 255, 0.3);
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.3s;
+        }
+
+        .download-card:hover {
+            border-color: rgba(0, 255, 136, 0.6);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .card-version {
+            color: #0099ff;
+            font-weight: bold;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            color: #00ff88;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .card-features {
+            color: #b0b0b0;
+            font-size: 0.95em;
+            margin: 20px 0;
+        }
+
+        .card-features li {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+            color: #000;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-right: 10px;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.4);
+        }
+
+        .secondary-btn {
+            background: rgba(0, 150, 255, 0.3);
+            color: #0099ff;
+            border: 1px solid rgba(0, 150, 255, 0.5);
+        }
+
+        .secondary-btn:hover {
+            background: rgba(0, 150, 255, 0.5);
+        }
+
+        .system-requirements {
+            background: rgba(255, 200, 0, 0.1);
+            border-left: 4px solid #ffc800;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .system-requirements h4 {
+            color: #ffc800;
+            margin-bottom: 10px;
+        }
+
+        .code-block {
+            background: #0a0a0a;
+            border: 1px solid #333;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            color: #00ff88;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: rgba(10, 10, 20, 0.5);
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 150, 255, 0.2);
+        }
+
+        .comparison-table th {
+            background: rgba(0, 150, 255, 0.2);
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        .checkmark {
+            color: #00ff88;
+        }
+
+        .cross {
+            color: #ff6666;
+        }
+
+        .add-on-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .add-on-card {
+            background: rgba(255, 200, 0, 0.1);
+            border: 2px solid rgba(255, 200, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .add-on-card h4 {
+            color: #ffc800;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            color: #00ff88;
+            font-size: 1.8em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .faq-section {
+            background: rgba(20, 20, 40, 0.6);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 50px;
+        }
+
+        .faq-item {
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(0, 150, 255, 0.2);
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            color: #00ff88;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .faq-answer {
+            color: #b0b0b0;
+            line-height: 1.8;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+            border-top: 1px solid rgba(0, 150, 255, 0.2);
+            margin-top: 60px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⬇️ Ai:oS Downloads</h1>
+            <p class="subtitle">Open-Source Autonomous Intelligence Operating System</p>
+            <p style="color: #888;">Choose your edition and get started instantly</p>
+        </header>
+
+        <!-- Community Tier -->
+        <section class="tier-section">
+            <div class="tier-header">
+                <h2>📚 Community Edition (Free)</h2>
+                <p class="tier-description">Perfect for individual developers, students, and researchers. Open source, fully transparent.</p>
+            </div>
+
+            <div class="downloads-grid">
+                <div class="download-card">
+                    <div class="card-version">v1.0.0 Stable</div>
+                    <div class="card-title">Source Code</div>
+                    <ul class="card-features">
+                        <li>✓ Full source on GitHub</li>
+                        <li>✓ MIT License</li>
+                        <li>✓ Community support</li>
+                        <li>✓ Self-hosted deployment</li>
+                    </ul>
+                    <a href="https://github.com/Workofarttattoo/AioS" class="download-btn">View on GitHub</a>
+                    <a href="#" class="download-btn secondary-btn">Clone Repo</a>
+                </div>
+
+                <div class="download-card">
+                    <div class="card-version">v1.0.0 Stable</div>
+                    <div class="card-title">Docker Image</div>
+                    <ul class="card-features">
+                        <li>✓ Pre-built container</li>
+                        <li>✓ One-click deployment</li>
+                        <li>✓ Environment isolation</li>
+                        <li>✓ Docker Compose ready</li>
+                    </ul>
+                    <a href="#" class="download-btn">Pull from DockerHub</a>
+                    <div class="code-block">docker pull aios:latest</div>
+                </div>
+
+                <div class="download-card">
+                    <div class="card-version">v1.0.0 Stable</div>
+                    <div class="card-title">Installation Script</div>
+                    <ul class="card-features">
+                        <li>✓ Automated setup</li>
+                        <li>✓ macOS & Linux</li>
+                        <li>✓ Dependency resolution</li>
+                        <li>✓ Quick start guide</li>
+                    </ul>
+                    <a href="#" class="download-btn">Download Installer</a>
+                    <div class="code-block">bash install-aios.sh</div>
+                </div>
+
+                <div class="download-card">
+                    <div class="card-version">Latest</div>
+                    <div class="card-title">Python Package</div>
+                    <ul class="card-features">
+                        <li>✓ pip install aios</li>
+                        <li>✓ Python 3.9+</li>
+                        <li>✓ Virtual env compatible</li>
+                        <li>✓ PyPI distribution</li>
+                    </ul>
+                    <a href="#" class="download-btn">PyPI Package</a>
+                    <div class="code-block">pip install aios-os</div>
+                </div>
+
+                <div class="download-card">
+                    <div class="card-version">Latest</div>
+                    <div class="card-title">Documentation</div>
+                    <ul class="card-features">
+                        <li>✓ Getting started guides</li>
+                        <li>✓ API reference</li>
+                        <li>✓ Example manifests</li>
+                        <li>✓ Troubleshooting</li>
+                    </ul>
+                    <a href="https://docs.aios.is" class="download-btn">Read Docs</a>
+                    <a href="#" class="download-btn secondary-btn">PDF Download</a>
+                </div>
+
+                <div class="download-card">
+                    <div class="card-version">v1.0.0</div>
+                    <div class="card-title">Sample Manifests</div>
+                    <ul class="card-features">
+                        <li>✓ Security response examples</li>
+                        <li>✓ Multi-cloud orchestration</li>
+                        <li>✓ Custom agent patterns</li>
+                        <li>✓ Real-world configs</li>
+                    </ul>
+                    <a href="#" class="download-btn">Download Zip</a>
+                </div>
+            </div>
+
+            <div class="system-requirements">
+                <h4>System Requirements - Community Edition</h4>
+                <ul style="color: #b0b0b0; margin-top: 10px;">
+                    <li><strong>CPU</strong>: 2+ cores (4+ recommended)</li>
+                    <li><strong>RAM</strong>: 4GB minimum (8GB+ recommended)</li>
+                    <li><strong>OS</strong>: macOS, Linux, Windows (WSL2)</li>
+                    <li><strong>Python</strong>: 3.9+ or Docker</li>
+                    <li><strong>Storage</strong>: 2GB for base system</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Professional Tier -->
+        <section class="tier-section">
+            <div class="tier-header">
+                <h2>⭐ Professional Edition ($29/month)</h2>
+                <p class="tier-description">For teams and startups. Includes all meta-agents, ML algorithms, and priority support.</p>
+            </div>
+
+            <div class="downloads-grid">
+                <div class="download-card">
+                    <div class="card-version">v1.1.0 Pro</div>
+                    <div class="card-title">Professional Package</div>
+                    <ul class="card-features">
+                        <li>✓ All 8 meta-agents</li>
+                        <li>✓ ML Algorithms Suite</li>
+                        <li>✓ Quantum ML (1-50 qubits)</li>
+                        <li>✓ 3 Security Tools</li>
+                        <li>✓ Priority support</li>
+                    </ul>
+                    <a href="https://aios.is/pricing" class="download-btn">Subscribe & Download</a>
+                </div>
+
+                <div class="download-card">
+                    <div class="card-version">v1.1.0 Pro</div>
+                    <div class="card-title">Team Installation</div>
+                    <ul class="card-features">
+                        <li>✓ Multi-user setup</li>
+                        <li>✓ License management</li>
+                        <li>✓ Team collaboration</li>
+                        <li>✓ Central deployment</li>
+                    </ul>
+                    <a href="#" class="download-btn">Team License</a>
+                </div>
+
+                <div class="download-card">
+                    <div class="card-version">Latest</div>
+                    <div class="card-title">Private Docker Registry</div>
+                    <ul class="card-features">
+                        <li>✓ Optimized images</li>
+                        <li>✓ Auto-updates</li>
+                        <li>✓ Version pinning</li>
+                        <li>✓ Private registry access</li>
+                    </ul>
+                    <a href="#" class="download-btn">Configure Access</a>
+                </div>
+            </div>
+
+            <div class="system-requirements">
+                <h4>System Requirements - Professional Edition</h4>
+                <ul style="color: #b0b0b0; margin-top: 10px;">
+                    <li><strong>CPU</strong>: 4+ cores (8+ for ML algorithms)</li>
+                    <li><strong>RAM</strong>: 8GB minimum (16GB+ recommended)</li>
+                    <li><strong>GPU</strong>: Optional (NVIDIA CUDA for 2-5x speedup)</li>
+                    <li><strong>Storage</strong>: 5GB+ (models and data)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Add-On Modules -->
+        <section class="tier-section">
+            <h2 style="color: #00ff88; margin-bottom: 30px; font-size: 2em;">📦 Premium Add-On Modules</h2>
+            <p style="color: #b0b0b0; margin-bottom: 30px; font-size: 1.1em;">
+                Enhance your Ai:oS installation with specialized tools and capabilities
+            </p>
+
+            <div class="add-on-grid">
+                <div class="add-on-card">
+                    <h4>TheGAVLSuite</h4>
+                    <p style="color: #b0b0b0; font-size: 0.9em; margin: 10px 0;">Legal AI & Case Analysis</p>
+                    <div class="price">$14.99/mo</div>
+                    <a href="#" class="download-btn" style="display: block;">Learn More</a>
+                </div>
+
+                <div class="add-on-card">
+                    <h4>Prompt Masterworks Pro</h4>
+                    <p style="color: #b0b0b0; font-size: 0.9em; margin: 10px 0;">14 Advanced Prompts</p>
+                    <div class="price">$9.99/mo</div>
+                    <a href="https://promptlab.aios.is" class="download-btn" style="display: block;">Try It</a>
+                </div>
+
+                <div class="add-on-card">
+                    <h4>Red Team Toolkit</h4>
+                    <p style="color: #b0b0b0; font-size: 0.9em; margin: 10px 0;">Security Assessment</p>
+                    <div class="price">$24.99/mo</div>
+                    <a href="https://red-team-tools.aios.is" class="download-btn" style="display: block;">Explore</a>
+                </div>
+
+                <div class="add-on-card">
+                    <h4>Quantum VQE Advanced</h4>
+                    <p style="color: #b0b0b0; font-size: 0.9em; margin: 10px 0;">20-50 Qubit Simulation</p>
+                    <div class="price">$19.99/mo</div>
+                    <a href="#" class="download-btn" style="display: block;">Download</a>
+                </div>
+
+                <div class="add-on-card">
+                    <h4>Autonomous Discovery Pro</h4>
+                    <p style="color: #b0b0b0; font-size: 0.9em; margin: 10px 0;">Level 4 Agent Learning</p>
+                    <div class="price">$29.99/mo</div>
+                    <a href="#" class="download-btn" style="display: block;">Get Access</a>
+                </div>
+
+                <div class="add-on-card">
+                    <h4>Boardroom of Light</h4>
+                    <p style="color: #b0b0b0; font-size: 0.9em; margin: 10px 0;">Executive Simulation</p>
+                    <div class="price">$9.99/mo</div>
+                    <a href="#" class="download-btn" style="display: block;">Learn More</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feature Comparison -->
+        <section class="tier-section">
+            <h2 style="color: #00ff88; margin-bottom: 30px; font-size: 2em;">📊 Feature Comparison</h2>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Community</th>
+                        <th>Professional</th>
+                        <th>Enterprise</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Core Ai:oS Runtime</td>
+                        <td class="checkmark">✓</td>
+                        <td class="checkmark">✓</td>
+                        <td class="checkmark">✓</td>
+                    </tr>
+                    <tr>
+                        <td>Meta-Agents (3 basic)</td>
+                        <td class="checkmark">✓</td>
+                        <td class="cross">-</td>
+                        <td class="cross">-</td>
+                    </tr>
+                    <tr>
+                        <td>All 8 Meta-Agents</td>
+                        <td class="cross">-</td>
+                        <td class="checkmark">✓</td>
+                        <td class="checkmark">✓</td>
+                    </tr>
+                    <tr>
+                        <td>ML Algorithms Suite</td>
+                        <td class="cross">-</td>
+                        <td class="checkmark">✓</td>
+                        <td class="checkmark">✓</td>
+                    </tr>
+                    <tr>
+                        <td>Quantum ML (1-50 qubits)</td>
+                        <td class="cross">-</td>
+                        <td class="checkmark">✓</td>
+                        <td class="checkmark">✓</td>
+                    </tr>
+                    <tr>
+                        <td>Security Tools (3)</td>
+                        <td class="cross">-</td>
+                        <td class="checkmark">✓</td>
+                        <td class="checkmark">✓ (all 8)</td>
+                    </tr>
+                    <tr>
+                        <td>Autonomous Discovery</td>
+                        <td class="cross">-</td>
+                        <td class="checkmark">✓</td>
+                        <td class="checkmark">✓</td>
+                    </tr>
+                    <tr>
+                        <td>Support Level</td>
+                        <td>Community</td>
+                        <td>Priority Email</td>
+                        <td>Dedicated 24/7</td>
+                    </tr>
+                    <tr>
+                        <td>Price</td>
+                        <td class="checkmark">Free</td>
+                        <td class="checkmark">$29/mo</td>
+                        <td>Custom</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- FAQ -->
+        <section class="faq-section">
+            <h2 style="color: #00ff88; margin-bottom: 30px; font-size: 2em;">❓ Frequently Asked Questions</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">How do I get started with Community Edition?</div>
+                <div class="faq-answer">
+                    Clone from GitHub, run the installer script, or pull the Docker image. No credit card required.
+                    Full documentation at <a href="https://docs.aios.is" style="color: #0099ff;">docs.aios.is</a>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Can I try Professional before paying?</div>
+                <div class="faq-answer">
+                    Yes! We offer 14-day free trials for Professional edition. No credit card required for trial.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">What's included in the Professional tier?</div>
+                <div class="faq-answer">
+                    All 8 meta-agents, ML/Quantum ML algorithms, 3 security tools, priority email support,
+                    and advanced customization options. Perfect for engineering teams.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Can I self-host instead of cloud?</div>
+                <div class="faq-answer">
+                    Absolutely! Community and Professional editions are fully self-hosted on your infrastructure.
+                    Enterprise edition supports on-premises deployment with additional SLA guarantees.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">What about GPU acceleration?</div>
+                <div class="faq-answer">
+                    Ai:oS automatically detects and uses NVIDIA CUDA GPUs when available. This provides 2-5x
+                    speedup for ML algorithms and quantum simulations. Optional but highly recommended.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Can I upgrade later?</div>
+                <div class="faq-answer">
+                    Yes, upgrades are instant and pro-rated. Start free, upgrade to Professional when you're ready.
+                    Can add modules individually or purchase bundles at a discount.
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>Copyright (c) 2025 Joshua Hendricks Cole. All Rights Reserved.</p>
+            <p>Ai:oS is open-source software. <a href="https://github.com/Workofarttattoo/AioS" style="color: #0099ff;">View on GitHub</a></p>
+        </footer>
+    </div>
+</body>
+</html>
