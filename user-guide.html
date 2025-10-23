@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Prediction Tools - User Guide & Best Practices</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 100%);
+            color: #e0e0ff;
+            line-height: 1.8;
+        }
+
+        .nav {
+            position: sticky;
+            top: 0;
+            background: rgba(5, 5, 16, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+            padding: 1rem 2%;
+            z-index: 100;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #00ff88;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(224, 224, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #00ff88;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 60px 5%;
+        }
+
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: #00d4ff;
+            margin-top: 60px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid rgba(0, 212, 255, 0.2);
+            padding-bottom: 15px;
+        }
+
+        h3 {
+            color: #00ff88;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .intro {
+            font-size: 1.1rem;
+            color: rgba(224, 224, 255, 0.8);
+            margin-bottom: 40px;
+            line-height: 1.9;
+        }
+
+        section {
+            margin-bottom: 50px;
+        }
+
+        .callout {
+            background: rgba(0, 212, 255, 0.1);
+            border-left: 4px solid #00d4ff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .callout.warning {
+            background: rgba(255, 159, 67, 0.1);
+            border-left-color: #ff9f43;
+        }
+
+        .callout.success {
+            background: rgba(34, 197, 94, 0.1);
+            border-left-color: #22c55e;
+        }
+
+        .callout h4 {
+            margin-bottom: 10px;
+        }
+
+        .callout.warning h4 {
+            color: #ff9f43;
+        }
+
+        .callout.success h4 {
+            color: #22c55e;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #00ff88;
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .checklist li::before {
+            content: "✓";
+            color: #00ff88;
+            font-weight: 900;
+            min-width: 20px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .table th {
+            background: rgba(0, 255, 136, 0.1);
+            padding: 15px;
+            text-align: left;
+            color: #00ff88;
+            font-weight: 700;
+            border-bottom: 2px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+            color: rgba(224, 224, 255, 0.8);
+        }
+
+        .table tr:hover {
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .metric-example {
+            background: rgba(124, 58, 237, 0.05);
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .metric-example h4 {
+            color: #7c3aed;
+            margin-bottom: 10px;
+        }
+
+        .example-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 10px 0;
+        }
+
+        .example-item {
+            color: rgba(224, 224, 255, 0.8);
+        }
+
+        .example-item strong {
+            color: #00d4ff;
+        }
+
+        .formula {
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 3px solid #7c3aed;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Monaco', monospace;
+            color: #00d4ff;
+        }
+
+        .step-box {
+            background: rgba(0, 255, 136, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 6px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #0a0a1a;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: 700;
+            margin-right: 12px;
+        }
+
+        footer {
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+            text-align: center;
+            color: rgba(224, 224, 255, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .example-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <div class="nav-content">
+            <div class="logo" onclick="window.location.href='index.html'">Ai|oS</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="tools.html">Tools</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="user-guide.html" style="color: #00ff88;">Guide</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Quantum Prediction Tools - User Guide</h1>
+        <p class="intro">
+            This guide explains how to use Ai|oS quantum prediction tools effectively, interpret results, and make informed decisions based on quantum machine learning analysis.
+        </p>
+
+        <!-- Getting Started -->
+        <section>
+            <h2>Getting Started: The 5-Minute Setup</h2>
+
+            <div class="step-box">
+                <div><span class="step-number">1</span><strong>Choose Your Tool</strong></div>
+                <p>Select the prediction tool matching your interest: stocks (Bear Tame), crypto, weather, legal, or patents. Start with a free prediction on the demo page.</p>
+            </div>
+
+            <div class="step-box">
+                <div><span class="step-number">2</span><strong>Input Your Data</strong></div>
+                <p>Enter the ticker symbol, market, or domain you want analyzed. The tool automatically fetches historical data from public sources (Yahoo Finance, CoinGecko, etc.).</p>
+            </div>
+
+            <div class="step-box">
+                <div><span class="step-number">3</span><strong>Choose Forecast Horizon</strong></div>
+                <p>Select prediction timeframe: 7 days (short-term), 30 days (medium-term), 90 days (long-term), or 252+ days (seasonal). Accuracy generally decreases with longer horizons.</p>
+            </div>
+
+            <div class="step-box">
+                <div><span class="step-number">4</span><strong>Read the Report</strong></div>
+                <p>Review the prediction direction, confidence score, risk assessment, and recommendation. See "Interpreting Results" below for detailed explanations.</p>
+            </div>
+
+            <div class="step-box">
+                <div><span class="step-number">5</span><strong>Make Informed Decision</strong></div>
+                <p>Use the prediction as ONE input in your decision-making. Never rely solely on predictions. Always verify with your own analysis and risk management.</p>
+            </div>
+
+            <div class="callout success">
+                <h4>✓ Pro Tip: Start with Freemium</h4>
+                <p>The Freemium tier gives you 5 predictions/month. Use these to get familiar with the tool interface and outputs before upgrading to Pro.</p>
+            </div>
+        </section>
+
+        <!-- Data Requirements -->
+        <section>
+            <h2>Data Requirements & Preparation</h2>
+
+            <h3>What Data Does the Tool Need?</h3>
+            <p>Quantum prediction tools require historical price/metric data to identify patterns. Minimum requirements:</p>
+
+            <ul class="checklist">
+                <li><strong>Minimum 60 data points</strong> (60 days for daily data, 60 weeks for weekly, etc.)</li>
+                <li><strong>Preferred 300+ data points</strong> for optimal accuracy (1+ year of daily data)</li>
+                <li><strong>No gaps</strong> in data (weekends/holidays are automatically handled)</li>
+                <li><strong>Clean data</strong> without extreme outliers or delisted periods</li>
+            </ul>
+
+            <div class="callout">
+                <h4>📊 How the Tool Processes Your Data</h4>
+                <p>
+                    <strong>Step 1:</strong> Fetch historical prices (automated for stocks/crypto)<br>
+                    <strong>Step 2:</strong> Calculate returns and volatility<br>
+                    <strong>Step 3:</strong> Extract quantum features (momentum, mean reversion, autocorrelation)<br>
+                    <strong>Step 4:</strong> Run ensemble of quantum ML models<br>
+                    <strong>Step 5:</strong> Generate prediction with confidence bounds
+                </p>
+            </div>
+
+            <h3>Data Quality Impact</h3>
+            <table class="table">
+                <tr>
+                    <th>Data Quality</th>
+                    <th>Accuracy Impact</th>
+                    <th>Confidence Score</th>
+                </tr>
+                <tr>
+                    <td>Excellent (500+ days, no gaps)</td>
+                    <td>+15% better accuracy</td>
+                    <td>Highly confident (>75%)</td>
+                </tr>
+                <tr>
+                    <td>Good (300-500 days)</td>
+                    <td>Baseline accuracy</td>
+                    <td>Moderately confident (65-75%)</td>
+                </tr>
+                <tr>
+                    <td>Fair (100-300 days)</td>
+                    <td>-10% less accuracy</td>
+                    <td>Low-moderate confidence (50-65%)</td>
+                </tr>
+                <tr>
+                    <td>Poor (<100 days)</td>
+                    <td>-25% or worse</td>
+                    <td>Low confidence (<50%)</td>
+                </tr>
+            </table>
+
+            <div class="callout warning">
+                <h4>⚠️ Caution: Recent IPOs and New Assets</h4>
+                <p>Assets with <100 days of trading history have unreliable predictions. Wait until 6+ months of data exists before using for important decisions.</p>
+            </div>
+        </section>
+
+        <!-- Interpreting Results -->
+        <section>
+            <h2>Interpreting Prediction Results</h2>
+
+            <h3>The Core Prediction Output</h3>
+            <p>Every prediction returns these key metrics:</p>
+
+            <div class="metric-example">
+                <h4>📈 Example: AAPL Stock Prediction</h4>
+                <div class="example-row">
+                    <div class="example-item">
+                        <strong>Prediction:</strong> +3.45%<br>
+                        The model predicts AAPL will rise 3.45% in the 30-day period.
+                    </div>
+                    <div class="example-item">
+                        <strong>Confidence:</strong> 68%<br>
+                        The model is 68% confident in this direction. This is "moderately bullish."
+                    </div>
+                </div>
+                <div class="example-row">
+                    <div class="example-item">
+                        <strong>Upside Target:</strong> +4.50%<br>
+                        If bullish scenario plays out, expect 4.50% potential gain.
+                    </div>
+                    <div class="example-item">
+                        <strong>Downside Risk:</strong> -3.10%<br>
+                        If bearish scenario occurs, expect 3.10% potential loss.
+                    </div>
+                </div>
+            </div>
+
+            <h3>Confidence Score Interpretation</h3>
+            <table class="table">
+                <tr>
+                    <th>Confidence Range</th>
+                    <th>Signal Strength</th>
+                    <th>Interpretation</th>
+                </tr>
+                <tr>
+                    <td>80-100%</td>
+                    <td>Very Strong</td>
+                    <td>High certainty. Strong directional bias detected. Consider position size increase.</td>
+                </tr>
+                <tr>
+                    <td>65-80%</td>
+                    <td>Strong</td>
+                    <td>Good confidence. Proceed with normal position sizes. Monitor for reversals.</td>
+                </tr>
+                <tr>
+                    <td>50-65%</td>
+                    <td>Moderate</td>
+                    <td>Fair confidence. Use as confirmation tool only. Combine with other analysis.</td>
+                </tr>
+                <tr>
+                    <td>&lt;50%</td>
+                    <td>Weak</td>
+                    <td>Low confidence. Mixed signals. Skip prediction or use extremely small position.</td>
+                </tr>
+            </table>
+
+            <h3>Risk Metrics Explained</h3>
+
+            <div class="formula">
+Volatility = Standard Deviation of Returns<br>
+Higher volatility = more unpredictable price swings<br>
+(Stocks: 10-20% typical | Crypto: 30-80% typical)
+            </div>
+
+            <div class="formula">
+Sharpe Ratio = (Expected Return - Risk-Free Rate) / Risk<br>
+Values: >1.0 is good, >2.0 is excellent<br>
+Indicates reward per unit of risk taken
+            </div>
+
+            <div class="formula">
+Maximum Drawdown = Peak-to-trough decline<br>
+Example: -15% max drawdown = worst loss from peak in period<br>
+Risk tolerance guide: Conservative &lt;10%, Moderate &lt;20%, Aggressive &lt;40%
+            </div>
+
+            <h3>The Investment Signal</h3>
+            <p>After all calculations, the tool provides a simple signal:</p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                <div style="background: rgba(34, 197, 94, 0.1); border-left: 4px solid #22c55e; padding: 15px; border-radius: 0 6px 6px 0;">
+                    <strong style="color: #22c55e;">🟢 BUY / BULLISH</strong>
+                    <p>Prediction &gt; 0% AND Confidence &gt; 65%<br>Suggests long position or hold</p>
+                </div>
+                <div style="background: rgba(239, 68, 68, 0.1); border-left: 4px solid #ef4444; padding: 15px; border-radius: 0 6px 6px 0;">
+                    <strong style="color: #ef4444;">🔴 SELL / BEARISH</strong>
+                    <p>Prediction &lt; 0% AND Confidence &gt; 65%<br>Suggests short or exit long positions</p>
+                </div>
+            </div>
+
+            <div style="background: rgba(155, 155, 155, 0.1); border-left: 4px solid #999; padding: 15px; border-radius: 0 6px 6px 0; margin-bottom: 20px;">
+                <strong style="color: #ccc;">⊘ HOLD / NEUTRAL</strong>
+                <p>Mixed confidence or near-zero prediction<br>Low conviction. Wait for clearer signal or use other methods.</p>
+            </div>
+        </section>
+
+        <!-- Best Practices -->
+        <section>
+            <h2>Best Practices & Success Tips</h2>
+
+            <h3>✓ What TO Do</h3>
+            <ul class="checklist">
+                <li>Use predictions as ONE input in larger decision framework</li>
+                <li>Always set stop-losses to limit downside (suggest: 2x downside risk)</li>
+                <li>Monitor prediction confidence and reassess when new data arrives</li>
+                <li>Combine quantum predictions with technical and fundamental analysis</li>
+                <li>Keep detailed logs: prediction, actual outcome, decision made, result</li>
+                <li>Backtest your strategy (compare predictions to actual outcomes)</li>
+                <li>Use shorter timeframes (7-30 days) for higher accuracy</li>
+                <li>Review whitepapers to understand model assumptions</li>
+            </ul>
+
+            <h3>✗ What NOT To Do</h3>
+            <ul style="list-style: none; padding: 0;">
+                <li style="padding: 10px 0; border-bottom: 1px solid rgba(0, 255, 136, 0.1);">
+                    ❌ Use predictions on assets with &lt;100 days of data
+                </li>
+                <li style="padding: 10px 0; border-bottom: 1px solid rgba(0, 255, 136, 0.1);">
+                    ❌ Trust a single prediction for large position sizing
+                </li>
+                <li style="padding: 10px 0; border-bottom: 1px solid rgba(0, 255, 136, 0.1);">
+                    ❌ Ignore risk metrics and position sizing rules
+                </li>
+                <li style="padding: 10px 0; border-bottom: 1px solid rgba(0, 255, 136, 0.1);">
+                    ❌ Trade without stop-losses (even when confident)
+                </li>
+                <li style="padding: 10px 0; border-bottom: 1px solid rgba(0, 255, 136, 0.1);">
+                    ❌ Chase losses by averaging down on failed predictions
+                </li>
+                <li style="padding: 10px 0; border-bottom: 1px solid rgba(0, 255, 136, 0.1);">
+                    ❌ Use predictions on extremely illiquid assets
+                </li>
+                <li style="padding: 10px 0; border-bottom: 1px solid rgba(0, 255, 136, 0.1);">
+                    ❌ Assume historical accuracy = future performance
+                </li>
+                <li style="padding: 10px 0;">
+                    ❌ Predict black swan events (model can't foresee major shocks)
+                </li>
+            </ul>
+
+            <div class="callout warning">
+                <h4>⚠️ Disclaimer: Past Performance ≠ Future Results</h4>
+                <p>
+                    Quantum prediction tools are trained on historical data. Backtests show 65-75% directional accuracy on past data, but future accuracy may differ. Market regimes change, new information emerges, and unexpected events occur. Never risk more than you can afford to lose. These tools assist decision-making but cannot guarantee outcomes.
+                </p>
+            </div>
+        </section>
+
+        <!-- Real Example -->
+        <section>
+            <h2>Real Example: Using Bear Tame for Stock Trading</h2>
+
+            <h3>Scenario: You want to trade AAPL in the next 30 days</h3>
+
+            <div class="step-box">
+                <strong>1. Get the Prediction</strong>
+                <p>Input: AAPL, 30-day horizon<br>
+                Output: +2.8% prediction, 71% confidence, +3.5% upside, -2.2% downside, Volatility 14%</p>
+            </div>
+
+            <div class="step-box">
+                <strong>2. Interpret the Signal</strong>
+                <p>71% confidence &gt; 65% threshold = BULLISH signal. Model expects upside in next month.</p>
+            </div>
+
+            <div class="step-box">
+                <strong>3. Design Your Position</strong>
+                <p>
+                    Current AAPL price: $150<br>
+                    Stop-loss: 150 × (1 - 2.2% - 1%) = $144.20 (risk = 3.8%)<br>
+                    Take-profit target: 150 × (1 + 3.5%) = $155.25<br>
+                    Risk/Reward: $5.25 upside vs $5.80 downside = favorable
+                </p>
+            </div>
+
+            <div class="step-box">
+                <strong>4. Execute with Risk Management</strong>
+                <p>
+                    Buy 100 shares at $150 (1% account risk)<br>
+                    Set stop-loss at $144.20<br>
+                    Set take-profit at $155.25<br>
+                    Plan to reassess in 10 days with new data
+                </p>
+            </div>
+
+            <div class="step-box">
+                <strong>5. Document & Learn</strong>
+                <p>
+                    Log: Prediction (+2.8%), actual result (+1.5%), your decision (buy 100 shares), outcome (+$150 profit)<br>
+                    Lesson: Prediction was directionally correct. Model helped. Position size was appropriate.
+                </p>
+            </div>
+        </section>
+
+        <!-- FAQs -->
+        <section>
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Q: Why was a prediction wrong?</h3>
+            <p><strong>A:</strong> Quantum models are statistical, not fortune tellers. They identify patterns from 70+ years of market data, achieving 65-75% accuracy. "Wrong" predictions are part of normal operation. Always use stop-losses.</p>
+
+            <h3>Q: Which tool should I use?</h3>
+            <p><strong>A:</strong> Match tool to your interest: stocks (Bear Tame), crypto (CryptoVault), weather (WeatherQuantum), legal cases (LegalPredictor), patents (PatentDiscovery).</p>
+
+            <h3>Q: How often should I check predictions?</h3>
+            <p><strong>A:</strong> For active trading: daily or weekly. For longer timeframes (3+ months): weekly or monthly. New data = new insights. Re-run predictions every 5-7 days.</p>
+
+            <h3>Q: Can I use predictions for different timeframes?</h3>
+            <p><strong>A:</strong> Yes! Get both 7-day AND 30-day predictions. Signals should align for strongest conviction. Conflicting signals = caution.</p>
+
+            <h3>Q: What about market shocks (black swans)?</h3>
+            <p><strong>A:</strong> Models can't predict unprecedented events (wars, pandemics, regulatory changes). If risks change, predictions become invalid. Always maintain stop-losses.</p>
+
+            <h3>Q: How much money should I risk per prediction?</h3>
+            <p><strong>A:</strong> Position sizing rule: Risk no more than 1-2% of account per trade. If AAPL prediction has 2.2% downside risk and you have $50K account, risk max $1K (roughly 6-7 shares at $150).</p>
+        </section>
+
+        <!-- Resources -->
+        <section>
+            <h2>Additional Resources</h2>
+            <ul class="checklist">
+                <li><strong>Whitepapers:</strong> Download technical docs explaining quantum algorithms</li>
+                <li><strong>Backtest Reports:</strong> See historical accuracy for each tool</li>
+                <li><strong>API Documentation:</strong> Integrate predictions into your workflows (Pro+ tiers)</li>
+                <li><strong>Community:</strong> Share strategies and learn from other users</li>
+                <li><strong>Support:</strong> Email support@aios.is for questions</li>
+            </ul>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Ai|oS - Quantum Prediction Tools. All rights reserved.</p>
+        <p><a href="pricing.html" style="color: #00ff88; text-decoration: none;">View Pricing</a> | <a href="index.html" style="color: #00ff88; text-decoration: none;">Home</a></p>
+    </footer>
+</body>
+</html>

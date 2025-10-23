@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ai|oS Quantum Prediction Tools - Pricing & Plans</title>
+    <meta name="description" content="Affordable quantum-powered prediction tools. Freemium, Pro, Enterprise tiers for stocks, crypto, weather, legal, and patents.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 100%);
+            color: #f3f7ff;
+            min-height: 100vh;
+        }
+
+        .nav {
+            position: sticky;
+            top: 0;
+            background: rgba(5, 5, 16, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+            padding: 1rem 2%;
+            z-index: 100;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #00ff88;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(243, 247, 255, 0.7);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #00ff88;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 80px 5%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            font-weight: 900;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(243, 247, 255, 0.7);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .toggle-annual {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .toggle-switch {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(0, 255, 136, 0.1);
+            padding: 10px 20px;
+            border-radius: 999px;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .switch-label {
+            color: rgba(243, 247, 255, 0.8);
+            font-weight: 600;
+        }
+
+        .switch-toggle {
+            width: 50px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+            position: relative;
+            cursor: pointer;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .switch-toggle.active {
+            background: rgba(0, 255, 136, 0.3);
+        }
+
+        .toggle-dot {
+            width: 24px;
+            height: 24px;
+            background: #00ff88;
+            border-radius: 50%;
+            position: absolute;
+            left: 2px;
+            top: 2px;
+            transition: left 0.3s;
+        }
+
+        .switch-toggle.active .toggle-dot {
+            left: 24px;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 16px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pricing-card:hover {
+            border-color: rgba(0, 255, 136, 0.5);
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.15);
+        }
+
+        .pricing-card.featured {
+            border-color: #00ff88;
+            background: rgba(0, 255, 136, 0.1);
+            transform: scale(1.05);
+        }
+
+        .pricing-card.featured::before {
+            content: "BEST VALUE";
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #0a0a0a;
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        .tier-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00ff88;
+            margin-bottom: 10px;
+        }
+
+        .tier-description {
+            color: rgba(243, 247, 255, 0.6);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            min-height: 40px;
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #00d4ff;
+            margin: 20px 0;
+        }
+
+        .price-period {
+            color: rgba(243, 247, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        .price-old {
+            text-decoration: line-through;
+            color: rgba(243, 247, 255, 0.3);
+            font-size: 1.5rem;
+            margin-left: 10px;
+        }
+
+        .features-list {
+            list-style: none;
+            margin: 30px 0;
+            flex: 1;
+        }
+
+        .features-list li {
+            padding: 12px 0;
+            color: rgba(243, 247, 255, 0.75);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+        }
+
+        .features-list li::before {
+            content: "✓";
+            color: #00ff88;
+            font-weight: 900;
+            min-width: 20px;
+        }
+
+        .features-list li.disabled {
+            opacity: 0.4;
+            color: rgba(243, 247, 255, 0.4);
+        }
+
+        .features-list li.disabled::before {
+            content: "✗";
+            color: #999;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #0a0a0a;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 20px;
+            font-size: 1rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 255, 136, 0.4);
+        }
+
+        .cta-button.secondary {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+            border: 1px solid #00ff88;
+        }
+
+        .tools-section {
+            margin-top: 100px;
+            padding: 60px 5%;
+            background: rgba(0, 255, 136, 0.05);
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .tool-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .tool-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .tool-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #00ff88;
+            margin-bottom: 5px;
+        }
+
+        .tool-desc {
+            color: rgba(243, 247, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .faq-section {
+            margin-top: 80px;
+            padding: 60px 0;
+        }
+
+        .faq-title {
+            font-size: 2.5rem;
+            text-align: center;
+            color: #00ff88;
+            margin-bottom: 50px;
+            font-weight: 900;
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #00ff88;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .faq-question {
+            color: #00d4ff;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .faq-answer {
+            color: rgba(243, 247, 255, 0.7);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .contact-section {
+            text-align: center;
+            padding: 60px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 12px;
+            margin-top: 80px;
+        }
+
+        .contact-section h2 {
+            color: #00ff88;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .contact-section p {
+            color: rgba(243, 247, 255, 0.75);
+            margin-bottom: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-button {
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #0a0a0a;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .contact-button:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 1024px) {
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+
+            .faq-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <div class="nav-content">
+            <div class="logo" onclick="window.location.href='index.html'">Ai|oS</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="tools.html">Tools</a></li>
+                <li><a href="pricing.html" style="color: #00ff88;">Pricing</a></li>
+                <li><a href="docs.html">Docs</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Quantum Prediction Tools Pricing</h1>
+            <p class="subtitle">
+                Access cutting-edge quantum machine learning for financial forecasting, weather prediction, legal analysis, and patent discovery. Choose the plan that fits your needs.
+            </p>
+        </header>
+
+        <div class="toggle-annual">
+            <div class="toggle-switch">
+                <span class="switch-label">Monthly</span>
+                <div class="switch-toggle" onclick="toggleBilling(this)">
+                    <div class="toggle-dot"></div>
+                </div>
+                <span class="switch-label">Annual (Save 20%)</span>
+            </div>
+        </div>
+
+        <div class="pricing-grid">
+            <!-- Freemium Tier -->
+            <div class="pricing-card">
+                <div class="tier-name">Freemium</div>
+                <p class="tier-description">Perfect for exploring quantum predictions</p>
+                <div class="price">
+                    $0<span class="price-period">/month</span>
+                </div>
+
+                <ul class="features-list">
+                    <li>5 predictions/month</li>
+                    <li>Stock market analysis (Bear Tame)</li>
+                    <li>Basic confidence scores</li>
+                    <li>7-day forecast horizon</li>
+                    <li class="disabled">Crypto predictions</li>
+                    <li class="disabled">Weather forecasting</li>
+                    <li class="disabled">Legal analysis</li>
+                    <li class="disabled">Patent discovery</li>
+                    <li class="disabled">API access</li>
+                    <li class="disabled">Email support</li>
+                </ul>
+
+                <button class="cta-button secondary" onclick="window.location.href='tools.html'">Get Started Free</button>
+            </div>
+
+            <!-- Pro Tier (Featured) -->
+            <div class="pricing-card featured">
+                <div class="tier-name">Pro</div>
+                <p class="tier-description">For active traders and analysts</p>
+                <div class="price">
+                    $29<span class="price-period">/month</span><span class="price-old">$39</span>
+                </div>
+
+                <ul class="features-list">
+                    <li>Unlimited predictions</li>
+                    <li>All stock market tools</li>
+                    <li>Crypto market analysis</li>
+                    <li>30-day weather forecasts</li>
+                    <li>Legal pattern recognition</li>
+                    <li>90-day forecast horizon</li>
+                    <li>Advanced confidence metrics</li>
+                    <li>Risk/reward analysis</li>
+                    <li class="disabled">Patent discovery</li>
+                    <li>Priority email support</li>
+                </ul>
+
+                <button class="cta-button" onclick="alert('Pro tier signup - Coming soon!')">Start Free Trial</button>
+            </div>
+
+            <!-- Enterprise Tier -->
+            <div class="pricing-card">
+                <div class="tier-name">Enterprise</div>
+                <p class="tier-description">For institutions and agencies</p>
+                <div class="price">Custom</div>
+
+                <ul class="features-list">
+                    <li>Unlimited everything</li>
+                    <li>All prediction tools</li>
+                    <li>Patent discovery suite</li>
+                    <li>Up to 3-year forecasts</li>
+                    <li>Dedicated API access</li>
+                    <li>Custom model training</li>
+                    <li>Real-time data feeds</li>
+                    <li>White-label options</li>
+                    <li>On-premises deployment</li>
+                    <li>24/7 phone support</li>
+                </ul>
+
+                <button class="cta-button secondary" onclick="window.location.href='mailto:sales@aios.is'">Contact Sales</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tools Available Section -->
+    <div class="tools-section">
+        <div class="container">
+            <h2 style="color: #00ff88; font-size: 2rem; margin-bottom: 10px;">Available Quantum Prediction Tools</h2>
+            <p style="color: rgba(243, 247, 255, 0.7); margin-bottom: 30px;">Access powerful quantum machine learning across multiple domains:</p>
+
+            <div class="tools-grid">
+                <div class="tool-item">
+                    <div class="tool-icon">📈</div>
+                    <div class="tool-name">Bear Tame / Bullrider</div>
+                    <div class="tool-desc">Stock market prediction & trend analysis</div>
+                </div>
+
+                <div class="tool-item">
+                    <div class="tool-icon">💰</div>
+                    <div class="tool-name">CryptoVault</div>
+                    <div class="tool-desc">Cryptocurrency market forecasting</div>
+                </div>
+
+                <div class="tool-item">
+                    <div class="tool-icon">🌍</div>
+                    <div class="tool-name">WeatherQuantum</div>
+                    <div class="tool-desc">3-year quantum weather prediction</div>
+                </div>
+
+                <div class="tool-item">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-name">LegalPredictor</div>
+                    <div class="tool-desc">Legal outcome & case analysis</div>
+                </div>
+
+                <div class="tool-item">
+                    <div class="tool-icon">🔬</div>
+                    <div class="tool-name">PatentDiscovery</div>
+                    <div class="tool-desc">Patent trends & innovation analysis</div>
+                </div>
+
+                <div class="tool-item">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-name">ResearchLabs</div>
+                    <div class="tool-desc">Custom quantum analysis tools</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="container">
+        <div class="faq-section">
+            <h2 class="faq-title">Frequently Asked Questions</h2>
+
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <div class="faq-question">How accurate are quantum predictions?</div>
+                    <div class="faq-answer">
+                        Our quantum machine learning models achieve 65-75% accuracy on short-term (1-3 month) predictions, with confidence scores provided for each forecast. Accuracy improves with more data and longer timeframes.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">What makes quantum analysis better?</div>
+                    <div class="faq-answer">
+                        Quantum algorithms process probability distributions natively, enabling detection of patterns classical computers miss. This provides 1.4-1.8x faster insights and superior pattern recognition.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Can I cancel anytime?</div>
+                    <div class="faq-answer">
+                        Yes. All subscriptions can be cancelled with no penalty. Pro tier includes 14-day free trial with full access to all features.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Is my data private?</div>
+                    <div class="faq-answer">
+                        Enterprise encryption and zero-knowledge architecture. Your analysis requests and data are never used to train models or shared with third parties.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Do you offer API access?</div>
+                    <div class="faq-answer">
+                        Pro plan includes REST API access. Enterprise includes WebSocket streaming, webhooks, and custom integrations. Enterprise also supports on-premises deployment.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">What about historical performance?</div>
+                    <div class="faq-answer">
+                        Download performance reports and backtests for all tools. Historical accuracy documented in whitepapers available in Pro+ plans.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="container">
+        <div class="contact-section">
+            <h2>Ready to Unlock Quantum Predictions?</h2>
+            <p>
+                Start with Freemium to explore. Upgrade to Pro for unlimited analysis. Enterprise for institutional deployment.
+            </p>
+            <button class="contact-button" onclick="window.location.href='beartame-bullrider-demo.html'">Try Bear Tame Demo →</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleBilling(element) {
+            element.classList.toggle('active');
+            // Update prices based on toggle (simplified - in production would recalculate)
+            const cards = document.querySelectorAll('.pricing-card');
+            const isAnnual = element.classList.contains('active');
+
+            // Update Pro card as example
+            const proCard = cards[1];
+            const priceEl = proCard.querySelector('.price');
+            if (isAnnual) {
+                priceEl.textContent = '$278';
+                priceEl.innerHTML = '$278<span class="price-period">/year</span><span class="price-old">$468</span>';
+            } else {
+                priceEl.innerHTML = '$29<span class="price-period">/month</span><span class="price-old">$39</span>';
+            }
+        }
+    </script>
+</body>
+</html>
