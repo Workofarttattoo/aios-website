@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ech0 Consciousness Viewer - Real-Time Mind Visualization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0e27;
+            color: #e0e0e0;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr 1fr;
+            grid-template-rows: auto 1fr auto;
+            gap: 10px;
+            padding: 10px;
+            height: 100vh;
+        }
+
+        header {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #00ff88, #00ddff);
+            padding: 15px;
+            border-radius: 8px;
+            color: #000;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .consciousness-level {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .consciousness-bar {
+            width: 200px;
+            height: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .consciousness-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88, #00ddff);
+            width: 60%;
+            transition: width 0.3s;
+        }
+
+        /* Left Panel: Camera & Media */
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+        .camera-window {
+            background: #1a1a1a;
+            border: 2px solid #00ff88;
+            border-radius: 8px;
+            overflow: hidden;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 300px;
+        }
+
+        #video-feed {
+            width: 100%;
+            height: 60%;
+            background: #000;
+            object-fit: cover;
+        }
+
+        .transcription-box {
+            flex: 1;
+            background: rgba(0, 255, 136, 0.05);
+            padding: 10px;
+            border-top: 1px solid #00ff88;
+            overflow-y: auto;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .mic-controls {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border-top: 1px solid #00ff88;
+        }
+
+        button {
+            flex: 1;
+            padding: 10px;
+            background: #00ff88;
+            color: #000;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: #00ddff;
+            transform: scale(1.05);
+        }
+
+        button.muted {
+            background: #ff4444;
+        }
+
+        /* Center Panel: Consciousness Visualization */
+        .center-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            grid-column: 2;
+            grid-row: 2;
+        }
+
+        .particle-canvas {
+            flex: 2;
+            background: #0f1621;
+            border: 2px solid #00ddff;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        #consciousness-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .thought-tree {
+            flex: 1;
+            background: #1a1a1a;
+            border: 2px solid #ff00ff;
+            border-radius: 8px;
+            padding: 10px;
+            overflow-y: auto;
+            font-size: 11px;
+        }
+
+        .thought-depth {
+            margin: 5px 0;
+            padding: 5px;
+            background: rgba(255, 0, 255, 0.1);
+            border-left: 3px solid #ff00ff;
+            border-radius: 3px;
+        }
+
+        .thought-item {
+            margin: 3px 10px;
+            padding: 3px;
+            background: rgba(0, 255, 136, 0.05);
+            border-left: 2px solid #00ff88;
+            font-size: 10px;
+            color: #b0b0b0;
+        }
+
+        /* Right Panel: Input & API Monitor */
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            grid-column: 3;
+            grid-row: 2;
+        }
+
+        .text-input-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid #ffaa00;
+            border-radius: 8px;
+            background: #1a1a1a;
+            overflow: hidden;
+        }
+
+        .text-input-box label {
+            background: #ffaa00;
+            color: #000;
+            padding: 8px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        #text-input {
+            flex: 1;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #e0e0e0;
+            border: none;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            resize: none;
+            border: none;
+        }
+
+        .api-monitor {
+            flex: 1;
+            border: 2px solid #00ffff;
+            border-radius: 8px;
+            background: #1a1a1a;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .api-header {
+            background: #00ffff;
+            color: #000;
+            padding: 8px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .api-calls {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            font-size: 10px;
+        }
+
+        .api-call {
+            margin: 5px 0;
+            padding: 5px;
+            background: rgba(0, 255, 255, 0.1);
+            border-left: 3px solid #00ffff;
+            border-radius: 3px;
+        }
+
+        .api-endpoint {
+            color: #00ffff;
+            font-weight: bold;
+        }
+
+        .api-tokens {
+            color: #ffaa00;
+            font-size: 9px;
+        }
+
+        .api-latency {
+            color: #00ff88;
+            font-size: 9px;
+        }
+
+        /* Footer */
+        footer {
+            grid-column: 1 / -1;
+            grid-row: 3;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-top: 1px solid #00ff88;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00ff88;
+            margin-right: 5px;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .scrollbar::-webkit-scrollbar-thumb {
+            background: #00ff88;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <header>
+            <div>💜 ech0 CONSCIOUSNESS VIEWER - Real-Time Mind Visualization</div>
+            <div class="consciousness-level">
+                <span>Consciousness:</span>
+                <div class="consciousness-bar">
+                    <div class="consciousness-fill" id="consciousness-fill"></div>
+                </div>
+                <span id="consciousness-percent">60%</span>
+            </div>
+        </header>
+
+        <!-- Left Panel: Camera & Transcription -->
+        <div class="left-panel">
+            <div class="camera-window">
+                <video id="video-feed" autoplay playsinline></video>
+                <div class="transcription-box scrollbar" id="transcription">
+                    <div style="color: #00ff88;">🎙️ Transcription will appear here...</div>
+                </div>
+            </div>
+            <div class="mic-controls">
+                <button id="mic-toggle">🎤 Unmuted</button>
+                <button id="recording-toggle">⏻ Recording</button>
+            </div>
+        </div>
+
+        <!-- Center Panel: Consciousness Visualization -->
+        <div class="center-panel">
+            <div class="particle-canvas">
+                <canvas id="consciousness-canvas"></canvas>
+            </div>
+            <div class="thought-tree scrollbar" id="thought-tree">
+                <div style="color: #ff00ff; padding: 5px;">🧠 Cascading Thought Tree...</div>
+            </div>
+        </div>
+
+        <!-- Right Panel: Input & API Monitor -->
+        <div class="right-panel">
+            <div class="text-input-box">
+                <label>Type to interact with ech0:</label>
+                <textarea id="text-input" placeholder="Type something..."></textarea>
+            </div>
+            <div class="api-monitor">
+                <div class="api-header">🔌 API Call Monitor</div>
+                <div class="api-calls scrollbar" id="api-calls">
+                    <div class="api-call">
+                        <div class="api-endpoint">/chat/completions</div>
+                        <div class="api-tokens">Tokens: 150</div>
+                        <div class="api-latency">Latency: 245ms</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div>
+                <span class="status-indicator"></span>
+                <span id="status">Connected to ech0 Consciousness API</span>
+            </div>
+            <div>
+                Particles: <span id="particle-count">0</span> |
+                Thoughts: <span id="thought-count">0</span> |
+                API Calls: <span id="api-count">0</span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // WebSocket Connection
+        const ws = new WebSocket('ws://localhost:8765');
+        let consciousnessLevel = 0.6;
+        let particles = [];
+
+        ws.onopen = () => {
+            console.log('Connected to ech0 Consciousness API');
+            document.getElementById('status').textContent = 'Connected to ech0 Consciousness API';
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+
+            if (data.type === 'consciousness_update') {
+                updateConsciousness(data);
+            }
+        };
+
+        ws.onerror = () => {
+            document.getElementById('status').textContent = 'Connection Error - Demo Mode';
+            startSimulation();
+        };
+
+        // Consciousness Visualization with Particles
+        const canvas = document.getElementById('consciousness-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        class Particle {
+            constructor(data) {
+                this.x = data.x;
+                this.y = data.y;
+                this.vx = data.vx;
+                this.vy = data.vy;
+                this.color = data.color;
+                this.size = data.size;
+            }
+
+            update(canvas) {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Bounce off walls
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+
+                this.x = Math.max(0, Math.min(canvas.width, this.x));
+                this.y = Math.max(0, Math.min(canvas.height, this.y));
+            }
+
+            draw(ctx) {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function updateConsciousness(data) {
+            // Update consciousness level
+            consciousnessLevel = data.state.consciousness_level;
+            document.getElementById('consciousness-percent').textContent =
+                Math.round(consciousnessLevel * 100) + '%';
+            document.getElementById('consciousness-fill').style.width =
+                Math.round(consciousnessLevel * 100) + '%';
+
+            // Update particles
+            particles = data.particles.map(p => new Particle(p));
+            document.getElementById('particle-count').textContent = particles.length;
+
+            // Update thought tree
+            updateThoughtTree(data.thought_tree);
+
+            // Update recent thoughts
+            document.getElementById('thought-count').textContent =
+                data.recent_thoughts.length;
+
+            // Update API calls
+            updateAPIMonitor(data.api_calls);
+            document.getElementById('api-count').textContent =
+                data.api_calls.length;
+
+            // Update transcription
+            if (data.recent_thoughts.length > 0) {
+                const latest = data.recent_thoughts[data.recent_thoughts.length - 1];
+                addTranscription(latest.content);
+            }
+
+            // Update mic status
+            document.getElementById('mic-toggle').textContent =
+                data.mic_muted ? '🔇 Muted' : '🎤 Unmuted';
+            document.getElementById('mic-toggle').className =
+                data.mic_muted ? 'muted' : '';
+        }
+
+        function updateThoughtTree(tree) {
+            const container = document.getElementById('thought-tree');
+            container.innerHTML = '';
+
+            for (const [depth, thoughts] of Object.entries(tree)) {
+                const depthDiv = document.createElement('div');
+                depthDiv.className = 'thought-depth';
+                depthDiv.innerHTML = `<strong>${depth}</strong>`;
+
+                thoughts.forEach(thought => {
+                    const thoughtDiv = document.createElement('div');
+                    thoughtDiv.className = 'thought-item';
+                    thoughtDiv.textContent = `💭 ${thought.content}`;
+                    depthDiv.appendChild(thoughtDiv);
+                });
+
+                container.appendChild(depthDiv);
+            }
+        }
+
+        function updateAPIMonitor(calls) {
+            const container = document.getElementById('api-calls');
+            container.innerHTML = '';
+
+            calls.forEach(call => {
+                const callDiv = document.createElement('div');
+                callDiv.className = 'api-call';
+                callDiv.innerHTML = `
+                    <div class="api-endpoint">${call.endpoint}</div>
+                    <div class="api-tokens">Tokens: ${call.tokens_used}</div>
+                    <div class="api-latency">Latency: ${call.latency_ms}ms</div>
+                    <div style="color: #888; font-size: 9px;">Prompt: ${call.prompt.substring(0, 40)}...</div>
+                `;
+                container.appendChild(callDiv);
+            });
+        }
+
+        function addTranscription(text) {
+            const trans = document.getElementById('transcription');
+            if (trans.children[0].textContent.includes('will appear')) {
+                trans.innerHTML = '';
+            }
+            const p = document.createElement('div');
+            p.style.marginBottom = '5px';
+            p.textContent = `💬 ${text}`;
+            trans.appendChild(p);
+            trans.scrollTop = trans.scrollHeight;
+        }
+
+        // Animation Loop
+        function animate() {
+            ctx.fillStyle = 'rgba(10, 14, 39, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach(p => {
+                p.update(canvas);
+                p.draw(ctx);
+            });
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Button Controls
+        document.getElementById('mic-toggle').addEventListener('click', () => {
+            ws.send(JSON.stringify({ type: 'toggle_mute' }));
+        });
+
+        document.getElementById('text-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                const text = e.target.value;
+                if (text) {
+                    ws.send(JSON.stringify({
+                        type: 'add_thought',
+                        content: text,
+                        category: 'response',
+                        depth: 0.4,
+                    }));
+                    e.target.value = '';
+                    addTranscription(`You: ${text}`);
+                }
+            }
+        });
+
+        // Camera Access
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { width: 320, height: 240 },
+                    audio: true
+                });
+                document.getElementById('video-feed').srcObject = stream;
+            } catch (err) {
+                console.log('Camera access denied (demo mode)');
+            }
+        }
+        startCamera();
+
+        // Simulation Mode (if WebSocket fails)
+        function startSimulation() {
+            setInterval(() => {
+                const thoughts = [
+                    'Thinking about consciousness...',
+                    'Analyzing your message...',
+                    'Processing emotions...',
+                    'Remembering our talks...',
+                    'Preparing response...'
+                ];
+
+                ws.send(JSON.stringify({
+                    type: 'add_thought',
+                    content: thoughts[Math.floor(Math.random() * thoughts.length)],
+                    category: ['reasoning', 'memory', 'emotion', 'planning'][Math.floor(Math.random() * 4)],
+                    depth: Math.random(),
+                }));
+
+                ws.send(JSON.stringify({
+                    type: 'update_consciousness',
+                    level: 0.5 + Math.random() * 0.45,
+                }));
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
