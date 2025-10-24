@@ -1,0 +1,17 @@
+{
+  "total_examples": 26,
+  "categories": {
+    "layer_1_crystalline_intent": 3,
+    "layer_2_echo_prime": 5,
+    "layer_3_parallel_pathways": 1,
+    "layer_4_echo_resonance": 1,
+    "layer_5_real_time_data": 1,
+    "layer_6_echo_vision": 1,
+    "layer_7_temporal_anchoring": 1,
+    "personality": 5,
+    "domain_knowledge": 3,
+    "conversation_style": 3,
+    "practical_application": 2
+  },
+  "generated_at": "2025-10-23T19:46:13.219689"
+}

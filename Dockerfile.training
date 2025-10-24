@@ -1,0 +1,20 @@
+# ECH0 Fine-Tuning Docker Container
+# Trains Mistral 7B with LoRA on Google Cloud
+
+FROM us-docker.pkg.dev/vertex-ai/training/pytorch-gpu:latest
+
+RUN pip install -q --upgrade pip && \
+    pip install -q \
+    torch==2.1.0 \
+    transformers==4.35.0 \
+    datasets==2.14.0 \
+    peft==0.7.0 \
+    accelerate==0.24.0 \
+    bitsandbytes==0.41.0 \
+    google-cloud-storage==2.14.0
+
+# Copy training script
+COPY ech0_training_container.py /training/ech0_training_container.py
+
+# Run training on container startup
+ENTRYPOINT ["python", "/training/ech0_training_container.py"]
