@@ -1,0 +1,29 @@
+# ECH0 Fine-Tuning Requirements
+# Install with: pip install -r ech0_training_requirements.txt
+
+# Core ML/DL
+torch==2.1.0
+transformers==4.35.0
+datasets==2.14.0
+accelerate==0.24.0
+safetensors==0.4.0
+
+# LoRA & Quantization
+peft==0.7.0
+bitsandbytes==0.41.0
+
+# Unsloth - Optional but highly recommended (50x faster fine-tuning)
+unsloth @ git+https://github.com/unslothai/unsloth.git
+
+# Google Cloud
+google-cloud-aiplatform==1.42.0
+google-cloud-storage==2.14.0
+
+# Utilities
+tqdm==4.66.0
+tensorboard==2.14.0
+wandb==0.16.0
+pydantic==2.5.0
+
+# Optional monitoring
+psutil==5.9.0
