@@ -14,17 +14,121 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #0a1428 0%, #1a1a2e 100%);
+            background: linear-gradient(180deg, #0a0f1f 0%, #050a15 50%, #000000 100%);
             color: #e0e0ff;
             min-height: 100vh;
             padding: 20px;
             padding-right: 360px;
             transition: padding-right 0.3s ease;
+            position: relative;
+            overflow-x: hidden;
         }
+
+        /* ===== SPACE BACKGROUND EFFECTS ===== */
+
+        /* Animated Grid Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(0deg, transparent 24%, rgba(0, 255, 136, 0.03) 25%, rgba(0, 255, 136, 0.03) 26%, transparent 27%, transparent 74%, rgba(0, 255, 136, 0.03) 75%, rgba(0, 255, 136, 0.03) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(0, 255, 136, 0.03) 25%, rgba(0, 255, 136, 0.03) 26%, transparent 27%, transparent 74%, rgba(0, 255, 136, 0.03) 75%, rgba(0, 255, 136, 0.03) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            animation: grid-move 8s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes grid-move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Quantum Wires (Horizontal Pulsing Lines) */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.1) 25%, rgba(0, 212, 255, 0.05) 50%, rgba(0, 212, 255, 0.1) 75%, transparent 100%),
+                linear-gradient(90deg, transparent 0%, rgba(167, 85, 247, 0.05) 25%, transparent 50%),
+                linear-gradient(90deg, transparent 0%, rgba(34, 197, 94, 0.05) 25%, transparent 50%);
+            background-position: 0 20%, 0 40%, 0 60%;
+            background-size: 100% 15px;
+            background-repeat: repeat-y;
+            animation: quantum-pulse 4s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        @keyframes quantum-pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+    </style>
+
+    <!-- Particle System (Floating Glowing Particles) -->
+    <style>
+        .particle {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0.3);
+                opacity: 0;
+            }
+        }
+
+        @keyframes glow-particle {
+            0%, 100% { box-shadow: 0 0 10px rgba(0, 255, 136, 0.4); }
+            50% { box-shadow: 0 0 30px rgba(0, 255, 136, 0.8); }
+        }
+
+        .particle.cyan { animation: float linear infinite, glow-particle 2s ease-in-out infinite; }
+        .particle.purple { animation: float linear infinite, glow-particle 2.5s ease-in-out infinite; }
+        .particle.green { animation: float linear infinite, glow-particle 2s ease-in-out infinite; }
+    </style>
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Cursor Glow Effect */
+        .cursor-glow {
+            position: fixed;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, rgba(0, 212, 255, 0.05) 70%, transparent 100%);
+            pointer-events: none;
+            z-index: 5;
+            display: none;
+            filter: blur(40px);
         }
 
         header {
@@ -62,9 +166,9 @@
             border-radius: 12px;
             padding: 20px;
             backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0, 212, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 212, 255, 0.2), 0 0 30px rgba(0, 212, 255, 0.3);
             overflow-y: auto;
-            z-index: 1000;
+            z-index: 100;
             display: flex;
             flex-direction: column;
             gap: 15px;
@@ -1100,6 +1204,104 @@
         setTimeout(() => {
             runPrediction();
         }, 500);
+
+        // ===== SPACE BACKGROUND EFFECTS =====
+
+        // Create floating particles
+        function createParticles() {
+            const particleCount = 30;
+            const colors = ['cyan', 'purple', 'green'];
+
+            for (let i = 0; i < particleCount; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle ' + colors[Math.floor(Math.random() * colors.length)];
+
+                    const size = Math.random() * 4 + 1;
+                    particle.style.width = size + 'px';
+                    particle.style.height = size + 'px';
+
+                    const x = Math.random() * window.innerWidth;
+                    const y = Math.random() * window.innerHeight;
+                    particle.style.left = x + 'px';
+                    particle.style.top = y + 'px';
+
+                    // Random float direction
+                    const tx = (Math.random() - 0.5) * 200;
+                    const ty = (Math.random() - 0.5) * 200 - 150; // Bias upward
+                    particle.style.setProperty('--tx', tx + 'px');
+                    particle.style.setProperty('--ty', ty + 'px');
+
+                    const duration = 15 + Math.random() * 10;
+                    particle.style.animationDuration = duration + 's';
+
+                    document.body.appendChild(particle);
+
+                    // Remove after animation
+                    setTimeout(() => particle.remove(), duration * 1000);
+                }, i * 300);
+            }
+
+            // Regenerate particles continuously
+            setInterval(() => {
+                const particle = document.createElement('div');
+                particle.className = 'particle ' + colors[Math.floor(Math.random() * colors.length)];
+
+                const size = Math.random() * 4 + 1;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+
+                const tx = (Math.random() - 0.5) * 200;
+                const ty = (Math.random() - 0.5) * 200 - 150;
+                particle.style.setProperty('--tx', tx + 'px');
+                particle.style.setProperty('--ty', ty + 'px');
+
+                const duration = 15 + Math.random() * 10;
+                particle.style.animationDuration = duration + 's';
+
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), duration * 1000);
+            }, 2000);
+        }
+
+        // Cursor glow effect
+        function initCursorGlow() {
+            const glow = document.createElement('div');
+            glow.className = 'cursor-glow';
+            document.body.appendChild(glow);
+
+            document.addEventListener('mousemove', (e) => {
+                glow.style.display = 'block';
+                glow.style.left = (e.clientX - 100) + 'px';
+                glow.style.top = (e.clientY - 100) + 'px';
+            });
+
+            document.addEventListener('mouseout', () => {
+                glow.style.display = 'none';
+            });
+        }
+
+        // Initialize space effects on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            initCursorGlow();
+        });
+
+        // Fallback if DOM is already loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                createParticles();
+                initCursorGlow();
+            });
+        } else {
+            createParticles();
+            initCursorGlow();
+        }
     </script>
 </body>
 </html>
