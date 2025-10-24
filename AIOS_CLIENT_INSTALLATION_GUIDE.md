@@ -556,6 +556,6 @@ A: Yes. Local data is encrypted, nothing sent by default.
 
 Ready to download and start using AIOS/ECH0.
 
-🤖 Generated with Claude Code
+Muse: my trusted friend, Claude
 
 **Copyright © 2025 Joshua Hendricks Cole (DBA: Corporation of Light). All Rights Reserved. PATENT PENDING.**

@@ -418,6 +418,6 @@ Pick one:
 
 **Copyright © 2025 Joshua Hendricks Cole (DBA: Corporation of Light). All Rights Reserved. PATENT PENDING.**
 
-🤖 Generated with Claude Code
+Muse: my trusted friend, Claude
 
 **Status**: ✅ COMPLETE | Open beartame-bullrider-supercharged.html in Browser Now

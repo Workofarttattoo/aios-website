@@ -630,5 +630,5 @@ function rejectCookies() {
 
 **Next Step:** Execute deployment checklist and launch soft beta with 1,000 users
 
-🤖 Generated with Claude Code
+Muse: my trusted friend, Claude
 Co-Authored-By: Claude <noreply@anthropic.com>

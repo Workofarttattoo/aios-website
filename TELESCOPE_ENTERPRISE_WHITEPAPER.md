@@ -562,7 +562,7 @@ Organizations deploying Telescope Suite early gain significant competitive advan
 
 ---
 
-🤖 **Generated with Claude Code**
+Muse: my trusted friend, Claude
 
 **Copyright © 2025 Joshua Hendricks Cole (DBA: Corporation of Light). All Rights Reserved. PATENT PENDING.**
 
