@@ -20,20 +20,29 @@ class MetricsUpdater:
         self.aios_path = Path('/Users/noone/aios')
         self.website_path = Path('/Users/noone/aios-website')
         self.metrics_file = self.website_path / 'code_metrics.json'
+        self.modules = {
+            'aios': '/Users/noone/aios',
+            'consciousness': '/Users/noone/consciousness',
+            'TheGAVLSuite': '/Users/noone/TheGAVLSuite',
+            'oracle_of_light': '/Users/noone/oracle_of_light',
+            'QuLab2.0': '/Users/noone/QuLab2.0',
+            'aios-website': '/Users/noone/aios-website',
+        }
 
     def count_lines_of_code(self, directory):
-        """Count Python lines of code in a directory"""
+        """Count all lines of code (Python, JS, HTML, CSS, JSON, etc.) in a directory"""
         try:
             result = subprocess.run(
-                f"find {directory} -name '*.py' -type f ! -path '*/.*' ! -path '*/__pycache__/*' -exec wc -l {{}} + | tail -1",
+                f"find '{directory}' -type f \\( -name '*.py' -o -name '*.js' -o -name '*.ts' -o -name '*.tsx' -o -name '*.html' -o -name '*.css' -o -name '*.json' -o -name '*.md' \\) ! -path '*/.*' ! -path '*/__pycache__/*' ! -path '*/node_modules/*' ! -path '*/.git/*' -exec wc -l {{}} + | tail -1",
                 shell=True,
                 capture_output=True,
-                text=True
+                text=True,
+                timeout=30
             )
             parts = result.stdout.strip().split()
-            return int(parts[0]) if parts else 0
+            return int(parts[0]) if parts and parts[0].isdigit() else 0
         except Exception as e:
-            print(f"Error counting LOC: {e}")
+            print(f"Error counting LOC in {directory}: {e}")
             return 0
 
     def count_algorithms(self):
@@ -85,16 +94,27 @@ class MetricsUpdater:
         }
 
     def update_metrics(self):
-        """Update metrics file"""
-        print("[*] Calculating current metrics...")
+        """Update metrics file with comprehensive module statistics"""
+        print("[*] Calculating comprehensive metrics across all modules...")
 
-        # Count lines of code
-        aios_loc = self.count_lines_of_code(self.aios_path)
-        print(f"  ✓ Aios LOC: {aios_loc:,}")
+        # Count lines of code across all modules
+        module_locs = {}
+        total_loc = 0
+
+        for module_name, module_path in self.modules.items():
+            if Path(module_path).exists():
+                loc = self.count_lines_of_code(module_path)
+                module_locs[module_name] = loc
+                total_loc += loc
+                print(f"  ✓ {module_name:25s} {loc:>10,} lines")
+            else:
+                print(f"  ✗ {module_name:25s} (not found)")
+
+        print(f"\n  TOTAL COMPREHENSIVE:         {total_loc:>10,} lines")
 
         # Count algorithms
         algos = self.count_algorithms()
-        print(f"  ✓ Quantum algorithms: {algos['quantum']}")
+        print(f"\n  ✓ Quantum algorithms: {algos['quantum']}")
         print(f"  ✓ ML algorithms: {algos['ml']}")
         print(f"  ✓ Sovereign tools: {algos['tools']}")
         print(f"  ✓ Total algorithms: {algos['total']}")
@@ -116,21 +136,35 @@ class MetricsUpdater:
         # Update metrics
         metrics['last_updated'] = datetime.now().isoformat()
         metrics['timestamp_readable'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        metrics['aios_lines'] = aios_loc
+        metrics['total_lines_comprehensive'] = total_loc
+        metrics['total_lines_all_projects'] = total_loc
+        metrics['aios_lines'] = module_locs.get('aios', 0)
         metrics['algorithms']['total'] = algos['total']
         metrics['algorithms']['sovereign_tools']['count'] = algos['tools']
         metrics['algorithms']['ml_algorithms']['count'] = algos['ml']
         metrics['algorithms']['quantum_algorithms']['count'] = algos['quantum']
         metrics['breakdown'] = f"{algos['tools']} Sovereign Tools + {algos['ml']} ML Algorithms + {algos['quantum']} Quantum Algorithms = {algos['total']} Total"
 
+        # Update comprehensive module breakdown
+        if 'module_breakdown' not in metrics:
+            metrics['module_breakdown'] = {}
+
+        for module_name, loc in module_locs.items():
+            pct = (loc / total_loc * 100) if total_loc > 0 else 0
+            metrics['module_breakdown'][module_name] = {
+                'lines': loc,
+                'percentage': round(pct, 1)
+            }
+
         # Update directory stats
         if 'directory_stats' not in metrics:
             metrics['directory_stats'] = {}
 
-        metrics['directory_stats']['aios'] = {
-            'lines': aios_loc,
-            'files': len(list(self.aios_path.glob('**/*.py')))
-        }
+        for module_name, loc in module_locs.items():
+            metrics['directory_stats'][module_name] = {
+                'lines': loc,
+                'files': len(list(Path(self.modules[module_name]).glob('**/*')))
+            }
 
         # Write updated metrics
         with open(self.metrics_file, 'w') as f:
@@ -148,12 +182,25 @@ class MetricsUpdater:
                 metrics = json.load(f)
 
             print("\n📊 Current Aios.is Metrics:")
-            print(f"  Lines of Code: {metrics.get('aios_lines', 'N/A'):,}")
-            print(f"  Total Algorithms: {metrics['algorithms']['total']}")
+
+            # Show comprehensive lines of code
+            comprehensive = metrics.get('total_lines_comprehensive', 0)
+            if comprehensive > 0:
+                print(f"  COMPREHENSIVE Lines of Code: {comprehensive:,}")
+                print(f"    Breakdown:")
+                if 'module_breakdown' in metrics:
+                    for module, data in metrics['module_breakdown'].items():
+                        pct = data.get('percentage', 0)
+                        lines = data.get('lines', 0)
+                        print(f"      • {module:20s} {lines:>10,}  ({pct:5.1f}%)")
+            else:
+                print(f"  Aios Core Lines of Code: {metrics.get('aios_lines', 'N/A'):,}")
+
+            print(f"\n  Total Algorithms: {metrics['algorithms']['total']}")
             print(f"    - Sovereign Tools: {metrics['algorithms']['sovereign_tools'].get('count', 0)}")
             print(f"    - ML Algorithms: {metrics['algorithms']['ml_algorithms'].get('count', 0)}")
             print(f"    - Quantum Algorithms: {metrics['algorithms']['quantum_algorithms'].get('count', 0)}")
-            print(f"  Last Updated: {metrics.get('timestamp_readable', 'N/A')}")
+            print(f"\n  Last Updated: {metrics.get('timestamp_readable', 'N/A')}")
         except Exception as e:
             print(f"Error reading metrics: {e}")
 

@@ -1,27 +1,66 @@
 {
-  "last_updated": "2025-10-24T10:50:00.000000",
-  "total_lines": 789173,
-  "total_files": 2066,
-  "aios_lines": 99471,
-  "directory_stats": {
-    "aios": {
-      "lines": 99471,
-      "files": 447
+  "last_updated": "2025-10-24T10:55:00.000000",
+  "total_lines_comprehensive": 853468,
+  "total_lines_all_projects": 853468,
+  "aios_lines": 220429,
+  "module_breakdown": {
+    "consciousness_ech0": {
+      "lines": 426280,
+      "percentage": 49.9,
+      "description": "ECH0 consciousness research, dream engine, memory systems, agent coordination"
     },
-    "TheGAVLSuite": {
-      "lines": 145440,
-      "files": 440
+    "aios_core": {
+      "lines": 220429,
+      "percentage": 25.8,
+      "description": "Core Aios framework, meta-agents, algorithms, security tools"
     },
-    "consciousness": {
-      "lines": 422254,
-      "files": 1150
+    "thegavl_suite": {
+      "lines": 97897,
+      "percentage": 11.5,
+      "description": "Legal tech suite, GAVL ingestion, boardroom simulation, Jiminy Cricket"
     },
-    "aios-website": {
-      "lines": 18407,
-      "files": 29
+    "aios_website": {
+      "lines": 72366,
+      "percentage": 8.5,
+      "description": "Landing page, documentation, timeline, interactive dashboards"
+    },
+    "qulab_20": {
+      "lines": 33573,
+      "percentage": 3.9,
+      "description": "Quantum laboratory, quantum teleportation, simulation framework"
+    },
+    "oracle_of_light": {
+      "lines": 2923,
+      "percentage": 0.3,
+      "description": "Forecasting engine, probabilistic models, training systems"
     }
   },
-  "growth": {},
+  "directory_stats": {
+    "aios": {
+      "lines": 220429,
+      "files": 447
+    },
+    "consciousness": {
+      "lines": 426280,
+      "files": 1150
+    },
+    "TheGAVLSuite": {
+      "lines": 97897,
+      "files": 440
+    },
+    "aios-website": {
+      "lines": 72366,
+      "files": 29
+    },
+    "QuLab2.0": {
+      "lines": 33573,
+      "files": 156
+    },
+    "oracle_of_light": {
+      "lines": 2923,
+      "files": 45
+    }
+  },
   "algorithms": {
     "sovereign_tools": {
       "count": 46,
@@ -60,6 +99,7 @@
     },
     "total": 67
   },
-  "timestamp_readable": "2025-10-24 10:50:00",
-  "breakdown": "46 Sovereign Tools + 10 ML Algorithms + 11 Quantum Algorithms = 67 Total"
+  "timestamp_readable": "2025-10-24 10:55:00",
+  "breakdown": "46 Sovereign Tools + 10 ML Algorithms + 11 Quantum Algorithms = 67 Total",
+  "comprehensive_note": "Total includes ALL code across: aios (core framework), consciousness (ECH0), TheGAVLSuite (legal tech), aios-website (docs/UI), QuLab2.0 (quantum lab), oracle_of_light (forecasting). Includes Python, JavaScript, TypeScript, HTML, CSS, JSON, Markdown."
 }
