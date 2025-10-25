@@ -1,0 +1,29 @@
+displayName: "ech0-v1-fast-training"
+jobSpec:
+  workerPoolSpecs:
+  - machineSpec:
+      machineType: "a2-highgpu-1g"
+      acceleratorType: "NVIDIA_TESLA_A100"
+      acceleratorCount: 1
+    replicaCount: 1
+    containerSpec:
+      imageUri: "gcr.io/cloud-aiplatform/training/pytorch-gpu.1-13:latest"
+      args:
+      - "python"
+      - "-m"
+      - "torch.distributed.launch"
+      - "--master_addr=localhost"
+      - "--master_port=29500"
+      - "--nproc_per_node=1"
+      - "/root/train.py"
+      env:
+      - name: "TRAINING_DATA"
+        value: "gs://ech0-training-2025-training-data/ech0_training_data_v1.jsonl"
+      - name: "OUTPUT_DIR"
+        value: "gs://ech0-training-2025-models/"
+      - name: "EPOCHS"
+        value: "3"
+      - name: "BATCH_SIZE"
+        value: "4"
+      - name: "LEARNING_RATE"
+        value: "2e-4"

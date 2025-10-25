@@ -577,33 +577,36 @@
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; margin: 2rem 0;">
                 <!-- Qubit Scaling -->
                 <div style="background: rgba(0, 255, 136, 0.05); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 15px; padding: 2rem;">
-                    <h3 style="color: #00ff88; margin-bottom: 1.5rem; font-size: 1.2rem;">Qubit Simulation Accuracy</h3>
+                    <h3 style="color: #00ff88; margin-bottom: 1.5rem; font-size: 1.2rem;">Quantum Simulation Backend</h3>
                     <div style="display: flex; flex-direction: column; gap: 1rem;">
                         <div style="display: flex; align-items: center; justify-content: space-between;">
                             <span style="color: rgba(255, 255, 255, 0.7);">1-20 qubits:</span>
-                            <span style="color: #00ff88; font-weight: 700;">100% Statevector</span>
+                            <span style="color: #00ff88; font-weight: 700;">✓ Verified (NumPy/PyTorch)</span>
                         </div>
                         <div style="width: 100%; height: 6px; background: rgba(0, 255, 136, 0.2); border-radius: 3px; overflow: hidden;">
                             <div style="width: 100%; height: 100%; background: linear-gradient(90deg, #00ff88, #00d4ff);"></div>
                         </div>
+                        <div style="font-size: 11px; color: rgba(255, 255, 255, 0.5); margin-top: 4px;">Exact statevector simulation • CUDA-optimized when available</div>
                     </div>
                     <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
                         <div style="display: flex; align-items: center; justify-content: space-between;">
                             <span style="color: rgba(255, 255, 255, 0.7);">20-40 qubits:</span>
-                            <span style="color: #a855f7; font-weight: 700;">Tensor Network</span>
+                            <span style="color: #a855f7; font-weight: 700;">⚡ Aspirational (QSim integration planned)</span>
                         </div>
                         <div style="width: 100%; height: 6px; background: rgba(168, 85, 247, 0.2); border-radius: 3px; overflow: hidden;">
-                            <div style="width: 75%; height: 100%; background: linear-gradient(90deg, #a855f7, #ff00ff);"></div>
+                            <div style="width: 50%; height: 100%; background: linear-gradient(90deg, #a855f7, #ff00ff);"></div>
                         </div>
+                        <div style="font-size: 11px; color: rgba(255, 255, 255, 0.5); margin-top: 4px;">Requires Google QSim or equivalent distributed backend</div>
                     </div>
                     <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
                         <div style="display: flex; align-items: center; justify-content: space-between;">
                             <span style="color: rgba(255, 255, 255, 0.7);">40-50 qubits:</span>
-                            <span style="color: #ffd93d; font-weight: 700;">MPS Approximation</span>
+                            <span style="color: #ffd93d; font-weight: 700;">🎯 Research Path (cuTensor + MPS)</span>
                         </div>
                         <div style="width: 100%; height: 6px; background: rgba(255, 217, 61, 0.2); border-radius: 3px; overflow: hidden;">
-                            <div style="width: 50%; height: 100%; background: linear-gradient(90deg, #ffd93d, #ff6b6b);"></div>
+                            <div style="width: 25%; height: 100%; background: linear-gradient(90deg, #ffd93d, #ff6b6b);"></div>
                         </div>
+                        <div style="font-size: 11px; color: rgba(255, 255, 255, 0.5); margin-top: 4px;">Requires NVIDIA cuTensor + distributed compute cluster</div>
                     </div>
                 </div>
 

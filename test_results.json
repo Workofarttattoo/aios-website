@@ -1,0 +1,83 @@
+{
+  "timestamp": "2025-10-25T04:34:28.956800",
+  "total_tests": 128,
+  "passed": 69,
+  "failed": 4,
+  "pass_rate": 53.90625,
+  "tiers": {
+    "Tier 2": {
+      "tier": "Tier 2",
+      "test_file": "test_aios_comprehensive.py, test_chrono_walker_btc.py, test_ml_quantum_algorithms.py, test_probabilistic_btc_core.py, test_probabilistic_core.py, test_security_suite.py, test_sovereign_toolkit_comprehensive.py",
+      "total_tests": 12,
+      "passed": 5,
+      "failed": 4,
+      "errors": 0,
+      "duration_ms": 3243.8573837280273,
+      "components": [
+        "AIOS Comprehensive",
+        "Chrono Walker",
+        "Bitcoin Analysis",
+        "ML Algorithms",
+        "Quantum Algorithms",
+        "Probabilistic Analysis",
+        "Probabilistic Core",
+        "Security Suite",
+        "Sovereign Toolkit"
+      ]
+    },
+    "Tier 4": {
+      "tier": "Tier 4",
+      "test_file": "test_autonomous_tool_discovery.py, test_level_5_6_autonomy.py, test_ml_quantum_algorithms_tier4.py, test_quantum_engine.py, test_quantum_reasoning_probability_comprehensive.py",
+      "total_tests": 30,
+      "passed": 30,
+      "failed": 0,
+      "errors": 0,
+      "duration_ms": 1980.405330657959,
+      "components": [
+        "Autonomous Discovery",
+        "Advanced Autonomy",
+        "ML Algorithms",
+        "Quantum Algorithms",
+        "Quantum Engine",
+        "Quantum Reasoning"
+      ]
+    },
+    "Tier 1": {
+      "tier": "Tier 1",
+      "test_file": "test_diagnostics.py, test_wizard_validations.py",
+      "total_tests": 52,
+      "passed": 0,
+      "failed": 0,
+      "errors": 0,
+      "duration_ms": 76.74860954284668,
+      "components": [
+        "ECH0 Launcher",
+        "Diagnostics",
+        "Wizard Validation"
+      ]
+    },
+    "Tier 3": {
+      "tier": "Tier 3",
+      "test_file": "test_meta_agents_tier3.py, test_openagi_e2e_workflows.py, test_openagi_integration.py, test_openagi_memory_integration.py",
+      "total_tests": 34,
+      "passed": 34,
+      "failed": 0,
+      "errors": 0,
+      "duration_ms": 191.2240982055664,
+      "components": [
+        "KernelAgent",
+        "SecurityAgent",
+        "NetworkingAgent",
+        "StorageAgent",
+        "ApplicationAgent",
+        "ScalabilityAgent",
+        "OrchestrationAgent",
+        "UserAgent",
+        "GuiAgent",
+        "OpenAGI Workflows",
+        "OpenAGI Integration",
+        "OpenAGI Memory"
+      ]
+    }
+  }
+}

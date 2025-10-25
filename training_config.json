@@ -1,0 +1,23 @@
+{
+  "displayName": "ech0-v1-fast-training",
+  "trainingSpec": {
+    "machineSpec": {
+      "machineType": "a2-highgpu-1g",
+      "acceleratorType": "NVIDIA_TESLA_A100",
+      "acceleratorCount": 1
+    },
+    "replicaCount": 1,
+    "pythonPackageSpec": {
+      "executorImageUri": "gcr.io/cloud-aiplatform/training/pytorch-gpu.1-13:latest",
+      "packageUris": [],
+      "pythonModule": "fine_tune",
+      "args": [
+        "--training_data=gs://ech0-training-2025-training-data/ech0_training_data_v1.jsonl",
+        "--output_dir=gs://ech0-training-2025-models",
+        "--epochs=3",
+        "--batch_size=4",
+        "--learning_rate=0.0002"
+      ]
+    }
+  }
+}
