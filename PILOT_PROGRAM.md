@@ -210,7 +210,7 @@ After successful pilot:
 
 **If your country is interested in being a test subject:**
 
-📧 Email: pilot@thegavl.com
+📧 Email: inventor@aios.is
 🌐 Website: https://PilotProgram.TheGavl.com
 📱 Schedule Call: [Calendly link]
 
@@ -284,7 +284,7 @@ A: First 12 months FREE for qualifying pilot programs. After success, modest ann
 
 1. **Read the whitepaper**: https://thegavl.com/whitepaper.html
 2. **Review technical docs**: https://aios.is/docs.html
-3. **Schedule consultation**: pilot@thegavl.com
+3. **Schedule consultation**: inventor@aios.is
 4. **Legal review**: Share with your judicial committee
 5. **Public consultation**: Gauge citizen interest
 6. **Pilot agreement**: Sign MOU for 12-month trial

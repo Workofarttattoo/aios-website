@@ -409,7 +409,7 @@ Want more features? Supabase makes it easy:
 
 ## Support
 
-Questions? Email: tech@thegavl.com
+Questions? Email: support@aios.is
 
 ---
 
