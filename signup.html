@@ -424,8 +424,11 @@
             <p class="subtitle">Your account has been created. Access your downloads below.</p>
 
             <div class="download-links">
-                <a href="https://github.com/YourUsername/AgentaOS" class="download-btn" target="_blank">
-                    📦 Download Ai:oS Source Code
+                <a href="downloads/aios-installer.sh" class="download-btn" download onclick="trackDownload('installer')">
+                    📦 Download Ai:oS Installer (Shell Script)
+                </a>
+                <a href="downloads/aios-full-package.zip" class="download-btn" download onclick="trackDownload('full-package')">
+                    💾 Download Full Package (ZIP)
                 </a>
                 <a href="docs.html" class="download-btn">
                     📚 View Documentation
@@ -433,7 +436,7 @@
                 <a href="demos.html" class="download-btn">
                     🎮 Try Live Demos
                 </a>
-                <a href="index.html#tools" class="download-btn">
+                <a href="index.html" class="download-btn">
                     🛠️ Explore Security Toolkit
                 </a>
                 <a href="index.html" class="download-btn">
@@ -463,7 +466,16 @@
         </p>
     </footer>
 
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script>
+        // Initialize Supabase
+        const SUPABASE_URL = 'https://cszoklkfdszqsxhufhhj.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNzem9rbGtmZHN6cXN4aHVmaGhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjExNzI0MzAsImV4cCI6MjA3Njc0ODQzMH0.HdqXrWVTPCQ2NYH-5ED_nx91a38UGPvTHjva4NzBG8I';
+        const { createClient } = supabase;
+        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
         let authMode = 'signup';
 
         function switchMode(mode) {
@@ -516,7 +528,7 @@
             }
         }
 
-        function handleSubmit(event) {
+        async function handleSubmit(event) {
             event.preventDefault();
 
             const email = document.getElementById('userEmail').value.toLowerCase().trim();
@@ -525,9 +537,6 @@
                 alert('Please enter your email address.');
                 return;
             }
-
-            // Get existing users
-            const storedUsers = JSON.parse(localStorage.getItem('aiosUsers') || '{}');
 
             if (authMode === 'signin') {
                 // Sign In Mode
@@ -538,26 +547,42 @@
                     return;
                 }
 
-                if (!storedUsers[email]) {
-                    alert('⚠️ No account found with this email.\n\nPlease click "Sign Up" to create an account.');
-                    switchMode('signup');
-                    return;
+                try {
+                    // Check if user exists in Supabase
+                    const { data: users, error } = await supabaseClient
+                        .from('aios_users')
+                        .select('*')
+                        .eq('email', email)
+                        .single();
+
+                    if (error || !users) {
+                        alert('⚠️ No account found with this email.\n\nPlease click "Sign Up" to create an account.');
+                        switchMode('signup');
+                        return;
+                    }
+
+                    // Validate password
+                    const storedPassword = atob(users.password_hash);
+                    if (password !== storedPassword) {
+                        alert('⚠️ Incorrect password.\n\nPlease try again.');
+                        return;
+                    }
+
+                    // Update last access
+                    await supabaseClient
+                        .from('aios_users')
+                        .update({ last_access: new Date().toISOString() })
+                        .eq('email', email);
+
+                    // Store in session
+                    sessionStorage.setItem('currentAiosUser', JSON.stringify(users));
+
+                    // Show success
+                    showSuccess(users.name);
+                } catch (err) {
+                    console.error('Sign in error:', err);
+                    alert('An error occurred during sign in. Please try again.');
                 }
-
-                // Validate password
-                const storedPassword = atob(storedUsers[email].passwordHash);
-                if (password !== storedPassword) {
-                    alert('⚠️ Incorrect password.\n\nPlease try again.');
-                    return;
-                }
-
-                // Update last access
-                storedUsers[email].lastAccess = new Date().toISOString();
-                localStorage.setItem('aiosUsers', JSON.stringify(storedUsers));
-                sessionStorage.setItem('currentAiosUser', JSON.stringify(storedUsers[email]));
-
-                // Show success
-                showSuccess(storedUsers[email].name);
             } else {
                 // Sign Up Mode
                 const name = document.getElementById('userName').value.trim();
@@ -583,32 +608,65 @@
                     return;
                 }
 
-                if (storedUsers[email]) {
-                    alert('⚠️ An account with this email already exists.\n\nPlease click "Sign In" to access your account.');
-                    switchMode('signin');
-                    return;
+                try {
+                    // Check if email already exists
+                    const { data: existingUser } = await supabaseClient
+                        .from('aios_users')
+                        .select('email')
+                        .eq('email', email)
+                        .single();
+
+                    if (existingUser) {
+                        alert('⚠️ An account with this email already exists.\n\nPlease click "Sign In" to access your account.');
+                        switchMode('signin');
+                        return;
+                    }
+
+                    // Create new user in Supabase
+                    const newUser = {
+                        email: email,
+                        name: name,
+                        organization: org || null,
+                        use_case: useCase,
+                        password_hash: btoa(password),
+                        newsletter: newsletter,
+                        signup_date: new Date().toISOString(),
+                        last_access: new Date().toISOString(),
+                        user_agent: navigator.userAgent,
+                        referrer: document.referrer || 'Direct'
+                    };
+
+                    const { data, error } = await supabaseClient
+                        .from('aios_users')
+                        .insert([newUser])
+                        .select();
+
+                    if (error) {
+                        console.error('Signup error:', error);
+                        alert('An error occurred during signup. Please try again.');
+                        return;
+                    }
+
+                    // Store in session
+                    sessionStorage.setItem('currentAiosUser', JSON.stringify(data[0]));
+
+                    console.log('New Ai:oS user signed up:', email);
+
+                    // Send welcome email via Supabase Edge Function
+                    try {
+                        await supabaseClient.functions.invoke('send-welcome-email', {
+                            body: { email, name }
+                        });
+                    } catch (emailError) {
+                        console.log('Welcome email failed (non-critical):', emailError);
+                    }
+
+                    // Show success
+                    showSuccess(name);
+                } catch (err) {
+                    console.error('Signup error:', err);
+                    alert('An error occurred during signup. Please try again.');
                 }
-
-                // Create new user
-                const newUser = {
-                    email: email,
-                    name: name,
-                    organization: org,
-                    useCase: useCase,
-                    passwordHash: btoa(password),
-                    newsletter: newsletter,
-                    signupDate: new Date().toISOString(),
-                    lastAccess: new Date().toISOString()
-                };
-
-                storedUsers[email] = newUser;
-                localStorage.setItem('aiosUsers', JSON.stringify(storedUsers));
-                sessionStorage.setItem('currentAiosUser', JSON.stringify(newUser));
-
-                console.log('New Ai:oS user signed up:', email);
-
-                // Show success
-                showSuccess(name);
             }
         }
 
@@ -622,6 +680,27 @@
 
             // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        async function trackDownload(downloadType) {
+            try {
+                const currentUser = JSON.parse(sessionStorage.getItem('currentAiosUser') || '{}');
+
+                if (currentUser.email) {
+                    // Update download count in Supabase
+                    await supabaseClient
+                        .from('aios_users')
+                        .update({
+                            download_count: supabaseClient.raw('download_count + 1'),
+                            last_download: new Date().toISOString()
+                        })
+                        .eq('email', currentUser.email);
+
+                    console.log('Download tracked:', downloadType);
+                }
+            } catch (error) {
+                console.error('Download tracking failed:', error);
+            }
         }
     </script>
 </body>
