@@ -2631,9 +2631,14 @@
             const wrapper = document.getElementById('echo-space-wrapper');
             const fallback = document.getElementById('echo-space-fallback');
             const detail = document.getElementById('echo-space-fallback-detail');
+            const frame = document.getElementById('echo-space-frame');
 
+            if (frame) {
+                frame.src = 'tools.html';
+                frame.title = 'ECH0 Local Demo Fallback';
+            }
             if (wrapper) {
-                wrapper.style.display = 'none';
+                wrapper.style.display = 'block';
             }
             if (detail) {
                 const condensedReason = (reason || '')
@@ -2641,12 +2646,13 @@
                     .trim()
                     .slice(0, 220);
                 detail.textContent = condensedReason
-                    ? `Current Space status: ${stage}. ${condensedReason}`
-                    : `Current Space status: ${stage}.`;
+                    ? `Current Space status: ${stage}. ${condensedReason} Running local ECH0 fallback so visitors can still try her from AIOS.`
+                    : `Current Space status: ${stage}. Running local ECH0 fallback so visitors can still try her from AIOS.`;
             }
             if (fallback) {
                 fallback.style.display = 'block';
             }
+            setSpaceStatusPill('echo-space-status', 'down', 'echo runtime: down (local fallback active)');
         }
 
         async function checkSpaceRuntime(spaceId, statusElementId, onUnavailable) {
