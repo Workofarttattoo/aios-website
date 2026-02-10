@@ -779,6 +779,65 @@
             background: #05050a;
         }
 
+        .space-runtime-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 0.2rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .space-status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            border-radius: 999px;
+            padding: 0.28rem 0.7rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+            border: 1px solid transparent;
+        }
+
+        .space-status-pill.checking {
+            color: #93c5fd;
+            border-color: rgba(147, 197, 253, 0.45);
+            background: rgba(147, 197, 253, 0.12);
+        }
+
+        .space-status-pill.running {
+            color: #00ff88;
+            border-color: rgba(0, 255, 136, 0.45);
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .space-status-pill.down {
+            color: #fda4af;
+            border-color: rgba(253, 164, 175, 0.45);
+            background: rgba(253, 164, 175, 0.12);
+        }
+
+        .space-fallback {
+            display: none;
+            border: 1px solid rgba(253, 164, 175, 0.4);
+            background: rgba(253, 164, 175, 0.08);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .space-fallback h3 {
+            margin: 0 0 0.45rem;
+            color: #fda4af;
+            font-size: 1rem;
+        }
+
+        .space-fallback p {
+            margin: 0 0 0.8rem;
+            color: rgba(255, 255, 255, 0.84);
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
         .echo-benchmarks-panel {
             margin-top: 1.8rem;
             background: rgba(0, 212, 255, 0.05);
@@ -1609,18 +1668,32 @@
                             Launch the live Space directly from this pane and compare benchmark updates in real time.
                         </p>
                     </div>
+                    <div class="space-runtime-row">
+                        <span id="echo-space-status" class="space-status-pill checking">Echo runtime: checking...</span>
+                    </div>
                     <div class="agi-card-actions">
                         <a class="agi-action-link primary" href="https://huggingface.co/spaces/workofarttattoo/echo-prime-cognitive-architecture?embed=true" target="_blank" rel="noopener noreferrer">Try Echo Prime Space</a>
                         <a class="agi-action-link" href="https://huggingface.co/workofarttattoo/echo-prime-agi" target="_blank" rel="noopener noreferrer">View Hugging Face Benchmarks</a>
                     </div>
-                    <div class="agi-space-frame-wrap">
+                    <div id="echo-space-wrapper" class="agi-space-frame-wrap">
                         <iframe
+                            id="echo-space-frame"
                             class="agi-space-frame"
                             title="Echo Prime AGI Space"
                             src="https://huggingface.co/spaces/workofarttattoo/echo-prime-cognitive-architecture?embed=true"
                             loading="eager"
                             allow="clipboard-read; clipboard-write">
                         </iframe>
+                    </div>
+                    <div id="echo-space-fallback" class="space-fallback">
+                        <h3>Echo Prime Space is temporarily restarting</h3>
+                        <p id="echo-space-fallback-detail">
+                            We are waiting for the Hugging Face runtime to recover. You can still access benchmarks and the direct Space page while it restarts.
+                        </p>
+                        <div class="agi-card-actions">
+                            <a class="agi-action-link primary" href="https://huggingface.co/spaces/workofarttattoo/echo-prime-cognitive-architecture" target="_blank" rel="noopener noreferrer">Open Echo Space Page</a>
+                            <a class="agi-action-link" href="tools.html" target="_blank" rel="noopener noreferrer">Open ECH0 Tools Demo</a>
+                        </div>
                     </div>
                 </article>
 
@@ -1632,6 +1705,9 @@
                             A scientific and quantum-native experimentation environment for materials discovery, simulation,
                             and research orchestration. Embedded here for direct access from the AIOS main page.
                         </p>
+                    </div>
+                    <div class="space-runtime-row">
+                        <span id="qulab-space-status" class="space-status-pill checking">Qulab runtime: checking...</span>
                     </div>
                     <div class="agi-card-actions">
                         <a class="agi-action-link primary" href="https://huggingface.co/spaces/workofarttattoo/qulab-infinite?embed=true" target="_blank" rel="noopener noreferrer">Try Qulab Infinite Space</a>
@@ -2536,8 +2612,85 @@
             }
         }
 
+        function setSpaceStatusPill(elementId, state, label) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+
+            el.classList.remove('checking', 'running', 'down');
+            if (state === 'running') {
+                el.classList.add('running');
+            } else if (state === 'down') {
+                el.classList.add('down');
+            } else {
+                el.classList.add('checking');
+            }
+            el.textContent = label;
+        }
+
+        function showEchoSpaceFallback(stage, reason) {
+            const wrapper = document.getElementById('echo-space-wrapper');
+            const fallback = document.getElementById('echo-space-fallback');
+            const detail = document.getElementById('echo-space-fallback-detail');
+
+            if (wrapper) {
+                wrapper.style.display = 'none';
+            }
+            if (detail) {
+                const condensedReason = (reason || '')
+                    .split('\n')[0]
+                    .trim()
+                    .slice(0, 220);
+                detail.textContent = condensedReason
+                    ? `Current Space status: ${stage}. ${condensedReason}`
+                    : `Current Space status: ${stage}.`;
+            }
+            if (fallback) {
+                fallback.style.display = 'block';
+            }
+        }
+
+        async function checkSpaceRuntime(spaceId, statusElementId, onUnavailable) {
+            setSpaceStatusPill(statusElementId, 'checking', `${spaceId.split('/')[1]} runtime: checking...`);
+
+            try {
+                const response = await fetch(`https://huggingface.co/api/spaces/${spaceId}`, { cache: 'no-store' });
+                if (!response.ok) {
+                    throw new Error(`API status ${response.status}`);
+                }
+
+                const data = await response.json();
+                const runtime = data?.runtime || {};
+                const stage = runtime.stage || 'UNKNOWN';
+
+                if (stage === 'RUNNING') {
+                    setSpaceStatusPill(statusElementId, 'running', `${spaceId.split('/')[1]} runtime: running`);
+                    return;
+                }
+
+                setSpaceStatusPill(statusElementId, 'down', `${spaceId.split('/')[1]} runtime: ${stage.toLowerCase()}`);
+                if (typeof onUnavailable === 'function') {
+                    onUnavailable(stage, runtime.errorMessage || '');
+                }
+            } catch (error) {
+                setSpaceStatusPill(statusElementId, 'down', `${spaceId.split('/')[1]} runtime: unavailable`);
+                if (typeof onUnavailable === 'function') {
+                    onUnavailable('UNAVAILABLE', error.message);
+                }
+                console.log(`[space-runtime] Could not check ${spaceId}:`, error.message);
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             loadEchoPrimeBenchmarks();
+            checkSpaceRuntime(
+                'workofarttattoo/echo-prime-cognitive-architecture',
+                'echo-space-status',
+                showEchoSpaceFallback
+            );
+            checkSpaceRuntime(
+                'workofarttattoo/qulab-infinite',
+                'qulab-space-status'
+            );
         });
 
         // Parallax effect on scroll
