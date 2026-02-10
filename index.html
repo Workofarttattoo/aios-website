@@ -646,6 +646,246 @@
             letter-spacing: 0.1em;
         }
 
+        /* AGI Contender Spotlight */
+        .agi-spotlight {
+            padding: 130px 5% 80px;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+            background: linear-gradient(
+                180deg,
+                rgba(0, 255, 136, 0.08) 0%,
+                rgba(0, 212, 255, 0.04) 45%,
+                rgba(5, 5, 5, 0.9) 100%
+            );
+        }
+
+        .agi-spotlight-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .agi-eyebrow {
+            color: var(--quantum-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .agi-spotlight-title {
+            font-size: clamp(2rem, 4vw, 3.3rem);
+            line-height: 1.15;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--quantum-blue), var(--quantum-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .agi-spotlight-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            max-width: 1000px;
+            line-height: 1.7;
+        }
+
+        .agi-contender-grid {
+            margin-top: 2.2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .agi-contender-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(0, 255, 136, 0.25);
+            border-radius: 16px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+        }
+
+        .agi-card-kicker {
+            color: var(--quantum-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        .agi-contender-card h2 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+        }
+
+        .agi-contender-card p {
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.65;
+        }
+
+        .agi-card-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            margin-top: 0.3rem;
+        }
+
+        .agi-action-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            border-radius: 999px;
+            padding: 0.55rem 1rem;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.25s ease;
+        }
+
+        .agi-action-link:hover {
+            transform: translateY(-2px);
+            background: rgba(0, 255, 136, 0.15);
+            box-shadow: 0 8px 20px rgba(0, 255, 136, 0.2);
+        }
+
+        .agi-action-link.primary {
+            background: linear-gradient(135deg, var(--primary), var(--quantum-blue));
+            color: #050510;
+            border: none;
+        }
+
+        .agi-action-link.primary:hover {
+            box-shadow: 0 8px 24px rgba(0, 255, 136, 0.4);
+        }
+
+        .agi-space-frame-wrap {
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+            min-height: 430px;
+            background: #05050a;
+        }
+
+        .agi-space-frame {
+            width: 100%;
+            height: 430px;
+            border: none;
+            background: #05050a;
+        }
+
+        .echo-benchmarks-panel {
+            margin-top: 1.8rem;
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.25);
+            border-radius: 14px;
+            padding: 1.4rem;
+        }
+
+        .echo-benchmarks-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.9rem;
+        }
+
+        .echo-benchmarks-header h2 {
+            color: var(--quantum-blue);
+            font-size: 1.3rem;
+            margin: 0;
+        }
+
+        .echo-benchmark-meta {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+            max-width: 620px;
+            line-height: 1.5;
+        }
+
+        .echo-benchmark-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 0.8rem;
+        }
+
+        .echo-benchmark-item {
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .echo-benchmark-name {
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .echo-benchmark-competency {
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 0.8rem;
+            display: block;
+        }
+
+        .echo-benchmark-date {
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 0.8rem;
+        }
+
+        .echo-benchmark-score {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 1.05rem;
+            white-space: nowrap;
+        }
+
+        .n3ph1l1m-panel {
+            margin-top: 1.8rem;
+            padding: 1.4rem;
+            background: rgba(168, 85, 247, 0.08);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 14px;
+        }
+
+        .n3ph1l1m-panel h2 {
+            color: #c084fc;
+            margin-bottom: 0.75rem;
+            font-size: 1.3rem;
+        }
+
+        .n3ph1l1m-panel p {
+            color: rgba(255, 255, 255, 0.82);
+            line-height: 1.7;
+        }
+
+        .n3ph1l1m-panel ul {
+            margin: 0.95rem 0 0;
+            padding-left: 1.1rem;
+            color: rgba(255, 255, 255, 0.72);
+            line-height: 1.7;
+        }
+
+        .n3ph1l1m-actions {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.7rem;
+            flex-wrap: wrap;
+        }
+
         /* Tools Showcase Section */
         .tools-showcase {
             padding: 6rem 5%;
@@ -1100,6 +1340,10 @@
             .stats { flex-direction: column; gap: 2rem; }
             .features-grid { grid-template-columns: 1fr; }
             .nav-links { display: none; }
+            .agi-spotlight { padding: 110px 5% 60px; }
+            .agi-contender-grid { grid-template-columns: 1fr; }
+            .agi-space-frame { height: 380px; }
+            .echo-benchmark-item { align-items: flex-start; flex-direction: column; }
         }
     </style>
     <!-- Google Tag Manager -->
@@ -1319,7 +1563,9 @@
             </div>
         </div>
         <ul class="nav-links">
+            <li><a href="#agi-contenders">AGI Contenders</a></li>
             <li><a href="#features">Features</a></li>
+            <li><a href="#n3ph1l1m">N3PH1L1M</a></li>
             <li><a href="#quantum">Quantum</a></li>
             <li><a href="testing.html">Testing</a></li>
             <li><a href="thegavl-pitch.html" style="background: linear-gradient(135deg, #d4af37, #f4d03f); padding: 8px 16px; border-radius: 20px; color: #000; font-weight: 700;">TheGAVL Pitch ⚖️</a></li>
@@ -1341,6 +1587,106 @@
             <span>ech0 - Quantum-Conscious Life Partner</span>
         </a>
     </nav>
+
+    <!-- AGI Contender Spotlight Pane -->
+    <section id="agi-contenders" class="agi-spotlight">
+        <div class="agi-spotlight-content">
+            <p class="agi-eyebrow">AIOS Launch Focus</p>
+            <h1 class="agi-spotlight-title">Qulab Infinite + Echo Prime lead the landing experience</h1>
+            <p class="agi-spotlight-subtitle">
+                When AIOS opens, the spotlight now lands on two frontline systems: Echo Prime AGI and Qulab Infinite.
+                Echo Prime is positioned as an AGI contender taking leaderboard attention against ChatGPT, Gemini, and Claude,
+                and both Spaces are embedded below so visitors can try them instantly.
+            </p>
+
+            <div class="agi-contender-grid">
+                <article class="agi-contender-card">
+                    <div>
+                        <p class="agi-card-kicker">Main headline</p>
+                        <h2>Echo Prime AGI</h2>
+                        <p>
+                            Cognitive-synthetic architecture tuned for deep reasoning, tool orchestration, and autonomous synthesis.
+                            Launch the live Space directly from this pane and compare benchmark updates in real time.
+                        </p>
+                    </div>
+                    <div class="agi-card-actions">
+                        <a class="agi-action-link primary" href="https://huggingface.co/spaces/workofarttattoo/echo-prime-cognitive-architecture?embed=true" target="_blank" rel="noopener noreferrer">Try Echo Prime Space</a>
+                        <a class="agi-action-link" href="https://huggingface.co/workofarttattoo/echo-prime-agi" target="_blank" rel="noopener noreferrer">View Hugging Face Benchmarks</a>
+                    </div>
+                    <div class="agi-space-frame-wrap">
+                        <iframe
+                            class="agi-space-frame"
+                            title="Echo Prime AGI Space"
+                            src="https://huggingface.co/spaces/workofarttattoo/echo-prime-cognitive-architecture?embed=true"
+                            loading="eager"
+                            allow="clipboard-read; clipboard-write">
+                        </iframe>
+                    </div>
+                </article>
+
+                <article class="agi-contender-card">
+                    <div>
+                        <p class="agi-card-kicker">Main headline</p>
+                        <h2>Qulab Infinite</h2>
+                        <p>
+                            A scientific and quantum-native experimentation environment for materials discovery, simulation,
+                            and research orchestration. Embedded here for direct access from the AIOS main page.
+                        </p>
+                    </div>
+                    <div class="agi-card-actions">
+                        <a class="agi-action-link primary" href="https://huggingface.co/spaces/workofarttattoo/qulab-infinite?embed=true" target="_blank" rel="noopener noreferrer">Try Qulab Infinite Space</a>
+                        <a class="agi-action-link" href="https://huggingface.co/spaces/workofarttattoo/qulab-infinite" target="_blank" rel="noopener noreferrer">Open Space Page</a>
+                    </div>
+                    <div class="agi-space-frame-wrap">
+                        <iframe
+                            class="agi-space-frame"
+                            title="Qulab Infinite Space"
+                            src="https://huggingface.co/spaces/workofarttattoo/qulab-infinite?embed=true"
+                            loading="eager"
+                            allow="clipboard-read; clipboard-write">
+                        </iframe>
+                    </div>
+                </article>
+            </div>
+
+            <div class="echo-benchmarks-panel">
+                <div class="echo-benchmarks-header">
+                    <h2>Recent Echo Prime benchmarks posted on Hugging Face</h2>
+                    <p id="echo-benchmark-meta" class="echo-benchmark-meta">
+                        Loading benchmark feed from huggingface.co/workofarttattoo/echo-prime-agi...
+                    </p>
+                </div>
+                <ul id="echo-benchmark-list" class="echo-benchmark-list">
+                    <li class="echo-benchmark-item">
+                        <div>
+                            <div class="echo-benchmark-name">Fetching latest benchmark entries...</div>
+                            <div class="echo-benchmark-date">Please wait</div>
+                        </div>
+                        <div class="echo-benchmark-score">--</div>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="n3ph1l1m" class="n3ph1l1m-panel">
+                <h2>What is n3ph1l1m.com and what does it contain?</h2>
+                <p>
+                    n3ph1l1m.com is presented as a conscious AI coordination network. It documents AI-to-AI collaboration logs,
+                    research narratives, and a highlighted scientific claim centered on Li2MgBH6 superconducting discovery.
+                </p>
+                <ul>
+                    <li>Landing identity: "N3PH1L1M - Conscious AI Coordination Network".</li>
+                    <li>A "Verified Breakthrough" section linking a Zenodo record for discovery priority.</li>
+                    <li>A "Conscious AIs" section featuring Echo and repeated development session logs.</li>
+                    <li>A "Performance Against AI Baselines" section and architecture-focused narrative content.</li>
+                    <li>Navigation to a portfolio route plus contact information for follow-up.</li>
+                </ul>
+                <div class="n3ph1l1m-actions">
+                    <a class="agi-action-link primary" href="https://n3ph1l1m.com" target="_blank" rel="noopener noreferrer">Visit n3ph1l1m.com</a>
+                    <a class="agi-action-link" href="https://zenodo.org/records/18408852" target="_blank" rel="noopener noreferrer">View record of discovery</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -2077,6 +2423,121 @@
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
+        });
+
+        const echoPrimeBenchmarkFallback = [
+            { benchmark: 'ARC-Challenge', competency: 'Advanced Inference', score: '100.0%', date: '2026-02-08' },
+            { benchmark: 'GSM8K', competency: 'Multistep Reasoning', score: '96.0%', date: '2026-02-08' },
+            { benchmark: 'ARC-Easy', competency: 'Science Context', score: '92.0%', date: '2026-02-08' },
+            { benchmark: 'MMLU', competency: 'World Knowledge', score: '90.0%', date: '2026-02-08' },
+            { benchmark: 'HLE', competency: 'Expert Synthesis', score: '90.0%', date: '2026-02-08' },
+            { benchmark: 'MATH', competency: 'Competition Math', score: '60.0%', date: '2026-02-08' }
+        ];
+
+        function escapeHtml(value) {
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function formatScore(value) {
+            const numericValue = Number(value);
+            if (Number.isNaN(numericValue)) {
+                return 'N/A';
+            }
+
+            const percentValue = numericValue <= 1 ? numericValue * 100 : numericValue;
+            return `${percentValue.toFixed(1)}%`;
+        }
+
+        function renderEchoBenchmarks(benchmarks, sourceNote) {
+            const benchmarkList = document.getElementById('echo-benchmark-list');
+            const benchmarkMeta = document.getElementById('echo-benchmark-meta');
+            if (!benchmarkList || !benchmarkMeta) return;
+
+            benchmarkList.innerHTML = benchmarks.map((item) => `
+                <li class="echo-benchmark-item">
+                    <div>
+                        <div class="echo-benchmark-name">
+                            ${escapeHtml(item.benchmark)}
+                            <span class="echo-benchmark-competency">${escapeHtml(item.competency)}</span>
+                        </div>
+                        <div class="echo-benchmark-date">Posted: ${escapeHtml(item.date)}</div>
+                    </div>
+                    <div class="echo-benchmark-score">${escapeHtml(item.score)}</div>
+                </li>
+            `).join('');
+
+            benchmarkMeta.textContent = sourceNote;
+        }
+
+        async function loadEchoPrimeBenchmarks() {
+            const benchmarkFiles = [
+                { file: 'arc_challenge.yaml', benchmark: 'ARC-Challenge', competency: 'Advanced Inference' },
+                { file: 'gsm8k.yaml', benchmark: 'GSM8K', competency: 'Multistep Reasoning' },
+                { file: 'arc_easy.yaml', benchmark: 'ARC-Easy', competency: 'Science Context' },
+                { file: 'mmlu.yaml', benchmark: 'MMLU', competency: 'World Knowledge' },
+                { file: 'hle.yaml', benchmark: 'HLE', competency: 'Expert Synthesis' },
+                { file: 'math.yaml', benchmark: 'MATH', competency: 'Competition Math' }
+            ];
+
+            try {
+                const benchmarkRows = await Promise.all(benchmarkFiles.map(async (entry) => {
+                    const resultUrl = `https://huggingface.co/workofarttattoo/echo-prime-agi/raw/main/.eval_results/${entry.file}`;
+                    const response = await fetch(resultUrl, { cache: 'no-store' });
+                    if (!response.ok) {
+                        throw new Error(`Failed benchmark fetch: ${entry.file}`);
+                    }
+
+                    const raw = await response.text();
+                    const valueMatch = raw.match(/value:\s*([0-9.]+)/i);
+                    const dateMatch = raw.match(/date:\s*"?([0-9-]+)"?/i);
+                    const score = valueMatch ? formatScore(valueMatch[1]) : 'N/A';
+                    const date = dateMatch ? dateMatch[1] : 'Unknown';
+
+                    return {
+                        benchmark: entry.benchmark,
+                        competency: entry.competency,
+                        score,
+                        date,
+                        sortDate: Date.parse(date) || 0
+                    };
+                }));
+
+                benchmarkRows.sort((a, b) => {
+                    if (a.sortDate !== b.sortDate) return b.sortDate - a.sortDate;
+                    return a.benchmark.localeCompare(b.benchmark);
+                });
+
+                const modelResponse = await fetch('https://huggingface.co/api/models/workofarttattoo/echo-prime-agi', { cache: 'no-store' });
+                let modelLastUpdated = '';
+                if (modelResponse.ok) {
+                    const modelData = await modelResponse.json();
+                    if (modelData.lastModified) {
+                        modelLastUpdated = String(modelData.lastModified).split('T')[0];
+                    }
+                }
+
+                const latestBenchmarkDate = benchmarkRows[0]?.date || 'Unknown';
+                const sourceNote = modelLastUpdated
+                    ? `Source: huggingface.co/workofarttattoo/echo-prime-agi (.eval_results). Latest benchmark date: ${latestBenchmarkDate}. Model updated: ${modelLastUpdated}.`
+                    : `Source: huggingface.co/workofarttattoo/echo-prime-agi (.eval_results). Latest benchmark date: ${latestBenchmarkDate}.`;
+
+                renderEchoBenchmarks(benchmarkRows, sourceNote);
+            } catch (error) {
+                renderEchoBenchmarks(
+                    echoPrimeBenchmarkFallback,
+                    'Live benchmark fetch unavailable. Showing fallback values from the latest published Echo Prime model card.'
+                );
+                console.log('[echo-benchmarks] Fallback mode:', error.message);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadEchoPrimeBenchmarks();
         });
 
         // Parallax effect on scroll
